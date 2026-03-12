@@ -1,162 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Management — PartnerHub</title>
-  <link rel="stylesheet" href="css/slds.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management — PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
 </head>
+
 <body>
-  <div id="slds-global-header-container"></div>
-  <div id="slds-app-nav-container"></div>
-  <div id="slds-workspace-tabs-container"></div>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
 
-  <div class="slds-body">
+    <div class="slds-body">
 
-    <div class="slds-list-header">
-      <div class="slds-list-header__icon-title">
-        <div class="slds-icon-std ic-user">
-          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-user">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">User Management</div>
+                    <div class="slds-list-subtitle">6 users · Active Directory</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <button class="slds-btn slds-btn-neutral" onclick="showToast('Invite sent!','success')">Invite
+                    User</button>
+                <a href="user-master-create.html" class="slds-btn slds-btn-brand">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New User
+                </a>
+            </div>
         </div>
-        <div>
-          <div class="slds-list-title">User Management</div>
-          <div class="slds-list-subtitle">6 users · Active Directory</div>
+
+        <div class="slds-filter-bar">
+            <div class="slds-search-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" class="slds-search" placeholder="Search by name, email, role...">
+            </div>
+            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;">
+                <option>All Roles</option>
+                <option>Admin</option>
+                <option>Manager</option>
+                <option>Executive</option>
+                <option>Viewer</option>
+            </select>
+            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;">
+                <option>All Status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+                <option>Pending</option>
+            </select>
         </div>
-      </div>
-      <div class="slds-list-actions">
-        <button class="slds-btn slds-btn-neutral" onclick="showToast('Invite sent!','success')">Invite User</button>
-        <a href="user-master-create.html" class="slds-btn slds-btn-brand">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          New User
-        </a>
-      </div>
+
+        <!-- Users Cards grid view -->
+        <div style="padding:16px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;">
+
+            <div class="slds-card" style="padding:16px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                    <div
+                        style="width:44px;height:44px;border-radius:50%;background:#0176D3;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">
+                        PA</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:14px;">Priya Nair</div>
+                        <div style="font-size:12px;color:var(--slds-n4);">priya.nair@partnerhub.in</div>
+                    </div>
+                    <span class="slds-badge slds-badge-purple">Admin</span>
+                </div>
+                <div
+                    style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">
+                            WAREHOUSE</div>
+                        <div>WH-MUM-01</div>
+                    </div>
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST
+                            LOGIN</div>
+                        <div>Today, 9:40 AM</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                    <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm"
+                        style="flex:1;justify-content:center;">View</a>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;"
+                        onclick="showToast('Editing Priya Nair','info')">Edit</button>
+                </div>
+            </div>
+
+            <div class="slds-card" style="padding:16px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                    <div
+                        style="width:44px;height:44px;border-radius:50%;background:#54A77B;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">
+                        SK</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:14px;">Sanjay Kumar</div>
+                        <div style="font-size:12px;color:var(--slds-n4);">sanjay.kumar@partnerhub.in</div>
+                    </div>
+                    <span class="slds-badge slds-badge-info">Manager</span>
+                </div>
+                <div
+                    style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">
+                            WAREHOUSE</div>
+                        <div>WH-DEL-02</div>
+                    </div>
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST
+                            LOGIN</div>
+                        <div>Yesterday, 6:12 PM</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                    <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm"
+                        style="flex:1;justify-content:center;">View</a>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;"
+                        onclick="showToast('Editing Sanjay Kumar','info')">Edit</button>
+                </div>
+            </div>
+
+            <div class="slds-card" style="padding:16px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                    <div
+                        style="width:44px;height:44px;border-radius:50%;background:#E07AB8;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">
+                        AM</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:14px;">Anita Mehta</div>
+                        <div style="font-size:12px;color:var(--slds-n4);">anita.mehta@partnerhub.in</div>
+                    </div>
+                    <span class="slds-badge slds-badge-neutral">Executive</span>
+                </div>
+                <div
+                    style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">
+                            WAREHOUSE</div>
+                        <div>WH-BLR-01</div>
+                    </div>
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST
+                            LOGIN</div>
+                        <div>Dec 22, 2024</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                    <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm"
+                        style="flex:1;justify-content:center;">View</a>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;"
+                        onclick="showToast('Editing Anita Mehta','info')">Edit</button>
+                </div>
+            </div>
+
+            <div class="slds-card" style="padding:16px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                    <div
+                        style="width:44px;height:44px;border-radius:50%;background:#FCB95B;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">
+                        RV</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:14px;">Ravi Verma</div>
+                        <div style="font-size:12px;color:var(--slds-n4);">ravi.verma@partnerhub.in</div>
+                    </div>
+                    <span class="slds-badge slds-badge-neutral">Executive</span>
+                </div>
+                <div
+                    style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">
+                            WAREHOUSE</div>
+                        <div>WH-HYD-01</div>
+                    </div>
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST
+                            LOGIN</div>
+                        <div>Dec 23, 2024</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                    <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm"
+                        style="flex:1;justify-content:center;">View</a>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;"
+                        onclick="showToast('Editing Ravi Verma','info')">Edit</button>
+                </div>
+            </div>
+
+            <div class="slds-card" style="padding:16px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                    <div
+                        style="width:44px;height:44px;border-radius:50%;background:#9B6293;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">
+                        JS</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:14px;">Jay Shah</div>
+                        <div style="font-size:12px;color:var(--slds-n4);">jay.shah@partnerhub.in</div>
+                    </div>
+                    <span class="slds-badge slds-badge-neutral">Viewer</span>
+                </div>
+                <div
+                    style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">
+                            WAREHOUSE</div>
+                        <div>All</div>
+                    </div>
+                    <div>
+                        <div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST
+                            LOGIN</div>
+                        <div>Dec 20, 2024</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                    <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm"
+                        style="flex:1;justify-content:center;">View</a>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;"
+                        onclick="showToast('Editing Jay Shah','info')">Edit</button>
+                </div>
+            </div>
+
+            <!-- Invite card -->
+            <div class="slds-card"
+                style="padding:16px;border:2px dashed var(--slds-n7);box-shadow:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:160px;cursor:pointer;"
+                onclick="showToast('Invite modal opened','info')">
+                <div
+                    style="width:44px;height:44px;border-radius:50%;background:var(--slds-n9);border:2px dashed var(--slds-n6);display:flex;align-items:center;justify-content:center;color:var(--slds-n5);font-size:24px;">
+                    +</div>
+                <div style="font-weight:600;color:var(--slds-brand);">Invite New User</div>
+                <div style="font-size:12px;color:var(--slds-n4);text-align:center;">Send an email invitation to add a
+                    new team member</div>
+            </div>
+        </div>
     </div>
 
-    <div class="slds-filter-bar">
-      <div class="slds-search-wrap">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="text" class="slds-search" placeholder="Search by name, email, role...">
-      </div>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;">
-        <option>All Roles</option><option>Admin</option><option>Manager</option>
-        <option>Executive</option><option>Viewer</option>
-      </select>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;">
-        <option>All Status</option><option>Active</option><option>Inactive</option><option>Pending</option>
-      </select>
-    </div>
-
-    <!-- Users Cards grid view -->
-    <div style="padding:16px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;">
-
-      <div class="slds-card" style="padding:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#0176D3;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">PA</div>
-          <div style="flex:1;">
-            <div style="font-weight:700;font-size:14px;">Priya Nair</div>
-            <div style="font-size:12px;color:var(--slds-n4);">priya.nair@partnerhub.in</div>
-          </div>
-          <span class="slds-badge slds-badge-purple">Admin</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">WAREHOUSE</div><div>WH-MUM-01</div></div>
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST LOGIN</div><div>Today, 9:40 AM</div></div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:10px;">
-          <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;justify-content:center;">View</a>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;" onclick="showToast('Editing Priya Nair','info')">Edit</button>
-        </div>
-      </div>
-
-      <div class="slds-card" style="padding:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#54A77B;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">SK</div>
-          <div style="flex:1;">
-            <div style="font-weight:700;font-size:14px;">Sanjay Kumar</div>
-            <div style="font-size:12px;color:var(--slds-n4);">sanjay.kumar@partnerhub.in</div>
-          </div>
-          <span class="slds-badge slds-badge-info">Manager</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">WAREHOUSE</div><div>WH-DEL-02</div></div>
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST LOGIN</div><div>Yesterday, 6:12 PM</div></div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:10px;">
-          <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;justify-content:center;">View</a>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;" onclick="showToast('Editing Sanjay Kumar','info')">Edit</button>
-        </div>
-      </div>
-
-      <div class="slds-card" style="padding:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#E07AB8;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">AM</div>
-          <div style="flex:1;">
-            <div style="font-weight:700;font-size:14px;">Anita Mehta</div>
-            <div style="font-size:12px;color:var(--slds-n4);">anita.mehta@partnerhub.in</div>
-          </div>
-          <span class="slds-badge slds-badge-neutral">Executive</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">WAREHOUSE</div><div>WH-BLR-01</div></div>
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST LOGIN</div><div>Dec 22, 2024</div></div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:10px;">
-          <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;justify-content:center;">View</a>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;" onclick="showToast('Editing Anita Mehta','info')">Edit</button>
-        </div>
-      </div>
-
-      <div class="slds-card" style="padding:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#FCB95B;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">RV</div>
-          <div style="flex:1;">
-            <div style="font-weight:700;font-size:14px;">Ravi Verma</div>
-            <div style="font-size:12px;color:var(--slds-n4);">ravi.verma@partnerhub.in</div>
-          </div>
-          <span class="slds-badge slds-badge-neutral">Executive</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">WAREHOUSE</div><div>WH-HYD-01</div></div>
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST LOGIN</div><div>Dec 23, 2024</div></div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:10px;">
-          <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;justify-content:center;">View</a>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;" onclick="showToast('Editing Ravi Verma','info')">Edit</button>
-        </div>
-      </div>
-
-      <div class="slds-card" style="padding:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#9B6293;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">JS</div>
-          <div style="flex:1;">
-            <div style="font-weight:700;font-size:14px;">Jay Shah</div>
-            <div style="font-size:12px;color:var(--slds-n4);">jay.shah@partnerhub.in</div>
-          </div>
-          <span class="slds-badge slds-badge-neutral">Viewer</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;border-top:1px solid var(--slds-n7);padding-top:10px;">
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">WAREHOUSE</div><div>All</div></div>
-          <div><div style="color:var(--slds-n4);text-transform:uppercase;font-size:10px;font-weight:700;">LAST LOGIN</div><div>Dec 20, 2024</div></div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:10px;">
-          <a href="user-master-detail.html" class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;justify-content:center;">View</a>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" style="flex:1;" onclick="showToast('Editing Jay Shah','info')">Edit</button>
-        </div>
-      </div>
-
-      <!-- Invite card -->
-      <div class="slds-card" style="padding:16px;border:2px dashed var(--slds-n7);box-shadow:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:160px;cursor:pointer;" onclick="showToast('Invite modal opened','info')">
-        <div style="width:44px;height:44px;border-radius:50%;background:var(--slds-n9);border:2px dashed var(--slds-n6);display:flex;align-items:center;justify-content:center;color:var(--slds-n5);font-size:24px;">+</div>
-        <div style="font-weight:600;color:var(--slds-brand);">Invite New User</div>
-        <div style="font-size:12px;color:var(--slds-n4);text-align:center;">Send an email invitation to add a new team member</div>
-      </div>
-    </div>
-  </div>
-
-  <div id="slds-toast-zone" class="slds-toast-zone"></div>
-  <script src="js/app.js"></script>
-  <script>
-    initPage('user-master', 'Users');
-  </script>
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('user-master', 'Users');
+    </script>
 </body>
+
 </html>

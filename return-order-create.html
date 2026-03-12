@@ -1,214 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Return — PartnerHub</title>
-  <link rel="stylesheet" href="css/slds.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Return — PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
 </head>
+
 <body>
-  <div id="slds-global-header-container"></div>
-  <div id="slds-app-nav-container"></div>
-  <div id="slds-workspace-tabs-container"></div>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
 
-  <div class="slds-body">
-    <div class="slds-breadcrumb">
-      <a href="dashboard.html">Home</a><span class="slds-breadcrumb__sep">›</span>
-      <a href="return-order-list.html">Return Orders</a><span class="slds-breadcrumb__sep">›</span>
-      <span class="slds-breadcrumb__current">New Return</span>
-    </div>
-
-    <div class="slds-record-header-card">
-      <div class="slds-record-header-inner">
-        <div class="slds-record-header-top">
-          <div class="slds-icon-std ic-return">
-            <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
-          </div>
-          <div style="flex:1;">
-            <div class="slds-record-subtitle">Return Order</div>
-            <div class="slds-record-title">Initiate New Return</div>
-          </div>
-          <div style="display:flex;gap:8px;">
-            <a href="return-order-list.html" class="slds-btn slds-btn-neutral">Cancel</a>
-            <button class="slds-btn slds-btn-brand" onclick="submitReturn()">Create Return</button>
-          </div>
+    <div class="slds-body">
+        <div class="slds-breadcrumb">
+            <a href="dashboard.html">Home</a><span class="slds-breadcrumb__sep">›</span>
+            <a href="return-order-list.html">Return Orders</a><span class="slds-breadcrumb__sep">›</span>
+            <span class="slds-breadcrumb__current">New Return</span>
         </div>
-      </div>
-    </div>
 
-    <div style="padding:24px;display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1200px;">
-
-      <div style="display:flex;flex-direction:column;gap:16px;">
-
-        <!-- Linked Order lookup -->
-        <div class="slds-card">
-          <div class="slds-card__header"><div class="slds-card__header-title">Linked Order</div></div>
-          <div class="slds-card__body">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Order ID <span style="color:var(--slds-error);">*</span></label>
-                <div class="slds-form-element__control" style="display:flex;gap:8px;">
-                  <input type="text" class="slds-input" id="linked-order" placeholder="e.g. ORD-FWD-6672">
-                  <button class="slds-btn slds-btn-neutral" onclick="lookupOrder()">Lookup</button>
+        <div class="slds-record-header-card">
+            <div class="slds-record-header-inner">
+                <div class="slds-record-header-top">
+                    <div class="slds-icon-std ic-return">
+                        <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                        </svg>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="slds-record-subtitle">Return Order</div>
+                        <div class="slds-record-title">Initiate New Return</div>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <a href="return-order-list.html" class="slds-btn slds-btn-neutral">Cancel</a>
+                        <button class="slds-btn slds-btn-brand" onclick="submitReturn()">Create Return</button>
+                    </div>
                 </div>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Customer</label>
-                <div class="slds-form-element__control">
-                  <input type="text" class="slds-input" id="customer-name" placeholder="Auto-fills from Order" readonly>
+            </div>
+        </div>
+
+        <div style="padding:24px;display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1200px;">
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+
+                <!-- Linked Order lookup -->
+                <div class="slds-card">
+                    <div class="slds-card__header">
+                        <div class="slds-card__header-title">Linked Order</div>
+                    </div>
+                    <div class="slds-card__body">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Order ID <span
+                                        style="color:var(--slds-error);">*</span></label>
+                                <div class="slds-form-element__control" style="display:flex;gap:8px;">
+                                    <input type="text" class="slds-input" id="linked-order"
+                                        placeholder="e.g. ORD-FWD-6672">
+                                    <button class="slds-btn slds-btn-neutral" onclick="lookupOrder()">Lookup</button>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Customer</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" class="slds-input" id="customer-name"
+                                        placeholder="Auto-fills from Order" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Return Details -->
-        <div class="slds-card">
-          <div class="slds-card__header"><div class="slds-card__header-title">Return Details</div></div>
-          <div class="slds-card__body">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Return Reason <span style="color:var(--slds-error);">*</span></label>
-                <select class="slds-select" id="return-reason">
-                  <option value="">— Select Reason —</option>
-                  <option>Damaged / Defective</option>
-                  <option>Wrong Item Shipped</option>
-                  <option>Not as Described</option>
-                  <option>Changed Mind</option>
-                  <option>Duplicate Order</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Return Type <span style="color:var(--slds-error);">*</span></label>
-                <select class="slds-select" id="return-type">
-                  <option value="">— Select Type —</option>
-                  <option>Refund</option>
-                  <option>Exchange</option>
-                  <option>Store Credit</option>
-                  <option>Repair &amp; Return</option>
-                </select>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Return Pickup Date</label>
-                <input type="date" class="slds-input" id="pickup-date">
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Pickup Carrier</label>
-                <select class="slds-select" id="return-carrier">
-                  <option value="">— Select Carrier —</option>
-                  <option>FedEx</option><option>Delhivery</option>
-                  <option>Blue Dart</option><option>Xpressbees</option>
-                </select>
-              </div>
-            </div>
-            <div class="slds-form-element">
-              <label class="slds-form-element__label">Customer Comments</label>
-              <textarea class="slds-textarea" id="return-comments" placeholder="Customer's description of the issue..."></textarea>
-            </div>
-          </div>
-        </div>
+                <!-- Return Details -->
+                <div class="slds-card">
+                    <div class="slds-card__header">
+                        <div class="slds-card__header-title">Return Details</div>
+                    </div>
+                    <div class="slds-card__body">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Return Reason <span
+                                        style="color:var(--slds-error);">*</span></label>
+                                <select class="slds-select" id="return-reason">
+                                    <option value="">— Select Reason —</option>
+                                    <option>Damaged / Defective</option>
+                                    <option>Wrong Item Shipped</option>
+                                    <option>Not as Described</option>
+                                    <option>Changed Mind</option>
+                                    <option>Duplicate Order</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Return Type <span
+                                        style="color:var(--slds-error);">*</span></label>
+                                <select class="slds-select" id="return-type">
+                                    <option value="">— Select Type —</option>
+                                    <option>Refund</option>
+                                    <option>Exchange</option>
+                                    <option>Store Credit</option>
+                                    <option>Repair &amp; Return</option>
+                                </select>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Return Pickup Date</label>
+                                <input type="date" class="slds-input" id="pickup-date">
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Pickup Carrier</label>
+                                <select class="slds-select" id="return-carrier">
+                                    <option value="">— Select Carrier —</option>
+                                    <option>FedEx</option>
+                                    <option>Delhivery</option>
+                                    <option>Blue Dart</option>
+                                    <option>Xpressbees</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">Customer Comments</label>
+                            <textarea class="slds-textarea" id="return-comments"
+                                placeholder="Customer's description of the issue..."></textarea>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Items to Return -->
-        <div class="slds-card">
-          <div class="slds-card__header">
-            <div class="slds-card__header-title">Items to Return</div>
-            <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="addReturnRow()">+ Add Item</button>
-          </div>
-          <table class="slds-table">
-            <thead>
-              <tr><th>SKU</th><th>Product Description</th><th>Qty Ordered</th><th>Qty to Return</th><th>Condition</th><th></th></tr>
-            </thead>
-            <tbody id="return-items">
-              <tr>
-                <td><input type="text" class="slds-input" style="height:28px;font-size:12px;" placeholder="SKU-XXXX"></td>
-                <td><input type="text" class="slds-input" style="height:28px;font-size:12px;" placeholder="Product name"></td>
-                <td><input type="number" class="slds-input" style="height:28px;font-size:12px;width:70px;" placeholder="0"></td>
-                <td><input type="number" class="slds-input" style="height:28px;font-size:12px;width:70px;" placeholder="0"></td>
-                <td>
-                  <select class="slds-select" style="height:28px;font-size:12px;padding:0 24px 0 8px;">
-                    <option>Unopened</option><option>Opened</option>
-                    <option>Damaged</option><option>Defective</option>
-                  </select>
-                </td>
-                <td><button class="slds-btn slds-btn-icon slds-btn-sm" onclick="this.closest('tr').remove()">✕</button></td>
-              </tr>
-            </tbody>
-          </table>
-          <div style="padding:12px 24px;background:var(--slds-n10);font-size:12px;color:var(--slds-n4);">
-            <span>Estimated Refund: <b style="color:var(--slds-success);">₹—</b></span>
-          </div>
-        </div>
-      </div>
+                <!-- Items to Return -->
+                <div class="slds-card">
+                    <div class="slds-card__header">
+                        <div class="slds-card__header-title">Items to Return</div>
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="addReturnRow()">+ Add
+                            Item</button>
+                    </div>
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Product Description</th>
+                                <th>Qty Ordered</th>
+                                <th>Qty to Return</th>
+                                <th>Condition</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="return-items">
+                            <tr>
+                                <td><input type="text" class="slds-input" style="height:28px;font-size:12px;"
+                                        placeholder="SKU-XXXX"></td>
+                                <td><input type="text" class="slds-input" style="height:28px;font-size:12px;"
+                                        placeholder="Product name"></td>
+                                <td><input type="number" class="slds-input"
+                                        style="height:28px;font-size:12px;width:70px;" placeholder="0"></td>
+                                <td><input type="number" class="slds-input"
+                                        style="height:28px;font-size:12px;width:70px;" placeholder="0"></td>
+                                <td>
+                                    <select class="slds-select"
+                                        style="height:28px;font-size:12px;padding:0 24px 0 8px;">
+                                        <option>Unopened</option>
+                                        <option>Opened</option>
+                                        <option>Damaged</option>
+                                        <option>Defective</option>
+                                    </select>
+                                </td>
+                                <td><button class="slds-btn slds-btn-icon slds-btn-sm"
+                                        onclick="this.closest('tr').remove()">✕</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="padding:12px 24px;background:var(--slds-n10);font-size:12px;color:var(--slds-n4);">
+                        <span>Estimated Refund: <b style="color:var(--slds-success);">₹—</b></span>
+                    </div>
+                </div>
+            </div>
 
-      <!-- Right Sidebar -->
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div class="slds-highlight-panel">
-          <div class="slds-highlight-panel__header">Return Summary</div>
-          <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;justify-content:space-between;font-size:13px;">
-              <span style="color:var(--slds-n4);">Status</span>
-              <span class="slds-badge slds-badge-warning">Draft</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;">
-              <span style="color:var(--slds-n4);">Items</span><span id="sb-ret-items">1</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;">
-              <span style="color:var(--slds-n4);">Estimated Refund</span><span id="sb-refund">—</span>
-            </div>
-            <hr style="border:none;border-top:1px solid var(--slds-n7);">
-            <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="submitReturn()">Create Return Order</button>
-            <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="showToast('Saved as draft','info')">Save Draft</button>
-          </div>
-        </div>
+            <!-- Right Sidebar -->
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="slds-highlight-panel">
+                    <div class="slds-highlight-panel__header">Return Summary</div>
+                    <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:var(--slds-n4);">Status</span>
+                            <span class="slds-badge slds-badge-warning">Draft</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:var(--slds-n4);">Items</span><span id="sb-ret-items">1</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:var(--slds-n4);">Estimated Refund</span><span id="sb-refund">—</span>
+                        </div>
+                        <hr style="border:none;border-top:1px solid var(--slds-n7);">
+                        <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="submitReturn()">Create
+                            Return Order</button>
+                        <button class="slds-btn slds-btn-neutral" style="width:100%;"
+                            onclick="showToast('Saved as draft','info')">Save Draft</button>
+                    </div>
+                </div>
 
-        <div class="slds-highlight-panel">
-          <div class="slds-highlight-panel__header">Return Policy</div>
-          <div class="slds-highlight-panel__body" style="font-size:12px;color:var(--slds-n4);line-height:1.6;">
-            <ul style="padding-left:16px;margin:0;">
-              <li>Returns accepted within 30 days.</li>
-              <li>Item must be in original condition.</li>
-              <li>Free pickup for damaged/wrong items.</li>
-              <li>Refunds processed within 5–7 business days.</li>
-            </ul>
-          </div>
+                <div class="slds-highlight-panel">
+                    <div class="slds-highlight-panel__header">Return Policy</div>
+                    <div class="slds-highlight-panel__body"
+                        style="font-size:12px;color:var(--slds-n4);line-height:1.6;">
+                        <ul style="padding-left:16px;margin:0;">
+                            <li>Returns accepted within 30 days.</li>
+                            <li>Item must be in original condition.</li>
+                            <li>Free pickup for damaged/wrong items.</li>
+                            <li>Refunds processed within 5–7 business days.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <div id="slds-toast-zone" class="slds-toast-zone"></div>
-  <script src="js/app.js"></script>
-  <script>
-    initPage('return-order', 'New Return', 'New Return', 'return');
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('return-order', 'New Return', 'New Return', 'return');
 
-    function lookupOrder() {
-      const v = document.getElementById('linked-order').value.trim();
-      if (!v) { showToast('Enter an order ID first', 'warning'); return; }
-      document.getElementById('customer-name').value = 'Nexus Corp';
-      showToast(`Order ${v} found!`, 'success');
-    }
+        function lookupOrder() {
+            const v = document.getElementById('linked-order').value.trim();
+            if (!v) { showToast('Enter an order ID first', 'warning'); return; }
+            document.getElementById('customer-name').value = 'Nexus Corp';
+            showToast(`Order ${v} found!`, 'success');
+        }
 
-    function addReturnRow() {
-      const tbody = document.getElementById('return-items');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
+        function addReturnRow() {
+            const tbody = document.getElementById('return-items');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
         <td><input type="text" class="slds-input" style="height:28px;font-size:12px;" placeholder="SKU-XXXX"></td>
         <td><input type="text" class="slds-input" style="height:28px;font-size:12px;" placeholder="Product name"></td>
         <td><input type="number" class="slds-input" style="height:28px;font-size:12px;width:70px;" placeholder="0"></td>
         <td><input type="number" class="slds-input" style="height:28px;font-size:12px;width:70px;" placeholder="0"></td>
         <td><select class="slds-select" style="height:28px;font-size:12px;padding:0 24px 0 8px;"><option>Unopened</option><option>Opened</option><option>Damaged</option><option>Defective</option></select></td>
         <td><button class="slds-btn slds-btn-icon slds-btn-sm" onclick="this.closest('tr').remove()">✕</button></td>`;
-      tbody.appendChild(tr);
-    }
+            tbody.appendChild(tr);
+        }
 
-    function submitReturn() {
-      const reason = document.getElementById('return-reason').value;
-      if (!reason) { showToast('Please select a return reason.', 'error', 'Validation Error'); return; }
-      const retId = 'RET-' + Math.floor(Math.random() * 90000 + 10000);
-      showToast(`Return ${retId} created successfully!`, 'success', 'Success');
-      setTimeout(() => { window.location.href = 'return-order-list.html'; }, 1500);
-    }
-  </script>
+        function submitReturn() {
+            const reason = document.getElementById('return-reason').value;
+            if (!reason) { showToast('Please select a return reason.', 'error', 'Validation Error'); return; }
+            const retId = 'RET-' + Math.floor(Math.random() * 90000 + 10000);
+            showToast(`Return ${retId} created successfully!`, 'success', 'Success');
+            setTimeout(() => { window.location.href = 'return-order-list.html'; }, 1500);
+        }
+    </script>
 </body>
+
 </html>

@@ -1,114 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Return Orders — PartnerHub</title>
-  <link rel="stylesheet" href="css/slds.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Orders — PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
 </head>
+
 <body>
-  <div id="slds-global-header-container"></div>
-  <div id="slds-app-nav-container"></div>
-  <div id="slds-workspace-tabs-container"></div>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
 
-  <div class="slds-body">
+    <div class="slds-body">
 
-    <div class="slds-list-header">
-      <div class="slds-list-header__icon-title">
-        <div class="slds-icon-std ic-return">
-          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-return">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">Return Orders</div>
+                    <div class="slds-list-subtitle">5 records · Recently Viewed</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <button class="slds-btn slds-btn-neutral" onclick="exportData()">Export</button>
+                <a href="return-order-create.html" class="slds-btn slds-btn-brand">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New Return
+                </a>
+            </div>
         </div>
-        <div>
-          <div class="slds-list-title">Return Orders</div>
-          <div class="slds-list-subtitle">5 records · Recently Viewed</div>
+
+        <!-- KPI Strip -->
+        <div
+            style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Total Returns</div>
+                <div class="slds-kpi-value" style="font-size:20px;">24</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Initiated</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">5</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">In-Transit</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">7</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Received</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-n3);">10</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Refunded</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">2</div>
+            </div>
         </div>
-      </div>
-      <div class="slds-list-actions">
-        <button class="slds-btn slds-btn-neutral" onclick="exportData()">Export</button>
-        <a href="return-order-create.html" class="slds-btn slds-btn-brand">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          New Return
-        </a>
-      </div>
-    </div>
 
-    <!-- KPI Strip -->
-    <div style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Total Returns</div>
-        <div class="slds-kpi-value" style="font-size:20px;">24</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Initiated</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">5</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">In-Transit</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">7</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Received</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-n3);">10</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Refunded</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">2</div>
-      </div>
-    </div>
-
-    <div class="slds-filter-bar">
-      <div class="slds-search-wrap">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="text" class="slds-search" placeholder="Search by Return ID, order, customer...">
-      </div>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;">
-        <option>All Statuses</option>
-        <option>Initiated</option><option>In-Transit</option>
-        <option>Received</option><option>Inspecting</option><option>Refunded</option>
-      </select>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
-        <option>All Reasons</option>
-        <option>Damaged</option><option>Wrong Item</option>
-        <option>Not as Described</option><option>Changed Mind</option>
-      </select>
-    </div>
-
-    <div class="slds-card" style="margin:16px 24px;">
-      <table class="slds-table">
-        <thead>
-          <tr>
-            <th><input type="checkbox" class="slds-checkbox"></th>
-            <th>Return ID</th>
-            <th>Linked Order</th>
-            <th>Customer</th>
-            <th>Date Initiated</th>
-            <th>Items</th>
-            <th>Reason</th>
-            <th>Refund Amt</th>
-            <th>Status</th>
-            <th style="text-align:right;">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="return-tbody"></tbody>
-      </table>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
-        <span style="font-size:12px;color:var(--slds-n4);">Showing 1–5 of 24 records</span>
-        <div style="display:flex;gap:4px;">
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" disabled>‹</button>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" style="background:var(--slds-brand);color:white;border-color:var(--slds-brand);">1</button>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm">2</button>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm">›</button>
+        <div class="slds-filter-bar">
+            <div class="slds-search-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" class="slds-search" placeholder="Search by Return ID, order, customer...">
+            </div>
+            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;">
+                <option>All Statuses</option>
+                <option>Initiated</option>
+                <option>In-Transit</option>
+                <option>Received</option>
+                <option>Inspecting</option>
+                <option>Refunded</option>
+            </select>
+            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
+                <option>All Reasons</option>
+                <option>Damaged</option>
+                <option>Wrong Item</option>
+                <option>Not as Described</option>
+                <option>Changed Mind</option>
+            </select>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <div id="slds-toast-zone" class="slds-toast-zone"></div>
-  <script src="js/app.js"></script>
-  <script>
-    initPage('return-order', 'Return Orders');
-    const sMap = { 'Initiated':'slds-badge-warning','In-Transit':'slds-badge-info','Received':'slds-badge-neutral','Inspecting':'slds-badge-purple','Refunded':'slds-badge-success','Rejected':'slds-badge-error' };
-    document.getElementById('return-tbody').innerHTML = PH_RETURNS.map(r => `
+        <div class="slds-card" style="margin:16px 24px;">
+            <table class="slds-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="slds-checkbox"></th>
+                        <th>Return ID</th>
+                        <th>Linked Order</th>
+                        <th>Customer</th>
+                        <th>Date Initiated</th>
+                        <th>Items</th>
+                        <th>Reason</th>
+                        <th>Refund Amt</th>
+                        <th>Status</th>
+                        <th style="text-align:right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="return-tbody"></tbody>
+            </table>
+            <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+                <span style="font-size:12px;color:var(--slds-n4);">Showing 1–5 of 24 records</span>
+                <div style="display:flex;gap:4px;">
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm" disabled>‹</button>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm"
+                        style="background:var(--slds-brand);color:white;border-color:var(--slds-brand);">1</button>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm">2</button>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm">›</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('return-order', 'Return Orders');
+        const sMap = { 'Initiated': 'slds-badge-warning', 'In-Transit': 'slds-badge-info', 'Received': 'slds-badge-neutral', 'Inspecting': 'slds-badge-purple', 'Refunded': 'slds-badge-success', 'Rejected': 'slds-badge-error' };
+        document.getElementById('return-tbody').innerHTML = PH_RETURNS.map(r => `
       <tr>
         <td><input type="checkbox" class="slds-checkbox"></td>
         <td><a href="return-order-detail.html?id=${r.id}" class="slds-text-link" style="font-weight:600;">${r.id}</a></td>
@@ -117,8 +135,8 @@
         <td style="color:var(--slds-n4);">${r.date}</td>
         <td>${r.items}</td>
         <td style="color:var(--slds-n4);">${r.reason}</td>
-        <td>₹${r.amount.toLocaleString('en-IN','2f')}</td>
-        <td><span class="slds-badge ${sMap[r.status]||'slds-badge-neutral'}">${r.status}</span></td>
+        <td>₹${r.amount.toLocaleString('en-IN', '2f')}</td>
+        <td><span class="slds-badge ${sMap[r.status] || 'slds-badge-neutral'}">${r.status}</span></td>
         <td style="text-align:right;">
           <div style="display:flex;gap:6px;justify-content:flex-end;">
             <a href="return-order-detail.html?id=${r.id}" class="slds-btn slds-btn-neutral slds-btn-sm">View</a>
@@ -126,6 +144,7 @@
           </div>
         </td>
       </tr>`).join('');
-  </script>
+    </script>
 </body>
+
 </html>

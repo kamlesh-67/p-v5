@@ -1,121 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASN — PartnerHub</title>
-  <link rel="stylesheet" href="css/slds.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASN — PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
 </head>
+
 <body>
-  <div id="slds-global-header-container"></div>
-  <div id="slds-app-nav-container"></div>
-  <div id="slds-workspace-tabs-container"></div>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
 
-  <div class="slds-body">
+    <div class="slds-body">
 
-    <div class="slds-list-header">
-      <div class="slds-list-header__icon-title">
-        <div class="slds-icon-std ic-asn">
-          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-asn">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">Advance Shipment Notices</div>
+                    <div class="slds-list-subtitle">6 records · Recently Viewed</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <button class="slds-btn slds-btn-neutral" onclick="exportData()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export
+                </button>
+                <a href="asn-create.html" class="slds-btn slds-btn-brand">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New ASN
+                </a>
+            </div>
         </div>
-        <div>
-          <div class="slds-list-title">Advance Shipment Notices</div>
-          <div class="slds-list-subtitle">6 records · Recently Viewed</div>
+
+        <!-- KPI Row -->
+        <div
+            style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Total ASNs</div>
+                <div class="slds-kpi-value" style="font-size:20px;">41</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Pending</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">3</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">In-Transit</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">5</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Received</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">31</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Discrepancy</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-error);">2</div>
+            </div>
         </div>
-      </div>
-      <div class="slds-list-actions">
-        <button class="slds-btn slds-btn-neutral" onclick="exportData()">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Export
-        </button>
-        <a href="asn-create.html" class="slds-btn slds-btn-brand">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          New ASN
-        </a>
-      </div>
-    </div>
 
-    <!-- KPI Row -->
-    <div style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Total ASNs</div>
-        <div class="slds-kpi-value" style="font-size:20px;">41</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Pending</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">3</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">In-Transit</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">5</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Received</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">31</div>
-      </div>
-      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
-        <div class="slds-kpi-label">Discrepancy</div>
-        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-error);">2</div>
-      </div>
-    </div>
-
-    <div class="slds-filter-bar">
-      <div class="slds-search-wrap">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="text" class="slds-search" placeholder="Search ASN by ID, supplier...">
-      </div>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;">
-        <option value="">All Statuses</option>
-        <option>Pending</option><option>In-Transit</option>
-        <option>Received</option><option>Discrepancy</option>
-      </select>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
-        <option value="">All Warehouses</option>
-        <option>WH-MUM-01</option><option>WH-DEL-02</option>
-        <option>WH-BLR-01</option><option>WH-HYD-01</option>
-      </select>
-    </div>
-
-    <div class="slds-card" style="margin:16px 24px;">
-      <div class="slds-table-wrap">
-        <table class="slds-table">
-          <thead>
-            <tr>
-              <th><input type="checkbox" class="slds-checkbox"></th>
-              <th>ASN ID</th>
-              <th>Supplier</th>
-              <th>Expected Date</th>
-              <th>PO Reference</th>
-              <th>Items</th>
-              <th>Units</th>
-              <th>Warehouse</th>
-              <th>Status</th>
-              <th style="text-align:right;">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="asn-tbody">
-          </tbody>
-        </table>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
-        <span style="font-size:12px;color:var(--slds-n4);">Showing 1–6 of 41 records</span>
-        <div style="display:flex;gap:4px;">
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" disabled>‹</button>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm" style="background:var(--slds-brand);color:white;border-color:var(--slds-brand);">1</button>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm">2</button>
-          <button class="slds-btn slds-btn-neutral slds-btn-sm">›</button>
+        <div class="slds-filter-bar">
+            <div class="slds-search-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" class="slds-search" placeholder="Search ASN by ID, supplier...">
+            </div>
+            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;">
+                <option value="">All Statuses</option>
+                <option>Pending</option>
+                <option>In-Transit</option>
+                <option>Received</option>
+                <option>Discrepancy</option>
+            </select>
+            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
+                <option value="">All Warehouses</option>
+                <option>WH-MUM-01</option>
+                <option>WH-DEL-02</option>
+                <option>WH-BLR-01</option>
+                <option>WH-HYD-01</option>
+            </select>
         </div>
-      </div>
+
+        <div class="slds-card" style="margin:16px 24px;">
+            <div class="slds-table-wrap">
+                <table class="slds-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="slds-checkbox"></th>
+                            <th>ASN ID</th>
+                            <th>Supplier</th>
+                            <th>Expected Date</th>
+                            <th>PO Reference</th>
+                            <th>Items</th>
+                            <th>Units</th>
+                            <th>Warehouse</th>
+                            <th>Status</th>
+                            <th style="text-align:right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="asn-tbody">
+                    </tbody>
+                </table>
+            </div>
+            <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+                <span style="font-size:12px;color:var(--slds-n4);">Showing 1–6 of 41 records</span>
+                <div style="display:flex;gap:4px;">
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm" disabled>‹</button>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm"
+                        style="background:var(--slds-brand);color:white;border-color:var(--slds-brand);">1</button>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm">2</button>
+                    <button class="slds-btn slds-btn-neutral slds-btn-sm">›</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div id="slds-toast-zone" class="slds-toast-zone"></div>
-  <script src="js/app.js"></script>
-  <script>
-    initPage('asn', 'ASN');
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('asn', 'ASN');
 
-    const statusMap = { 'Received':'slds-badge-success', 'In-Transit':'slds-badge-info', 'Pending':'slds-badge-warning', 'Discrepancy':'slds-badge-error' };
-    document.getElementById('asn-tbody').innerHTML = PH_ASNS.map(a => `
+        const statusMap = { 'Received': 'slds-badge-success', 'In-Transit': 'slds-badge-info', 'Pending': 'slds-badge-warning', 'Discrepancy': 'slds-badge-error' };
+        document.getElementById('asn-tbody').innerHTML = PH_ASNS.map(a => `
       <tr>
         <td><input type="checkbox" class="slds-checkbox"></td>
         <td><a href="asn-detail.html?id=${a.id}" class="slds-text-link" style="font-weight:600;">${a.id}</a></td>
@@ -125,7 +145,7 @@
         <td>${a.items}</td>
         <td>${a.units}</td>
         <td style="color:var(--slds-n4);">${a.warehouse}</td>
-        <td><span class="slds-badge ${statusMap[a.status]||'slds-badge-neutral'}">${a.status}</span></td>
+        <td><span class="slds-badge ${statusMap[a.status] || 'slds-badge-neutral'}">${a.status}</span></td>
         <td style="text-align:right;">
           <div style="display:flex;gap:6px;justify-content:flex-end;">
             <a href="asn-detail.html?id=${a.id}" class="slds-btn slds-btn-neutral slds-btn-sm">View</a>
@@ -133,6 +153,7 @@
           </div>
         </td>
       </tr>`).join('');
-  </script>
+    </script>
 </body>
+
 </html>

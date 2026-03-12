@@ -1,301 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings — PartnerHub</title>
-  <link rel="stylesheet" href="css/slds.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
 </head>
+
 <body>
-  <div id="slds-global-header-container"></div>
-  <div id="slds-app-nav-container"></div>
-  <div id="slds-workspace-tabs-container"></div>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
 
-  <div class="slds-body">
+    <div class="slds-body">
 
-    <div class="slds-list-header">
-      <div class="slds-list-header__icon-title">
-        <div class="slds-icon-std ic-setting">
-          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-setting">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">Settings</div>
+                    <div class="slds-list-subtitle">System configuration &amp; preferences</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <button class="slds-btn slds-btn-brand" onclick="saveSettings()">Save Changes</button>
+            </div>
         </div>
-        <div>
-          <div class="slds-list-title">Settings</div>
-          <div class="slds-list-subtitle">System configuration &amp; preferences</div>
+
+        <div style="padding:16px 24px;display:grid;grid-template-columns:220px 1fr;gap:16px;">
+
+            <!-- Settings Nav (left sidebar navigation) -->
+            <div class="slds-card"
+                style="position:sticky;top:calc(var(--slds-total-header-height) + 16px);align-self:start;">
+                <div style="padding:8px 0;">
+                    <div class="slds-settings-nav-item active" onclick="showSettingsSection('general')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        General
+                    </div>
+                    <div class="slds-settings-nav-item" onclick="showSettingsSection('company')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        Company Profile
+                    </div>
+                    <div class="slds-settings-nav-item" onclick="showSettingsSection('warehouses')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                        Warehouses
+                    </div>
+                    <div class="slds-settings-nav-item" onclick="showSettingsSection('notifications')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        Notifications
+                    </div>
+                    <div class="slds-settings-nav-item" onclick="showSettingsSection('integrations')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                        </svg>
+                        Integrations
+                    </div>
+                    <div class="slds-settings-nav-item" onclick="showSettingsSection('billing')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                        Billing &amp; Plan
+                    </div>
+                    <div class="slds-settings-nav-item" onclick="showSettingsSection('security')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        Security
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div style="display:flex;flex-direction:column;gap:16px;">
+
+                <!-- General -->
+                <div id="settings-general" class="slds-settings-section">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <div class="slds-card__header-title">General Settings</div>
+                        </div>
+                        <div class="slds-card__body">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Application Name</label>
+                                    <input type="text" class="slds-input" value="PartnerHub WMS">
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Time Zone</label>
+                                    <select class="slds-select">
+                                        <option>(UTC+5:30) India Standard Time</option>
+                                        <option>(UTC+0:00) UTC</option>
+                                        <option>(UTC-5:00) Eastern Time</option>
+                                    </select>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Date Format</label>
+                                    <select class="slds-select">
+                                        <option>DD MMM YYYY</option>
+                                        <option>MM/DD/YYYY</option>
+                                        <option>YYYY-MM-DD</option>
+                                    </select>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Currency</label>
+                                    <select class="slds-select">
+                                        <option>INR (₹) — Indian Rupee</option>
+                                        <option>USD ($) — US Dollar</option>
+                                        <option>EUR (€) — Euro</option>
+                                    </select>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Default Language</label>
+                                    <select class="slds-select">
+                                        <option>English (India)</option>
+                                        <option>Hindi</option>
+                                        <option>English (US)</option>
+                                    </select>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Fiscal Year Start</label>
+                                    <select class="slds-select">
+                                        <option>April (Indian FY)</option>
+                                        <option>January</option>
+                                        <option>July</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <div class="slds-card__header-title">Order Settings</div>
+                        </div>
+                        <div class="slds-card__body">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Order ID Prefix</label>
+                                    <input type="text" class="slds-input" value="ORD-FWD-">
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Return ID Prefix</label>
+                                    <input type="text" class="slds-input" value="RET-">
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">ASN ID Prefix</label>
+                                    <input type="text" class="slds-input" value="ASN-">
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Default Dispatch SLA (days)</label>
+                                    <input type="number" class="slds-input" value="2" min="1">
+                                </div>
+                                <div style="grid-column:span 2;">
+                                    <div style="display:flex;flex-direction:column;gap:12px;">
+                                        <label
+                                            style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
+                                            <input type="checkbox" class="slds-checkbox" checked>
+                                            Auto-confirm orders on payment capture
+                                        </label>
+                                        <label
+                                            style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
+                                            <input type="checkbox" class="slds-checkbox" checked>
+                                            Send order confirmation email to customers
+                                        </label>
+                                        <label
+                                            style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
+                                            <input type="checkbox" class="slds-checkbox">
+                                            Require approval for orders above ₹1,00,000
+                                        </label>
+                                        <label
+                                            style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
+                                            <input type="checkbox" class="slds-checkbox" checked>
+                                            Auto-generate packing slips on dispatch
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div id="settings-notifications" class="slds-settings-section" style="display:none;">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <div class="slds-card__header-title">Notification Preferences</div>
+                        </div>
+                        <div class="slds-card__body">
+                            <table class="slds-table">
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th style="text-align:center;">Email</th>
+                                        <th style="text-align:center;">In-App</th>
+                                        <th style="text-align:center;">SMS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>New Order Received</td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Order Dispatched</td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Return Initiated</td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low Stock Alert</td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ASN Received</td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Payment Received</td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                checked></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div id="settings-security" class="slds-settings-section" style="display:none;">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <div class="slds-card__header-title">Security Settings</div>
+                        </div>
+                        <div class="slds-card__body">
+                            <div style="display:flex;flex-direction:column;gap:16px;">
+                                <div
+                                    style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slds-n10);border-radius:4px;border:1px solid var(--slds-n7);">
+                                    <div>
+                                        <div style="font-weight:600;font-size:13px;">Two-Factor Authentication</div>
+                                        <div style="font-size:12px;color:var(--slds-n4);margin-top:2px;">Require 2FA for
+                                            all admin users</div>
+                                    </div>
+                                    <label class="slds-toggle"
+                                        style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;">
+                                        <input type="checkbox"
+                                            style="width:36px;height:20px;appearance:none;background:var(--slds-success);border-radius:10px;cursor:pointer;">
+                                        Enabled
+                                    </label>
+                                </div>
+                                <div
+                                    style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slds-n10);border-radius:4px;border:1px solid var(--slds-n7);">
+                                    <div>
+                                        <div style="font-weight:600;font-size:13px;">Session Timeout</div>
+                                        <div style="font-size:12px;color:var(--slds-n4);margin-top:2px;">Auto-logout
+                                            after inactivity</div>
+                                    </div>
+                                    <select class="slds-select"
+                                        style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
+                                        <option>30 minutes</option>
+                                        <option>1 hour</option>
+                                        <option>4 hours</option>
+                                        <option>8 hours</option>
+                                        <option>Never</option>
+                                    </select>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Password Policy</label>
+                                    <select class="slds-select">
+                                        <option>Strong (min 8 chars, uppercase, number, symbol)</option>
+                                        <option>Medium (min 8 chars, number required)</option>
+                                        <option>Basic (min 6 chars)</option>
+                                    </select>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Allowed IP Ranges (one per line)</label>
+                                    <textarea class="slds-textarea" rows="3"
+                                        placeholder="0.0.0.0/0 (allow all)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <button class="slds-btn slds-btn-neutral"
+                        onclick="showToast('Changes discarded','warning')">Discard</button>
+                    <button class="slds-btn slds-btn-brand" onclick="saveSettings()">Save Changes</button>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="slds-list-actions">
-        <button class="slds-btn slds-btn-brand" onclick="saveSettings()">Save Changes</button>
-      </div>
     </div>
 
-    <div style="padding:16px 24px;display:grid;grid-template-columns:220px 1fr;gap:16px;">
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('settings', 'Settings', 'Settings', 'setting');
 
-      <!-- Settings Nav (left sidebar navigation) -->
-      <div class="slds-card" style="position:sticky;top:calc(var(--slds-total-header-height) + 16px);align-self:start;">
-        <div style="padding:8px 0;">
-          <div class="slds-settings-nav-item active" onclick="showSettingsSection('general')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-            General
-          </div>
-          <div class="slds-settings-nav-item" onclick="showSettingsSection('company')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-            Company Profile
-          </div>
-          <div class="slds-settings-nav-item" onclick="showSettingsSection('warehouses')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-            Warehouses
-          </div>
-          <div class="slds-settings-nav-item" onclick="showSettingsSection('notifications')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-            Notifications
-          </div>
-          <div class="slds-settings-nav-item" onclick="showSettingsSection('integrations')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-            Integrations
-          </div>
-          <div class="slds-settings-nav-item" onclick="showSettingsSection('billing')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-            Billing &amp; Plan
-          </div>
-          <div class="slds-settings-nav-item" onclick="showSettingsSection('security')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            Security
-          </div>
-        </div>
-      </div>
+        function showSettingsSection(id) {
+            document.querySelectorAll('.slds-settings-section').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.slds-settings-nav-item').forEach(el => el.classList.remove('active'));
+            const el = document.getElementById('settings-' + id);
+            if (el) el.style.display = 'flex';
+            event.currentTarget.classList.add('active');
+        }
 
-      <!-- Settings Content -->
-      <div style="display:flex;flex-direction:column;gap:16px;">
+        function saveSettings() {
+            showToast('Settings saved successfully!', 'success', 'Saved');
+        }
+    </script>
 
-        <!-- General -->
-        <div id="settings-general" class="slds-settings-section">
-          <div class="slds-card">
-            <div class="slds-card__header"><div class="slds-card__header-title">General Settings</div></div>
-            <div class="slds-card__body">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Application Name</label>
-                  <input type="text" class="slds-input" value="PartnerHub WMS">
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Time Zone</label>
-                  <select class="slds-select">
-                    <option>(UTC+5:30) India Standard Time</option>
-                    <option>(UTC+0:00) UTC</option>
-                    <option>(UTC-5:00) Eastern Time</option>
-                  </select>
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Date Format</label>
-                  <select class="slds-select">
-                    <option>DD MMM YYYY</option>
-                    <option>MM/DD/YYYY</option>
-                    <option>YYYY-MM-DD</option>
-                  </select>
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Currency</label>
-                  <select class="slds-select">
-                    <option>INR (₹) — Indian Rupee</option>
-                    <option>USD ($) — US Dollar</option>
-                    <option>EUR (€) — Euro</option>
-                  </select>
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Default Language</label>
-                  <select class="slds-select">
-                    <option>English (India)</option>
-                    <option>Hindi</option>
-                    <option>English (US)</option>
-                  </select>
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Fiscal Year Start</label>
-                  <select class="slds-select">
-                    <option>April (Indian FY)</option>
-                    <option>January</option>
-                    <option>July</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
+    <style>
+        .slds-settings-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slds-n3);
+            cursor: pointer;
+            transition: background 0.1s;
+            border-left: 3px solid transparent;
+        }
 
-          <div class="slds-card">
-            <div class="slds-card__header"><div class="slds-card__header-title">Order Settings</div></div>
-            <div class="slds-card__body">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Order ID Prefix</label>
-                  <input type="text" class="slds-input" value="ORD-FWD-">
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Return ID Prefix</label>
-                  <input type="text" class="slds-input" value="RET-">
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">ASN ID Prefix</label>
-                  <input type="text" class="slds-input" value="ASN-">
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Default Dispatch SLA (days)</label>
-                  <input type="number" class="slds-input" value="2" min="1">
-                </div>
-                <div style="grid-column:span 2;">
-                  <div style="display:flex;flex-direction:column;gap:12px;">
-                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
-                      <input type="checkbox" class="slds-checkbox" checked>
-                      Auto-confirm orders on payment capture
-                    </label>
-                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
-                      <input type="checkbox" class="slds-checkbox" checked>
-                      Send order confirmation email to customers
-                    </label>
-                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
-                      <input type="checkbox" class="slds-checkbox">
-                      Require approval for orders above ₹1,00,000
-                    </label>
-                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
-                      <input type="checkbox" class="slds-checkbox" checked>
-                      Auto-generate packing slips on dispatch
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        .slds-settings-nav-item:hover {
+            background: var(--slds-n10);
+            color: var(--slds-brand);
+        }
 
-        <!-- Notifications Section -->
-        <div id="settings-notifications" class="slds-settings-section" style="display:none;">
-          <div class="slds-card">
-            <div class="slds-card__header"><div class="slds-card__header-title">Notification Preferences</div></div>
-            <div class="slds-card__body">
-              <table class="slds-table">
-                <thead>
-                  <tr><th>Event</th><th style="text-align:center;">Email</th><th style="text-align:center;">In-App</th><th style="text-align:center;">SMS</th></tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>New Order Received</td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"></td>
-                  </tr>
-                  <tr>
-                    <td>Order Dispatched</td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"></td>
-                  </tr>
-                  <tr>
-                    <td>Return Initiated</td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                  </tr>
-                  <tr>
-                    <td>Low Stock Alert</td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"></td>
-                  </tr>
-                  <tr>
-                    <td>ASN Received</td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"></td>
-                  </tr>
-                  <tr>
-                    <td>Payment Received</td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                    <td style="text-align:center;"><input type="checkbox" class="slds-checkbox" checked></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        .slds-settings-nav-item.active {
+            background: var(--slds-brand-light);
+            color: var(--slds-brand-dark);
+            border-left-color: var(--slds-brand);
+            font-weight: 600;
+        }
 
-        <!-- Security Section -->
-        <div id="settings-security" class="slds-settings-section" style="display:none;">
-          <div class="slds-card">
-            <div class="slds-card__header"><div class="slds-card__header-title">Security Settings</div></div>
-            <div class="slds-card__body">
-              <div style="display:flex;flex-direction:column;gap:16px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slds-n10);border-radius:4px;border:1px solid var(--slds-n7);">
-                  <div>
-                    <div style="font-weight:600;font-size:13px;">Two-Factor Authentication</div>
-                    <div style="font-size:12px;color:var(--slds-n4);margin-top:2px;">Require 2FA for all admin users</div>
-                  </div>
-                  <label class="slds-toggle" style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;">
-                    <input type="checkbox" style="width:36px;height:20px;appearance:none;background:var(--slds-success);border-radius:10px;cursor:pointer;"> Enabled
-                  </label>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slds-n10);border-radius:4px;border:1px solid var(--slds-n7);">
-                  <div>
-                    <div style="font-weight:600;font-size:13px;">Session Timeout</div>
-                    <div style="font-size:12px;color:var(--slds-n4);margin-top:2px;">Auto-logout after inactivity</div>
-                  </div>
-                  <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
-                    <option>30 minutes</option><option>1 hour</option>
-                    <option>4 hours</option><option>8 hours</option><option>Never</option>
-                  </select>
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Password Policy</label>
-                  <select class="slds-select">
-                    <option>Strong (min 8 chars, uppercase, number, symbol)</option>
-                    <option>Medium (min 8 chars, number required)</option>
-                    <option>Basic (min 6 chars)</option>
-                  </select>
-                </div>
-                <div class="slds-form-element">
-                  <label class="slds-form-element__label">Allowed IP Ranges (one per line)</label>
-                  <textarea class="slds-textarea" rows="3" placeholder="0.0.0.0/0 (allow all)"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="display:flex;justify-content:flex-end;gap:8px;">
-          <button class="slds-btn slds-btn-neutral" onclick="showToast('Changes discarded','warning')">Discard</button>
-          <button class="slds-btn slds-btn-brand" onclick="saveSettings()">Save Changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="slds-toast-zone" class="slds-toast-zone"></div>
-  <script src="js/app.js"></script>
-  <script>
-    initPage('settings', 'Settings', 'Settings', 'setting');
-
-    function showSettingsSection(id) {
-      document.querySelectorAll('.slds-settings-section').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.slds-settings-nav-item').forEach(el => el.classList.remove('active'));
-      const el = document.getElementById('settings-' + id);
-      if (el) el.style.display = 'flex';
-      event.currentTarget.classList.add('active');
-    }
-
-    function saveSettings() {
-      showToast('Settings saved successfully!', 'success', 'Saved');
-    }
-  </script>
-
-  <style>
-    .slds-settings-nav-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 9px 16px; font-size: 13px; font-weight: 500;
-      color: var(--slds-n3); cursor: pointer; transition: background 0.1s;
-      border-left: 3px solid transparent;
-    }
-    .slds-settings-nav-item:hover { background: var(--slds-n10); color: var(--slds-brand); }
-    .slds-settings-nav-item.active { background: var(--slds-brand-light); color: var(--slds-brand-dark); border-left-color: var(--slds-brand); font-weight: 600; }
-    .slds-settings-section { display: flex; flex-direction: column; gap: 16px; }
-  </style>
+        .slds-settings-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+    </style>
 </body>
+
 </html>

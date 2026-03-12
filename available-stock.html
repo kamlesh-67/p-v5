@@ -1,195 +1,831 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Available Stock — PartnerHub</title>
-  <link rel="stylesheet" href="css/slds.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Stock &mdash; PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
+    <style>
+        /* ── Sub-tabs ── */
+        .stock-tabs { display:flex; gap:0; border-bottom:2px solid var(--slds-n7); padding:0 24px; background:white; }
+        .stock-tab  { padding:10px 18px; font-size:13px; font-weight:600; color:var(--slds-n4); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:color .15s,border-color .15s; }
+        .stock-tab:hover { color:var(--slds-brand); }
+        .stock-tab.active { color:var(--slds-brand); border-bottom-color:var(--slds-brand); }
+        .stock-panel { display:none; }
+        .stock-panel.active { display:block; }
+
+        /* ── Severity badges ── */
+        .sev-high   { color:#c23934; font-weight:700; }
+        .sev-medium { color:#dd7a01; font-weight:700; }
+        .sev-low    { color:#4bca81; font-weight:700; }
+
+        /* ── Cart slide panel ── */
+        .cart-panel { position:fixed; top:var(--total-hdr); right:-380px; width:360px; height:calc(100vh - var(--total-hdr)); background:white; box-shadow:-4px 0 20px rgba(0,0,0,.12); z-index:500; display:flex; flex-direction:column; transition:right .25s ease; }
+        .cart-panel.open { right:0; }
+        .cart-panel-header { padding:14px 16px; border-bottom:1px solid var(--slds-n7); display:flex; align-items:center; justify-content:space-between; background:var(--slds-brand); }
+        .cart-panel-body   { flex:1; overflow-y:auto; padding:12px 16px; }
+        .cart-panel-footer { padding:12px 16px; border-top:1px solid var(--slds-n7); background:var(--slds-n10); }
+        .cart-item { display:flex; align-items:flex-start; gap:10px; padding:10px; background:var(--slds-n10); border:1px solid var(--slds-n8); border-radius:4px; margin-bottom:8px; }
+        .cart-item-info { flex:1; }
+        .cart-item-name { font-size:13px; font-weight:600; color:var(--slds-n2); }
+        .cart-item-sku  { font-size:11px; color:var(--slds-n4); margin-top:2px; }
+        .cart-item-wh   { font-size:11px; color:var(--slds-n5); }
+        .cart-qty-ctrl  { display:flex; align-items:center; gap:6px; margin-top:6px; }
+        .cart-qty-btn   { width:22px; height:22px; border:1px solid var(--slds-n7); border-radius:3px; background:white; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--slds-n3); transition:background .1s; }
+        .cart-qty-btn:hover { background:var(--slds-brand); color:white; border-color:var(--slds-brand); }
+        .cart-qty-val   { font-size:13px; font-weight:700; min-width:22px; text-align:center; }
+        .cart-empty     { text-align:center; padding:40px 20px; color:var(--slds-n5); }
+
+        /* ── Dispatch modal summary ── */
+        .disp-summary-row { display:flex; justify-content:space-between; font-size:12px; padding:2px 0; }
+        .disp-summary-row .label { color:var(--slds-n3); }
+        .disp-summary-row .val   { font-weight:700; }
+        .disp-summary-total { display:flex; justify-content:space-between; font-size:14px; font-weight:800; border-top:1px solid var(--slds-n7); margin-top:7px; padding-top:7px; }
+
+        /* ── Watcher email tags ── */
+        .watcher-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
+        .watcher-tag  { display:flex; align-items:center; gap:4px; background:var(--slds-n9); border:1px solid var(--slds-n7); border-radius:12px; padding:2px 8px 2px 10px; font-size:11px; color:var(--slds-n2); font-weight:600; }
+        .watcher-tag button { background:none; border:none; cursor:pointer; color:var(--slds-n5); font-size:14px; line-height:1; padding:0 0 1px 2px; }
+        .watcher-tag button:hover { color:var(--slds-error); }
+
+        /* ── File drop zone ── */
+        .file-drop { border:2px dashed var(--slds-n7); border-radius:6px; padding:16px 14px; text-align:center; cursor:pointer; transition:border-color .15s,background .15s; }
+        .file-drop:hover, .file-drop.dragover { border-color:var(--slds-brand); background:var(--slds-brand-light,#e8f0fe); }
+        .disp-file-list { margin-top:6px; display:flex; flex-direction:column; gap:4px; }
+        .disp-file-item { display:flex; align-items:center; gap:7px; font-size:11px; background:var(--slds-n10); border:1px solid var(--slds-n7); border-radius:4px; padding:4px 8px; color:var(--slds-n2); }
+        .disp-file-item span { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .disp-file-item button { background:none; border:none; cursor:pointer; color:var(--slds-n5); font-size:14px; line-height:1; flex-shrink:0; }
+        .disp-file-item button:hover { color:var(--slds-error); }
+
+        /* ── Dispatch modal section header ── */
+        .disp-sec { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--slds-n4); padding-bottom:6px; border-bottom:1px solid var(--slds-n8); margin:14px 0 10px; }
+    </style>
 </head>
+
 <body>
-  <div id="slds-global-header-container"></div>
-  <div id="slds-app-nav-container"></div>
-  <div id="slds-workspace-tabs-container"></div>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
 
-  <div class="slds-body">
+    <div class="slds-body">
 
-    <div class="slds-list-header">
-      <div class="slds-list-header__icon-title">
-        <div class="slds-icon-std ic-stock">
-          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6m-6-4h6m-6-4h6"/></svg>
+        <!-- Page header -->
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-stock">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">Stock Management</div>
+                    <div class="slds-list-subtitle">Available &bull; Damaged &bull; Store Stock</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <button class="slds-btn slds-btn-neutral" onclick="exportData()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export
+                </button>
+                <button class="slds-btn slds-btn-brand" onclick="openCartPanel()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    Cart (<span id="cart-count">0</span>)
+                </button>
+            </div>
         </div>
-        <div>
-          <div class="slds-list-title">Available Stock</div>
-          <div class="slds-list-subtitle">Real-time Inventory · 4 Warehouses</div>
+
+        <!-- KPI Row -->
+        <div style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Total SKUs</div>
+                <div class="slds-kpi-value" style="font-size:20px;">248</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Available Units</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">12,430</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Damaged</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-error);">187</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Store Stock</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">3,890</div>
+            </div>
+            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+                <div class="slds-kpi-label">Low Stock Alerts</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">14</div>
+            </div>
         </div>
-      </div>
-      <div class="slds-list-actions">
-        <button class="slds-btn slds-btn-neutral" onclick="exportData()">Export Report</button>
-        <button class="slds-btn slds-btn-neutral" onclick="showToast('Stock adjustment panel','info')">Adjust Stock</button>
-        <button class="slds-btn slds-btn-brand" onclick="showToast('Stock transfer initiated','success')">Transfer Stock</button>
-      </div>
+
+        <!-- Sub-tabs -->
+        <div class="stock-tabs">
+            <div class="stock-tab active" onclick="switchTab('available')">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;display:inline;margin-right:5px;vertical-align:middle;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>Available Stock
+            </div>
+            <div class="stock-tab" onclick="switchTab('damaged')">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;display:inline;margin-right:5px;vertical-align:middle;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                </svg>Damaged Stock
+            </div>
+            <div class="stock-tab" onclick="switchTab('store')">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;display:inline;margin-right:5px;vertical-align:middle;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V10" />
+                </svg>Store Stock
+            </div>
+        </div>
+
+        <!-- ═══ AVAILABLE STOCK PANEL ═══ -->
+        <div id="panel-available" class="stock-panel active">
+            <div class="slds-filter-bar">
+                <div class="slds-search-wrap">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" class="slds-search" id="avail-search"
+                        placeholder="Search by SKU or product name..." oninput="filterAvailable()">
+                </div>
+                <select class="slds-select" id="avail-wh-filter" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;" onchange="filterAvailable()">
+                    <option value="">All Warehouses</option>
+                    <option>WH-MUM-01</option>
+                    <option>WH-DEL-02</option>
+                    <option>WH-BLR-01</option>
+                    <option>WH-HYD-01</option>
+                </select>
+            </div>
+
+            <div class="slds-card" style="margin:16px 24px;">
+                <div class="slds-table-wrap">
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" class="slds-checkbox"></th>
+                                <th>SKU</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Warehouse</th>
+                                <th style="text-align:right;">Available Qty</th>
+                                <th>Status</th>
+                                <th style="text-align:center;">Add to Cart</th>
+                            </tr>
+                        </thead>
+                        <tbody id="avail-tbody"></tbody>
+                    </table>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+                    <span style="font-size:12px;color:var(--slds-n4);" id="avail-count">Showing all records</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ DAMAGED STOCK PANEL ═══ -->
+        <div id="panel-damaged" class="stock-panel">
+            <div class="slds-filter-bar">
+                <div class="slds-search-wrap">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" class="slds-search" placeholder="Search damaged stock...">
+                </div>
+                <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
+                    <option value="">All Statuses</option>
+                    <option>Pending Inspection</option>
+                    <option>Ready for Disposal</option>
+                    <option>Claimed</option>
+                    <option>Scrapped</option>
+                </select>
+            </div>
+            <div class="slds-card" style="margin:16px 24px;">
+                <div class="slds-table-wrap">
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" class="slds-checkbox"></th>
+                                <th>SKU</th>
+                                <th>Product Name</th>
+                                <th>Warehouse</th>
+                                <th style="text-align:right;">Damaged Qty</th>
+                                <th>Severity</th>
+                                <th>Damage Type</th>
+                                <th>Reported Date</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="damaged-tbody"></tbody>
+                    </table>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+                    <span style="font-size:12px;color:var(--slds-n4);">Showing 1&ndash;8 of 187 damaged items</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ STORE STOCK PANEL ═══ -->
+        <div id="panel-store" class="stock-panel">
+            <div class="slds-filter-bar">
+                <div class="slds-search-wrap">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" class="slds-search" placeholder="Search store stock...">
+                </div>
+                <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
+                    <option value="">All Locations</option>
+                    <option>Mumbai Flagship</option>
+                    <option>Delhi Boutique</option>
+                    <option>Bengaluru Store</option>
+                    <option>Hyderabad Outlet</option>
+                </select>
+            </div>
+            <div class="slds-card" style="margin:16px 24px;">
+                <div class="slds-table-wrap">
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" class="slds-checkbox"></th>
+                                <th>SKU</th>
+                                <th>Product Name</th>
+                                <th>Store Location</th>
+                                <th style="text-align:right;">Store Qty</th>
+                                <th style="text-align:right;">Min Threshold</th>
+                                <th>Stock Health</th>
+                                <th>Last Updated</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="store-tbody"></tbody>
+                    </table>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+                    <span style="font-size:12px;color:var(--slds-n4);">Showing 1&ndash;8 of 3,890 store items</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /slds-body -->
+
+    <!-- ═══════════════════════ CART SLIDE PANEL ═══════════════════════ -->
+    <div id="cart-panel" class="cart-panel">
+        <div class="cart-panel-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:18px;height:18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span style="color:white;font-weight:700;font-size:14px;">Dispatch Cart &mdash; <span id="cart-panel-count">0</span> items</span>
+            </div>
+            <button style="background:none;border:none;color:white;font-size:20px;cursor:pointer;line-height:1;" onclick="closeCartPanel()">&#215;</button>
+        </div>
+        <div class="cart-panel-body" id="cart-body">
+            <div class="cart-empty" id="cart-empty-msg">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:40px;height:40px;margin:0 auto 10px;color:var(--slds-n7);">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+                </svg>
+                <div style="font-weight:600;color:var(--slds-n4);">Cart is empty</div>
+                <div style="font-size:11px;margin-top:4px;">Add stock items using the + button</div>
+            </div>
+        </div>
+        <div class="cart-panel-footer">
+            <button class="slds-btn slds-btn-brand"
+                style="width:100%;justify-content:center;" onclick="openDispatchModal()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;margin-right:5px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                Send to Client
+            </button>
+            <button class="slds-btn slds-btn-neutral"
+                style="width:100%;justify-content:center;margin-top:6px;" onclick="clearCart()">Clear Cart</button>
+        </div>
     </div>
 
-    <!-- Warehouse KPI Cards -->
-    <div style="padding:16px 24px;background:white;border-bottom:1px solid var(--slds-n7);">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
-        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('MUM-01')">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-            <div>
-              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-MUM-01</div>
-              <div style="font-size:12px;color:var(--slds-n4);">Mumbai, Maharashtra</div>
-            </div>
-            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
-          </div>
-          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">512</div>
-          <div style="margin-top:6px;">
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-n1);">78%</span></div>
-            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:78%;background:var(--slds-warning-accent);border-radius:2px;"></div></div>
-          </div>
-        </div>
+    <!-- Cart overlay -->
+    <div id="cart-overlay" onclick="closeCartPanel()"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.18);z-index:498;"></div>
 
-        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('DEL-02')">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-            <div>
-              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-DEL-02</div>
-              <div style="font-size:12px;color:var(--slds-n4);">New Delhi, DL</div>
+    <!-- ══════════════ DISPATCH TO CLIENT MODAL ══════════════ -->
+    <div id="dispatch-modal" class="slds-backdrop" style="display:none;"
+        onclick="if(event.target===this)closeModal('dispatch-modal')">
+        <div class="slds-modal" style="max-width:660px;">
+            <div class="slds-modal__header" style="background:var(--slds-brand);">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:18px;height:18px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    <span class="slds-modal__title">Send to Client &mdash; Dispatch Details</span>
+                </div>
+                <button class="slds-modal__close" onclick="closeModal('dispatch-modal')">&#215;</button>
             </div>
-            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
-          </div>
-          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">341</div>
-          <div style="margin-top:6px;">
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-success);">45%</span></div>
-            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:45%;background:var(--slds-success);border-radius:2px;"></div></div>
-          </div>
-        </div>
+            <div class="slds-modal__body" style="max-height:72vh;overflow-y:auto;">
 
-        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('BLR-01')">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-            <div>
-              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-BLR-01</div>
-              <div style="font-size:12px;color:var(--slds-n4);">Bengaluru, Karnataka</div>
-            </div>
-            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
-          </div>
-          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">289</div>
-          <div style="margin-top:6px;">
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-error);">91%</span></div>
-            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:91%;background:var(--slds-error);border-radius:2px;"></div></div>
-          </div>
-        </div>
+                <!-- Order summary -->
+                <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:12px 14px;margin-bottom:4px;">
+                    <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+                        Order Summary</div>
+                    <div id="dispatch-summary"></div>
+                </div>
 
-        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('HYD-01')">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-            <div>
-              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-HYD-01</div>
-              <div style="font-size:12px;color:var(--slds-n4);">Hyderabad, Telangana</div>
+                <!-- CLIENT & CONTACT -->
+                <div class="disp-sec">Client &amp; Contact</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div>
+                        <div class="slds-form-label">Client Name <span style="color:var(--slds-error)">*</span></div>
+                        <input class="slds-input" id="disp-client" placeholder="e.g. Nexus Corp">
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Contact Person Name <span style="color:var(--slds-error)">*</span></div>
+                        <input class="slds-input" id="disp-contact" placeholder="e.g. Vikram Malhotra">
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div>
+                        <div class="slds-form-label">Contact Person Phone No. <span style="color:var(--slds-error)">*</span></div>
+                        <input class="slds-input" id="disp-phone" placeholder="+91 98000 00000" type="tel">
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Dispatch From <span style="color:var(--slds-error)">*</span></div>
+                        <select class="slds-select" id="disp-warehouse">
+                            <option value="">Select Warehouse</option>
+                            <option>WH-MUM-01 &ndash; Mumbai</option>
+                            <option>WH-DEL-02 &ndash; New Delhi</option>
+                            <option>WH-BLR-01 &ndash; Bengaluru</option>
+                            <option>WH-HYD-01 &ndash; Hyderabad</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <div class="slds-form-label">
+                        Watchers Email
+                        <span style="font-size:10px;color:var(--slds-n4);font-weight:500;margin-left:4px;">(type and press Enter to add)</span>
+                    </div>
+                    <input class="slds-input" id="disp-watcher-input"
+                        placeholder="watcher@example.com" onkeydown="addDispWatcher(event)">
+                    <div class="watcher-tags" id="disp-watcher-tags"></div>
+                </div>
+
+                <!-- ORDER CONFIGURATION -->
+                <div class="disp-sec">Order Configuration</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div>
+                        <div class="slds-form-label">Order Type <span style="color:var(--slds-error)">*</span></div>
+                        <select class="slds-select" id="disp-order-type">
+                            <option value="">Select type</option>
+                            <option value="B2B">B2B</option>
+                            <option value="B2C">B2C</option>
+                            <option value="Marketplace">Marketplace</option>
+                            <option value="Direct">Direct</option>
+                            <option value="Wholesale">Wholesale</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Order Priority <span style="color:var(--slds-error)">*</span></div>
+                        <select class="slds-select" id="disp-order-priority">
+                            <option value="">Select priority</option>
+                            <option value="Urgent">Urgent</option>
+                            <option value="High">High</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Order Reason <span style="color:var(--slds-error)">*</span></div>
+                        <select class="slds-select" id="disp-order-reason">
+                            <option value="">Select reason</option>
+                            <option value="New Sale">New Sale</option>
+                            <option value="Replacement">Replacement</option>
+                            <option value="Exchange">Exchange</option>
+                            <option value="Replenishment">Replenishment</option>
+                            <option value="Demo">Demo</option>
+                            <option value="Gifting">Gifting</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- LOGISTICS -->
+                <div class="disp-sec">Logistics</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div>
+                        <div class="slds-form-label">Carrier</div>
+                        <select class="slds-select" id="disp-carrier">
+                            <option>Delhivery</option>
+                            <option>Blue Dart</option>
+                            <option>Ecom Express</option>
+                            <option>DTDC</option>
+                            <option>India Post</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Delivery Address <span style="color:var(--slds-error)">*</span></div>
+                        <textarea class="slds-textarea" id="disp-address" rows="2"
+                            placeholder="Street, City, State, PIN Code" style="resize:none;"></textarea>
+                    </div>
+                </div>
+
+                <!-- SCHEDULE -->
+                <div class="disp-sec">Schedule &amp; Dates</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div>
+                        <div class="slds-form-label">Delivery Date <span style="color:var(--slds-error)">*</span></div>
+                        <input class="slds-input" id="disp-delivery-date" type="datetime-local">
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Dispatch Date</div>
+                        <input class="slds-input" id="disp-dispatch-date" type="datetime-local">
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Pickup Date</div>
+                        <input class="slds-input" id="disp-pickup-date" type="datetime-local">
+                    </div>
+                </div>
+
+                <!-- NOTES & ATTACHMENTS -->
+                <div class="disp-sec">Notes &amp; Attachments</div>
+                <div style="margin-bottom:12px;">
+                    <div class="slds-form-label">Feedback / Special Instructions</div>
+                    <textarea class="slds-textarea" id="disp-notes" rows="2"
+                        placeholder="Any special delivery, packing, or handling instructions..."></textarea>
+                </div>
+                <div style="margin-bottom:4px;">
+                    <div class="slds-form-label">Attachments</div>
+                    <div class="file-drop" id="disp-file-drop"
+                        onclick="document.getElementById('disp-file-input').click()"
+                        ondragover="event.preventDefault();this.classList.add('dragover')"
+                        ondragleave="this.classList.remove('dragover')"
+                        ondrop="handleDispFileDrop(event)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="width:24px;height:24px;color:var(--slds-n5);margin:0 auto 6px;display:block;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                        </svg>
+                        <div style="font-size:12px;font-weight:600;color:var(--slds-n3);">Click or drag &amp; drop files</div>
+                        <div style="font-size:10px;color:var(--slds-n5);margin-top:2px;">PDF, Excel, images &mdash; up to 10 MB each</div>
+                    </div>
+                    <input type="file" id="disp-file-input" multiple style="display:none"
+                        onchange="handleDispFileSelect(this.files)">
+                    <div class="disp-file-list" id="disp-file-list"></div>
+                </div>
+
             </div>
-            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
-          </div>
-          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">62</div>
-          <div style="margin-top:6px;">
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-n1);">52%</span></div>
-            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:52%;background:var(--slds-brand);border-radius:2px;"></div></div>
-          </div>
+            <div class="slds-modal__footer">
+                <button class="slds-btn slds-btn-neutral" onclick="closeModal('dispatch-modal')">Cancel</button>
+                <button class="slds-btn slds-btn-brand" onclick="dispatchToClient()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        style="width:14px;height:14px;margin-right:4px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    Confirm Dispatch
+                </button>
+            </div>
         </div>
-      </div>
     </div>
 
-    <div class="slds-filter-bar">
-      <div class="slds-search-wrap">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="text" class="slds-search" id="stock-search" placeholder="Search SKU, product name...">
-      </div>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;" id="wh-filter">
-        <option value="">All Warehouses</option>
-        <option>WH-MUM-01</option><option>WH-DEL-02</option>
-        <option>WH-BLR-01</option><option>WH-HYD-01</option>
-      </select>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;" id="stock-status">
-        <option value="">All Stock Levels</option>
-        <option value="ok">In Stock</option>
-        <option value="low">Low Stock</option>
-        <option value="out">Out of Stock</option>
-        <option value="damaged">Has Damaged</option>
-      </select>
-      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;">
-        <option>All Categories</option>
-        <option>Electronics</option><option>Wearables</option>
-        <option>Audio</option><option>Accessories</option>
-      </select>
-    </div>
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('stock', 'Stock Management');
 
-    <div class="slds-card" style="margin:16px 24px;">
-      <table class="slds-table">
-        <thead>
-          <tr>
-            <th>SKU</th>
-            <th>Product Name</th>
-            <th>Category</th>
-            <th>Warehouse</th>
-            <th style="text-align:right;">On Hand</th>
-            <th style="text-align:right;">Reserved</th>
-            <th style="text-align:right;">Available</th>
-            <th style="text-align:right;">Damaged</th>
-            <th style="text-align:right;">Reorder Lvl</th>
-            <th>Status</th>
-            <th style="text-align:right;">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="stock-tbody"></tbody>
-      </table>
-      <div style="padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);font-size:12px;color:var(--slds-n4);">
-        Showing 1–12 of 48 entries across all warehouses
-      </div>
-    </div>
-  </div>
+        // ── Data ─────────────────────────────────────────────────────────
+        const AVAIL_DATA = [
+            { sku:'SKU-WFJ-001', name:'Harmony Dial Watch',     cat:'Watches',   wh:'WH-MUM-01', qty:245, status:'In Stock' },
+            { sku:'SKU-WFJ-002', name:'Eclipse Chronograph',    cat:'Watches',   wh:'WH-DEL-02', qty:130, status:'In Stock' },
+            { sku:'SKU-WFJ-003', name:'Pearl Strand Necklace',  cat:'Jewellery', wh:'WH-BLR-01', qty:78,  status:'Low Stock' },
+            { sku:'SKU-WFJ-004', name:'Diamond Solitaire Ring', cat:'Jewellery', wh:'WH-HYD-01', qty:32,  status:'Low Stock' },
+            { sku:'SKU-WFJ-005', name:'Sapphire Stud Earrings', cat:'Jewellery', wh:'WH-MUM-01', qty:410, status:'In Stock' },
+            { sku:'SKU-WFJ-006', name:'Aviator Pilot Watch',    cat:'Watches',   wh:'WH-DEL-02', qty:190, status:'In Stock' },
+            { sku:'SKU-WFJ-007', name:'Rose Gold Bracelet',     cat:'Jewellery', wh:'WH-BLR-01', qty:15,  status:'Low Stock' },
+            { sku:'SKU-WFJ-008', name:'Tourbillon Prestige',    cat:'Watches',   wh:'WH-MUM-01', qty:8,   status:'Low Stock' },
+        ];
 
-  <div id="slds-toast-zone" class="slds-toast-zone"></div>
-  <script src="js/app.js"></script>
-  <script>
-    initPage('stock', 'Available Stock');
+        const DAMAGED_DATA = [
+            { sku:'SKU-WFJ-002', name:'Eclipse Chronograph',   wh:'WH-DEL-02', qty:4,  severity:'High',   type:'Water Damage',    date:'22 Jun 2025', status:'Pending Inspection' },
+            { sku:'SKU-WFJ-001', name:'Harmony Dial Watch',    wh:'WH-MUM-01', qty:2,  severity:'Low',    type:'Packaging Fault', date:'20 Jun 2025', status:'Ready for Disposal' },
+            { sku:'SKU-WFJ-005', name:'Sapphire Stud Earrings',wh:'WH-MUM-01', qty:10, severity:'Medium', type:'Missing Parts',   date:'18 Jun 2025', status:'Pending Inspection' },
+            { sku:'SKU-WFJ-004', name:'Diamond Solitaire Ring',wh:'WH-HYD-01', qty:1,  severity:'High',   type:'Scratch / Dent',  date:'15 Jun 2025', status:'Claimed' },
+            { sku:'SKU-WFJ-006', name:'Aviator Pilot Watch',   wh:'WH-DEL-02', qty:3,  severity:'Medium', type:'Box Crushed',     date:'12 Jun 2025', status:'Scrapped' },
+            { sku:'SKU-WFJ-003', name:'Pearl Strand Necklace', wh:'WH-BLR-01', qty:5,  severity:'Low',    type:'Tarnish',         date:'10 Jun 2025', status:'Ready for Disposal' },
+        ];
 
-    const warehouses = ['WH-MUM-01', 'WH-DEL-02', 'WH-BLR-01', 'WH-HYD-01'];
-    const stockRows = PH_PRODUCTS.slice(0,12).map(p => {
-      const onHand = Math.floor(Math.random()*200+20);
-      const reserved = Math.floor(onHand * 0.15);
-      const avail = onHand - reserved;
-      const damaged = Math.floor(Math.random() * 5);
-      const reorder = 20;
-      const wh = warehouses[Math.floor(Math.random()*4)];
-      return { ...p, onHand, reserved, avail, damaged, reorder, wh };
-    });
+        const STORE_DATA = [
+            { sku:'SKU-WFJ-001', name:'Harmony Dial Watch',     loc:'Mumbai Flagship',  qty:42, min:20, health:'Healthy',  updated:'24 Jun 2025' },
+            { sku:'SKU-WFJ-002', name:'Eclipse Chronograph',    loc:'Delhi Boutique',   qty:18, min:15, health:'Healthy',  updated:'23 Jun 2025' },
+            { sku:'SKU-WFJ-003', name:'Pearl Strand Necklace',  loc:'Bengaluru Store',  qty:7,  min:10, health:'Low',      updated:'22 Jun 2025' },
+            { sku:'SKU-WFJ-004', name:'Diamond Solitaire Ring', loc:'Hyderabad Outlet', qty:4,  min:5,  health:'Critical', updated:'21 Jun 2025' },
+            { sku:'SKU-WFJ-005', name:'Sapphire Stud Earrings', loc:'Mumbai Flagship',  qty:95, min:30, health:'Healthy',  updated:'24 Jun 2025' },
+            { sku:'SKU-WFJ-006', name:'Aviator Pilot Watch',    loc:'Delhi Boutique',   qty:3,  min:8,  health:'Critical', updated:'20 Jun 2025' },
+            { sku:'SKU-WFJ-007', name:'Rose Gold Bracelet',     loc:'Bengaluru Store',  qty:11, min:10, health:'Healthy',  updated:'19 Jun 2025' },
+            { sku:'SKU-WFJ-008', name:'Tourbillon Prestige',    loc:'Mumbai Flagship',  qty:2,  min:2,  health:'Low',      updated:'18 Jun 2025' },
+        ];
 
-    function renderStockTable(rows) {
-      const stockStatus = r => r.avail === 0 ? ['slds-badge-error','Out of Stock'] : r.avail < r.reorder ? ['slds-badge-warning','Low Stock'] : ['slds-badge-success','In Stock'];
-      document.getElementById('stock-tbody').innerHTML = rows.map(r => {
-        const [sc, sl] = stockStatus(r);
-        return `<tr>
-          <td><a href="item-master-detail.html" class="slds-text-link" style="font-weight:600;">${r.sku||'SKU-'+r.id}</a></td>
-          <td style="font-weight:500;max-width:180px;" class="slds-truncate">${r.name}</td>
-          <td style="color:var(--slds-n4);">${r.category}</td>
-          <td style="color:var(--slds-n4);">${r.wh}</td>
-          <td style="text-align:right;font-weight:600;">${r.onHand}</td>
-          <td style="text-align:right;color:var(--slds-warning);">${r.reserved}</td>
-          <td style="text-align:right;font-weight:700;color:${r.avail < r.reorder ? 'var(--slds-error)':'var(--slds-success)'};">${r.avail}</td>
-          <td style="text-align:right;color:${r.damaged>0?'var(--slds-error)':'var(--slds-n4)'};">${r.damaged||'—'}</td>
-          <td style="text-align:right;color:var(--slds-n4);">${r.reorder}</td>
-          <td><span class="slds-badge ${sc}">${sl}</span></td>
-          <td style="text-align:right;">
-            <div style="display:flex;gap:6px;justify-content:flex-end;">
-              <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('Adjusting ${r.sku||r.id}','info')">Adjust</button>
-              <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('Transfer initiated','success')">Transfer</button>
-            </div>
-          </td>
-        </tr>`;
-      }).join('');
-    }
-    renderStockTable(stockRows);
+        // ── Cart state ────────────────────────────────────────────────────
+        let cart = [];
 
-    function filterWH(code) {
-      document.getElementById('wh-filter').value = 'WH-' + code;
-      renderStockTable(stockRows.filter(r => r.wh === 'WH-' + code));
-    }
-  </script>
+        // ── Tab switching ──────────────────────────────────────────────────
+        function switchTab(tab) {
+            document.querySelectorAll('.stock-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.stock-panel').forEach(p => p.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById('panel-' + tab).classList.add('active');
+        }
+
+        // ── Available stock table ──────────────────────────────────────────
+        function renderAvailableTable(data) {
+            const stCls = { 'In Stock': 'slds-badge-success', 'Low Stock': 'slds-badge-warning', 'Out of Stock': 'slds-badge-error' };
+            document.getElementById('avail-tbody').innerHTML = data.map(d => {
+                const inCart = cart.find(c => c.sku === d.sku && c.wh === d.wh);
+                return `<tr>
+                    <td><input type="checkbox" class="slds-checkbox"></td>
+                    <td style="font-weight:600;color:var(--slds-brand);font-family:monospace;">${d.sku}</td>
+                    <td style="font-weight:500;">${d.name}</td>
+                    <td style="color:var(--slds-n4);">${d.cat}</td>
+                    <td style="color:var(--slds-n4);">${d.wh}</td>
+                    <td style="text-align:right;font-weight:700;">${d.qty.toLocaleString('en-IN')}</td>
+                    <td><span class="slds-badge ${stCls[d.status] || 'slds-badge-neutral'}">${d.status}</span></td>
+                    <td style="text-align:center;">
+                        ${inCart
+                            ? `<div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+                                <button class="cart-qty-btn" onclick="updateCartQty('${d.sku}','${d.wh}',-1)">&#8722;</button>
+                                <span class="cart-qty-val">${inCart.qty}</span>
+                                <button class="cart-qty-btn" onclick="updateCartQty('${d.sku}','${d.wh}',1)">&#43;</button>
+                              </div>`
+                            : `<button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="addToCart('${d.sku}','${d.name}','${d.wh}')">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg> Add
+                               </button>`
+                        }
+                    </td>
+                </tr>`;
+            }).join('');
+            document.getElementById('avail-count').textContent = `Showing ${data.length} of ${AVAIL_DATA.length} records`;
+        }
+
+        function filterAvailable() {
+            const q  = document.getElementById('avail-search').value.toLowerCase();
+            const wh = document.getElementById('avail-wh-filter').value;
+            const filtered = AVAIL_DATA.filter(d =>
+                (!q  || d.sku.toLowerCase().includes(q) || d.name.toLowerCase().includes(q)) &&
+                (!wh || d.wh === wh)
+            );
+            renderAvailableTable(filtered);
+        }
+
+        // ── Cart management ────────────────────────────────────────────────
+        function addToCart(sku, name, wh) {
+            const existing = cart.find(c => c.sku === sku && c.wh === wh);
+            if (existing) { existing.qty++; }
+            else { cart.push({ sku, name, wh, qty: 1 }); }
+            updateCartUI();
+            filterAvailable();
+            showToast(name + ' added to cart', 'success');
+        }
+
+        function updateCartQty(sku, wh, delta) {
+            const item = cart.find(c => c.sku === sku && c.wh === wh);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) cart = cart.filter(c => !(c.sku === sku && c.wh === wh));
+            updateCartUI();
+            filterAvailable();
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+            filterAvailable();
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((s, c) => s + c.qty, 0);
+            document.getElementById('cart-count').textContent = count;
+            document.getElementById('cart-panel-count').textContent = count + ' item' + (count !== 1 ? 's' : '');
+            const body = document.getElementById('cart-body');
+            const emptyMsg = document.getElementById('cart-empty-msg');
+            if (cart.length === 0) {
+                body.innerHTML = '';
+                body.appendChild(emptyMsg);
+                emptyMsg.style.display = 'block';
+            } else {
+                body.innerHTML = cart.map(c => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${c.name}</div>
+                            <div class="cart-item-sku">${c.sku}</div>
+                            <div class="cart-item-wh">${c.wh}</div>
+                            <div class="cart-qty-ctrl">
+                                <button class="cart-qty-btn" onclick="updateCartQty('${c.sku}','${c.wh}',-1)">&#8722;</button>
+                                <span class="cart-qty-val">${c.qty}</span>
+                                <button class="cart-qty-btn" onclick="updateCartQty('${c.sku}','${c.wh}',1)">&#43;</button>
+                            </div>
+                        </div>
+                        <button style="background:none;border:none;cursor:pointer;color:var(--slds-n5);font-size:18px;"
+                            onclick="updateCartQty('${c.sku}','${c.wh}',-999)">&#215;</button>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        function openCartPanel() {
+            document.getElementById('cart-panel').classList.add('open');
+            document.getElementById('cart-overlay').style.display = 'block';
+        }
+
+        function closeCartPanel() {
+            document.getElementById('cart-panel').classList.remove('open');
+            document.getElementById('cart-overlay').style.display = 'none';
+        }
+
+        // ── Dispatch modal ─────────────────────────────────────────────────
+        let dispWatchers = [];
+        let dispFiles    = [];
+
+        function openDispatchModal() {
+            if (cart.length === 0) { showToast('Cart is empty', 'warning'); return; }
+            // Reset watcher/file state
+            dispWatchers = [];
+            dispFiles    = [];
+            document.getElementById('disp-watcher-tags').innerHTML = '';
+            document.getElementById('disp-file-list').innerHTML    = '';
+            document.getElementById('disp-watcher-input').value    = '';
+            // Build order summary
+            document.getElementById('dispatch-summary').innerHTML =
+                cart.map(c =>
+                    `<div class="disp-summary-row">
+                        <span class="label">${c.name}</span>
+                        <span class="val">Qty: ${c.qty}</span>
+                    </div>`
+                ).join('');
+            openModal('dispatch-modal');
+        }
+
+        function dispatchToClient() {
+            const client   = document.getElementById('disp-client').value.trim();
+            const contact  = document.getElementById('disp-contact').value.trim();
+            const phone    = document.getElementById('disp-phone').value.trim();
+            const wh       = document.getElementById('disp-warehouse').value;
+            const ordType  = document.getElementById('disp-order-type').value;
+            const ordPri   = document.getElementById('disp-order-priority').value;
+            const ordRsn   = document.getElementById('disp-order-reason').value;
+            const address  = document.getElementById('disp-address').value.trim();
+            const delDate  = document.getElementById('disp-delivery-date').value;
+
+            if (!client)  { showToast('Client name is required', 'error');                  return; }
+            if (!contact) { showToast('Contact person name is required', 'error');           return; }
+            if (!phone)   { showToast('Contact phone number is required', 'error');          return; }
+            if (!wh)      { showToast('Please select a dispatch warehouse', 'error');        return; }
+            if (!ordType) { showToast('Please select an order type', 'error');               return; }
+            if (!ordPri)  { showToast('Please select an order priority', 'error');           return; }
+            if (!ordRsn)  { showToast('Please select an order reason', 'error');             return; }
+            if (!address) { showToast('Delivery address is required', 'error');              return; }
+            if (!delDate) { showToast('Delivery date is required', 'error');                 return; }
+
+            const orderId = 'ORD-FWD-' + Math.floor(6700 + Math.random() * 99);
+            closeModal('dispatch-modal');
+            closeCartPanel();
+            clearCart();
+            showToast('Order ' + orderId + ' created for ' + client, 'success', 'Dispatch Confirmed');
+            setTimeout(() => showToast('Carrier notified \u2014 tracking will be available shortly', 'info'), 1400);
+        }
+
+        // ── Watcher tag helpers ───────────────────────────────────────────
+        function addDispWatcher(e) {
+            if (e.key !== 'Enter') return;
+            e.preventDefault();
+            const input = document.getElementById('disp-watcher-input');
+            const email = input.value.trim().toLowerCase();
+            // Basic email validation
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showToast('Please enter a valid email address', 'error');
+                return;
+            }
+            if (dispWatchers.includes(email)) {
+                showToast('Email already added', 'warning');
+                input.value = '';
+                return;
+            }
+            dispWatchers.push(email);
+            renderDispWatcherTags();
+            input.value = '';
+        }
+
+        function removeDispWatcher(email) {
+            dispWatchers = dispWatchers.filter(e => e !== email);
+            renderDispWatcherTags();
+        }
+
+        function renderDispWatcherTags() {
+            document.getElementById('disp-watcher-tags').innerHTML = dispWatchers.map(e =>
+                `<div class="watcher-tag">
+                    <span>${e}</span>
+                    <button type="button" onclick="removeDispWatcher('${e}')" title="Remove">&#215;</button>
+                </div>`
+            ).join('');
+        }
+
+        // ── File attachment helpers ───────────────────────────────────────
+        function handleDispFileSelect(files) {
+            Array.from(files).forEach(f => {
+                if (!dispFiles.find(x => x.name === f.name)) dispFiles.push(f);
+            });
+            renderDispFileList();
+        }
+
+        function handleDispFileDrop(e) {
+            e.preventDefault();
+            document.getElementById('disp-file-drop').classList.remove('dragover');
+            handleDispFileSelect(e.dataTransfer.files);
+        }
+
+        function removeDispFile(name) {
+            dispFiles = dispFiles.filter(f => f.name !== name);
+            renderDispFileList();
+        }
+
+        function renderDispFileList() {
+            const fmt = n => n < 1024 ? n + ' B' : n < 1048576 ? (n/1024).toFixed(1) + ' KB' : (n/1048576).toFixed(1) + ' MB';
+            document.getElementById('disp-file-list').innerHTML = dispFiles.map(f =>
+                `<div class="disp-file-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span>${f.name}</span>
+                    <span style="color:var(--slds-n5);white-space:nowrap;">${fmt(f.size)}</span>
+                    <button type="button" onclick="removeDispFile('${f.name}')" title="Remove">&#215;</button>
+                </div>`
+            ).join('');
+        }
+
+        // ── Damaged stock table ─────────────────────────────────────────────
+        function renderDamagedTable() {
+            const stMap = {
+                'Pending Inspection': 'slds-badge-warning',
+                'Ready for Disposal': 'slds-badge-error',
+                'Scrapped':           'slds-badge-neutral',
+                'Claimed':            'slds-badge-success'
+            };
+            document.getElementById('damaged-tbody').innerHTML = DAMAGED_DATA.map(d => {
+                const sevCls = d.severity === 'High' ? 'sev-high' : d.severity === 'Medium' ? 'sev-medium' : 'sev-low';
+                return `<tr>
+                    <td><input type="checkbox" class="slds-checkbox"></td>
+                    <td style="font-weight:600;color:var(--slds-brand);font-family:monospace;">${d.sku}</td>
+                    <td style="font-weight:500;">${d.name}</td>
+                    <td style="color:var(--slds-n4);">${d.wh}</td>
+                    <td style="text-align:right;font-weight:700;color:var(--slds-error);">${d.qty}</td>
+                    <td><span class="${sevCls}">${d.severity}</span></td>
+                    <td style="color:var(--slds-n4);">${d.type}</td>
+                    <td style="color:var(--slds-n5);">${d.date}</td>
+                    <td><span class="slds-badge ${stMap[d.status] || 'slds-badge-neutral'}">${d.status}</span></td>
+                    <td style="text-align:right;">
+                        <div style="display:flex;gap:6px;justify-content:flex-end;">
+                            <button class="slds-btn slds-btn-neutral slds-btn-sm">Inspect</button>
+                            <button class="slds-btn slds-btn-neutral slds-btn-sm">Dispose</button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ── Store stock table ───────────────────────────────────────────────
+        function renderStoreTable() {
+            const hMap = { 'Healthy': 'slds-badge-success', 'Low': 'slds-badge-warning', 'Critical': 'slds-badge-error' };
+            document.getElementById('store-tbody').innerHTML = STORE_DATA.map(d => `
+                <tr>
+                    <td><input type="checkbox" class="slds-checkbox"></td>
+                    <td style="font-weight:600;color:var(--slds-brand);font-family:monospace;">${d.sku}</td>
+                    <td style="font-weight:500;">${d.name}</td>
+                    <td style="color:var(--slds-n4);">${d.loc}</td>
+                    <td style="text-align:right;font-weight:700;">${d.qty}</td>
+                    <td style="text-align:right;color:var(--slds-n4);">${d.min}</td>
+                    <td><span class="slds-badge ${hMap[d.health] || 'slds-badge-neutral'}">${d.health}</span></td>
+                    <td style="color:var(--slds-n5);">${d.updated}</td>
+                    <td style="text-align:right;">
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm">Transfer</button>
+                    </td>
+                </tr>`
+            ).join('');
+        }
+
+        // ── Init ────────────────────────────────────────────────────────────
+        renderAvailableTable(AVAIL_DATA);
+        renderDamagedTable();
+        renderStoreTable();
+    </script>
 </body>
 </html>

@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Order - PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
+    <style>
+        /* ---- Stepper ---- */
+        .checkout-stepper {
+            display: flex;
+            align-items: center;
+            padding: 20px 32px;
+            background: white;
+            border-bottom: 1px solid var(--slds-n7);
+        }
+
+        .cstep {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            position: relative;
+        }
+
+        .cstep:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: calc(20px + 10px);
+            right: 0;
+            top: 50%;
+            height: 2px;
+            background: var(--slds-n7);
+            z-index: 0;
+            transition: background .3s;
+        }
+
+        .cstep.done:not(:last-child)::after {
+            background: var(--slds-brand);
+        }
+
+        .cstep__num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--slds-n7);
+            background: white;
+            color: var(--slds-n4);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            z-index: 1;
+            transition: all .25s;
+        }
+
+        .cstep.active .cstep__num {
+            border-color: var(--slds-brand);
+            background: var(--slds-brand);
+            color: white;
+        }
+
+        .cstep.done .cstep__num {
+            border-color: var(--slds-brand);
+            background: var(--slds-brand);
+            color: white;
+        }
+
+        .cstep__label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--slds-n4);
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .cstep.active .cstep__label {
+            color: var(--slds-brand);
+        }
+
+        .cstep.done .cstep__label {
+            color: var(--slds-success);
+        }
+
+        /* ---- Checkout layout ---- */
+        .checkout-body {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+            padding: 20px 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- Address cards ---- */
+        .addr-card {
+            border: 2px solid var(--slds-n7);
+            border-radius: 6px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
+            position: relative;
+        }
+
+        .addr-card:hover {
+            border-color: var(--slds-brand-accent);
+            background: #F8FBFF;
+        }
+
+        .addr-card.selected {
+            border-color: var(--slds-brand);
+            background: var(--slds-brand-light);
+        }
+
+        .addr-card__check {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--slds-n7);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .15s;
+        }
+
+        .addr-card.selected .addr-card__check {
+            border-color: var(--slds-brand);
+            background: var(--slds-brand);
+        }
+
+        .addr-card__tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            padding: 2px 7px;
+            border-radius: 10px;
+            margin-bottom: 7px;
+        }
+
+        .addr-card__tag.home {
+            background: #D8EDFF;
+            color: #014486;
+        }
+
+        .addr-card__tag.office {
+            background: #D4F5DF;
+            color: #1A4D2E;
+        }
+
+        .addr-card__tag.warehouse {
+            background: #F3E6FF;
+            color: #5A1BA9;
+        }
+
+        .addr-card__tag.store {
+            background: #FEF0C3;
+            color: #5A3600;
+        }
+
+        .addr-card__name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--slds-n1);
+            margin-bottom: 3px;
+        }
+
+        .addr-card__line {
+            font-size: 12px;
+            color: var(--slds-n3);
+            line-height: 1.5;
+        }
+
+        .addr-card__phone {
+            font-size: 11px;
+            color: var(--slds-n4);
+            margin-top: 5px;
+        }
+
+        .addr-add-card {
+            border: 2px dashed var(--slds-n7);
+            border-radius: 6px;
+            padding: 20px 16px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: var(--slds-n4);
+            transition: border-color .15s, color .15s;
+            min-height: 90px;
+        }
+
+        .addr-add-card:hover {
+            border-color: var(--slds-brand);
+            color: var(--slds-brand);
+        }
+
+        /* ---- Order / cart summary ---- */
+        .oc-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--slds-n8);
+        }
+
+        .oc-item:last-child {
+            border-bottom: none;
+        }
+
+        .oc-item__img {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--slds-n9);
+        }
+
+        .oc-item__name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slds-n1);
+            line-height: 1.3;
+        }
+
+        .oc-item__meta {
+            font-size: 11px;
+            color: var(--slds-n4);
+        }
+
+        .oc-summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 4px 0;
+        }
+
+        .oc-summary-row .label {
+            color: var(--slds-n4);
+        }
+
+        .oc-summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            font-weight: 800;
+            border-top: 2px solid var(--slds-n7);
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+
+        /* ---- Review boxes ---- */
+        .review-addr-box {
+            background: var(--slds-brand-light);
+            border: 1px solid #91CCFF;
+            border-radius: 6px;
+            padding: 14px 16px;
+        }
+
+        /* ---- Success ---- */
+        .success-wrap {
+            text-align: center;
+            padding: 56px 32px 40px;
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--slds-success-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .success-icon svg {
+            width: 36px;
+            height: 36px;
+            color: var(--slds-success);
+        }
+
+        .success-id {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--slds-n1);
+            margin-bottom: 6px;
+        }
+
+        .success-subtitle {
+            font-size: 14px;
+            color: var(--slds-n4);
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .success-chips {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .success-chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: var(--slds-n10);
+            border: 1px solid var(--slds-n7);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--slds-n3);
+        }
+
+        .success-chip span {
+            color: var(--slds-n4);
+            font-weight: 500;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
+
+    <div class="slds-body">
+
+        <!-- Page Header -->
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-order">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">New Order</div>
+                    <div class="slds-list-subtitle" id="page-subtitle">Step 1 of 2 &mdash; Select Delivery Address</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <a href="forward-order-list.html" class="slds-btn slds-btn-neutral">Cancel</a>
+            </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="checkout-stepper">
+            <div class="cstep active" id="step-indicator-1">
+                <div class="cstep__num" id="step-num-1">1</div>
+                <div class="cstep__label">Delivery Address</div>
+            </div>
+            <div class="cstep" id="step-indicator-2">
+                <div class="cstep__num" id="step-num-2">2</div>
+                <div class="cstep__label">Confirm Order</div>
+            </div>
+            <div class="cstep" id="step-indicator-3">
+                <div class="cstep__num" id="step-num-3">3</div>
+                <div class="cstep__label">Order Placed</div>
+            </div>
+        </div>
+
+        <!-- =================================================
+             STEP 1 — ADDRESS SELECTION
+             ================================================= -->
+        <div id="step-1" class="checkout-body">
+            <!-- Left: address grid -->
+            <div>
+                <div style="font-size:13px;font-weight:700;color:var(--slds-n1);margin-bottom:14px;">
+                    Select a delivery address for this order
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"
+                    id="address-grid"></div>
+
+                <!-- Inline add-new form -->
+                <div id="new-addr-form"
+                    style="display:none;margin-top:14px;background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:6px;padding:16px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--slds-n2);margin-bottom:12px;">New Delivery
+                        Address</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div>
+                            <div class="slds-form-label">Full Name *</div>
+                            <input class="slds-input" id="na-name" placeholder="e.g. Vikram Malhotra">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Company</div>
+                            <input class="slds-input" id="na-company" placeholder="e.g. Nexus Corp">
+                        </div>
+                        <div style="grid-column:1/-1;">
+                            <div class="slds-form-label">Street Address *</div>
+                            <input class="slds-input" id="na-street" placeholder="House/flat, street, locality">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">City *</div>
+                            <input class="slds-input" id="na-city" placeholder="City">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">State *</div>
+                            <select class="slds-select" id="na-state">
+                                <option value="">Select state</option>
+                                <option>Maharashtra</option>
+                                <option>Delhi</option>
+                                <option>Karnataka</option>
+                                <option>Telangana</option>
+                                <option>Tamil Nadu</option>
+                                <option>Gujarat</option>
+                                <option>Rajasthan</option>
+                                <option>West Bengal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="slds-form-label">PIN Code *</div>
+                            <input class="slds-input" id="na-pin" placeholder="400001" maxlength="6">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Phone *</div>
+                            <input class="slds-input" id="na-phone" placeholder="+91 98000 00000">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Label</div>
+                            <select class="slds-select" id="na-label">
+                                <option value="office">Office</option>
+                                <option value="home">Home</option>
+                                <option value="warehouse">Warehouse</option>
+                                <option value="store">Store</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:14px;">
+                        <button class="slds-btn slds-btn-brand slds-btn-sm" onclick="saveNewAddress()">Save &amp; Select
+                            Address</button>
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm"
+                            onclick="document.getElementById('new-addr-form').style.display='none'">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Order Summary -->
+            <div>
+                <div class="slds-card" style="padding:16px;">
+                    <div
+                        style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slds-n4);margin-bottom:12px;">
+                        Order Summary</div>
+                    <div id="s1-items"></div>
+                    <div style="margin-top:12px;" id="s1-totals"></div>
+                    <div style="margin-top:14px;">
+                        <div class="slds-form-label">Delivery Speed</div>
+                        <select class="slds-select" id="delivery-speed" style="margin-top:4px;">
+                            <option value="standard">Standard (3-5 days) &nbsp;&#8212; Free</option>
+                            <option value="express">Express (1-2 days)</option>
+                            <option value="same">Same Day</option>
+                        </select>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <div class="slds-form-label">Carrier</div>
+                        <select class="slds-select" id="carrier" style="margin-top:4px;">
+                            <option>Delhivery</option>
+                            <option>Blue Dart</option>
+                            <option>Ecom Express</option>
+                            <option>DTDC</option>
+                            <option>India Post</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="slds-btn slds-btn-brand" style="width:100%;justify-content:center;margin-top:12px;"
+                    onclick="goToStep2()">
+                    Continue to Confirmation
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        style="width:14px;height:14px;margin-left:6px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- =================================================
+             STEP 2 — CONFIRM ORDER
+             ================================================= -->
+        <div id="step-2" style="display:none;" class="checkout-body">
+            <!-- Left: review -->
+            <div>
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                        <div
+                            style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slds-n4);">
+                            Delivery Address</div>
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="gotoStep(1)">Change</button>
+                    </div>
+                    <div class="review-addr-box" id="review-addr"></div>
+                </div>
+
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div
+                        style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slds-n4);margin-bottom:12px;">
+                        Items to Dispatch</div>
+                    <div id="review-items-list"></div>
+                </div>
+
+                <div class="slds-card" style="padding:16px;">
+                    <div
+                        style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slds-n4);margin-bottom:12px;">
+                        Shipping Details</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;margin-bottom:12px;">
+                        <div style="color:var(--slds-n4);">Delivery Speed</div>
+                        <div style="font-weight:600;" id="review-speed"></div>
+                        <div style="color:var(--slds-n4);">Carrier</div>
+                        <div style="font-weight:600;" id="review-carrier"></div>
+                        <div style="color:var(--slds-n4);">Estimated Delivery</div>
+                        <div style="font-weight:600;" id="review-eta"></div>
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Notes / Special Instructions</div>
+                        <textarea class="slds-textarea" id="order-notes" rows="2"
+                            placeholder="Any special delivery instructions..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: totals -->
+            <div>
+                <div style="margin-top:12px;display:flex;gap:8px;">
+                    <button class="slds-btn slds-btn-neutral" style="flex:1;justify-content:center;"
+                        onclick="gotoStep(1)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="width:13px;height:13px;margin-right:4px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>Back
+                    </button>
+                    <button class="slds-btn slds-btn-brand" style="flex:2;justify-content:center;"
+                        onclick="placeOrder()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="width:14px;height:14px;margin-right:5px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>Place Order
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================================================
+             STEP 3 — ORDER PLACED
+             ================================================= -->
+        <div id="step-3" style="display:none;">
+            <div class="success-wrap">
+                <div class="success-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="success-id" id="success-order-id"></div>
+                <div class="success-subtitle">
+                    Your order has been placed successfully.<br>
+                    You will receive a confirmation email and tracking link once the shipment is dispatched.
+                </div>
+                <div class="success-chips" id="success-chips"></div>
+                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                    <a href="forward-order-detail.html" class="slds-btn slds-btn-brand">View Order Details</a>
+                    <a href="forward-order-list.html" class="slds-btn slds-btn-neutral">Back to Orders</a>
+                    <a href="forward-order-create.html" class="slds-btn slds-btn-neutral">Place Another Order</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('forward-order', 'New Order');
+
+        const ORDER_ITEMS = [
+            { id: 1, name: 'ProBook Laptop 15"', sku: 'LP-PRO-001', qty: 2, img: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=48&q=80' },
+            { id: 7, name: 'NoiseFree TWS Earbuds', sku: 'EB-NF-007', qty: 4, img: 'https://images.unsplash.com/photo-1590658268037-6bf12165cd8b?w=48&q=80' },
+            { id: 11, name: 'SteadyClick Pro Mouse', sku: 'MS-STD-011', qty: 3, img: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=48&q=80' },
+        ];
+
+        let ADDRESSES = [
+            { id: 1, label: 'office', name: 'Nexus Corp HQ', company: 'Nexus Corp', street: '14, Nariman Point, Ballard Estate', city: 'Mumbai', state: 'Maharashtra', pin: '400021', phone: '+91 98200 11000' },
+            { id: 2, label: 'warehouse', name: 'Delhi Distribution', company: 'Vertex Solutions', street: 'Plot 22, Sector 63, NOIDA', city: 'New Delhi', state: 'Delhi', pin: '201301', phone: '+91 98100 22000' },
+            { id: 3, label: 'office', name: 'Apex Bangalore', company: 'Apex Industries', street: 'No 8, Church St, Richmond Town', city: 'Bengaluru', state: 'Karnataka', pin: '560025', phone: '+91 80408 33000' },
+            { id: 4, label: 'store', name: 'Delta Hyderabad', company: 'Delta Systems', street: '501, Jubilee Hills, Road 45', city: 'Hyderabad', state: 'Telangana', pin: '500033', phone: '+91 40408 44000' },
+        ];
+
+        let selectedAddressId = null;
+
+        const subtotal = () => ORDER_ITEMS.reduce((s, i) => s + i.price * i.qty, 0);
+        const shippingCost = () => { const sp = document.getElementById('delivery-speed')?.value || 'standard'; return sp === 'express' ? 250 : sp === 'same' ? 500 : 0; };
+        const tax = () => Math.round(subtotal() * 0.18 * 100) / 100;
+        const grandTotal = () => subtotal() + shippingCost() + tax();
+        const fmt = n => '&#8377;' + n.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+
+        function speedLabel() {
+            const sp = document.getElementById('delivery-speed')?.value || 'standard';
+            return sp === 'standard' ? 'Standard (3-5 days)' : sp === 'express' ? 'Express (1-2 days)' : 'Same Day';
+        }
+        function etaLabel() {
+            const sp = document.getElementById('delivery-speed')?.value || 'standard';
+            const d = new Date('2026-03-12');
+            d.setDate(d.getDate() + (sp === 'standard' ? 5 : sp === 'express' ? 2 : 1));
+            return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        function totalsHTML(incShip = true) {
+            return `<div class="oc-summary-row"><span class="label">Subtotal (${ORDER_ITEMS.reduce((s, i) => s + i.qty, 0)} items)</span><span>${fmt(subtotal())}</span></div>
+                ${incShip ? `<div class="oc-summary-row"><span class="label">Shipping</span><span>${shippingCost() === 0 ? '<span style="color:var(--slds-success);font-weight:600;">Free</span>' : fmt(shippingCost())}</span></div>` : ''}
+                <div class="oc-summary-row"><span class="label">GST (18%)</span><span>${fmt(tax())}</span></div>
+                <div class="oc-summary-total"><span>Total</span><span style="color:var(--slds-brand);">${fmt(grandTotal())}</span></div>`;
+        }
+        function itemsHTML() {
+            return ORDER_ITEMS.map(i => `
+                <div class="oc-item">
+                    <img class="oc-item__img" src="${i.img}" alt="" onerror="this.style.display='none'">
+                    <div style="flex:1;min-width:0;"><div class="oc-item__name">${i.name}</div><div class="oc-item__meta">${i.sku} &middot; Qty ${i.qty}</div></div>
+                </div>`).join('');
+        }
+
+        function renderAddresses() {
+            document.getElementById('address-grid').innerHTML =
+                ADDRESSES.map(a => `
+                    <div class="addr-card${selectedAddressId === a.id ? ' selected' : ''}" onclick="selectAddress(${a.id})">
+                        <div class="addr-card__check">
+                            ${selectedAddressId === a.id ? '<svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:12px;height:12px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : ''}
+                        </div>
+                        <span class="addr-card__tag ${a.label}">${a.label}</span>
+                        <div class="addr-card__name">${a.name}</div>
+                        <div class="addr-card__line">${a.street},</div>
+                        <div class="addr-card__line">${a.city}, ${a.state} ${a.pin}</div>
+                        <div class="addr-card__phone">${a.phone}</div>
+                    </div>`).join('') + `
+                <div class="addr-add-card" onclick="document.getElementById('new-addr-form').style.display='block'">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:22px;height:22px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span style="font-size:12px;font-weight:600;">Add New Address</span>
+                </div>`;
+        }
+
+        function selectAddress(id) { selectedAddressId = id; renderAddresses(); }
+
+        function saveNewAddress() {
+            const name = document.getElementById('na-name').value.trim(), street = document.getElementById('na-street').value.trim();
+            const city = document.getElementById('na-city').value.trim(), state = document.getElementById('na-state').value;
+            const pin = document.getElementById('na-pin').value.trim(), phone = document.getElementById('na-phone').value.trim();
+            if (!name || !street || !city || !state || !pin || !phone) { showToast('Please fill all required fields', 'error'); return; }
+            const newId = ADDRESSES.length + 1;
+            ADDRESSES.push({ id: newId, label: document.getElementById('na-label').value, name, company: document.getElementById('na-company').value.trim(), street, city, state, pin, phone });
+            selectedAddressId = newId;
+            document.getElementById('new-addr-form').style.display = 'none';
+            renderAddresses();
+            showToast('Address saved and selected', 'success');
+        }
+
+        function gotoStep(n) {
+            [1, 2, 3].forEach(i => {
+                document.getElementById('step-' + i).style.display = 'none';
+                document.getElementById('step-indicator-' + i).className = 'cstep' + (i < n ? ' done' : i === n ? ' active' : '');
+            });
+            for (let i = 1; i < n; i++) document.getElementById('step-num-' + i).innerHTML = '&#10003;';
+            document.getElementById('step-num-' + n).innerHTML = String(n);
+            document.getElementById('step-' + n).style.display = n <= 2 ? 'grid' : 'block';
+            const subs = ['Step 1 of 2 &mdash; Select Delivery Address', 'Step 2 of 2 &mdash; Confirm Your Order', 'Order Placed Successfully'];
+            document.getElementById('page-subtitle').innerHTML = subs[n - 1];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToStep2() {
+            if (!selectedAddressId) { showToast('Please select a delivery address', 'warning'); return; }
+            const addr = ADDRESSES.find(a => a.id === selectedAddressId);
+            document.getElementById('review-addr').innerHTML = `
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                    <svg fill="none" stroke="var(--slds-brand)" viewBox="0 0 24 24" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <div>
+                        <div style="font-size:13px;font-weight:700;color:var(--slds-n1);">${addr.name}</div>
+                        ${addr.company ? `<div style="font-size:12px;color:var(--slds-n3);">${addr.company}</div>` : ''}
+                        <div style="font-size:12px;color:var(--slds-n3);margin-top:3px;">${addr.street},<br>${addr.city}, ${addr.state} &mdash; ${addr.pin}</div>
+                        <div style="font-size:11px;color:var(--slds-n4);margin-top:4px;">${addr.phone}</div>
+                    </div>
+                </div>`;
+            document.getElementById('review-items-list').innerHTML = itemsHTML();
+            document.getElementById('review-totals').innerHTML = totalsHTML();
+            document.getElementById('review-speed').textContent = speedLabel();
+            document.getElementById('review-carrier').textContent = document.getElementById('carrier').value;
+            document.getElementById('review-eta').textContent = etaLabel();
+            gotoStep(2);
+        }
+
+        function placeOrder() {
+            const orderId = 'ORD-FWD-' + (6700 + Math.floor(Math.random() * 99));
+            const addr = ADDRESSES.find(a => a.id === selectedAddressId);
+            document.getElementById('success-order-id').textContent = orderId;
+            document.getElementById('success-chips').innerHTML = `
+                <div class="success-chip"><span>Ship To</span>${addr.name}</div>
+                <div class="success-chip"><span>Speed</span>${speedLabel()}</div>
+                <div class="success-chip"><span>Carrier</span>${document.getElementById('carrier').value}</div>
+                <div class="success-chip"><span>ETA</span>${etaLabel()}</div>`;
+            gotoStep(3);
+            showToast(orderId + ' placed successfully!', 'success', 'Order Confirmed');
+        }
+
+        renderAddresses();
+        document.getElementById('s1-items').innerHTML = itemsHTML();
+        document.getElementById('s1-totals').innerHTML = totalsHTML(false);
+        document.getElementById('delivery-speed').addEventListener('change', () => {
+            document.getElementById('s1-totals').innerHTML = totalsHTML(false);
+        });
+    </script>
+</body>
+
+</html>
+.cstep {
+display: flex;
+align-items: center;
+gap: 10px;
+flex: 1;
+position: relative;
+}
+.cstep:not(:last-child)::after {
+content: '';
+position: absolute;
+left: 42px;
+right: 0;
+top: 50%;
+height: 2px;
+background: var(--slds-n7);
+z-index: 0;
+transition: background .3s;
+}
+.cstep.done:not(:last-child)::after { background: var(--slds-brand); }
+.cstep__num {
+width: 32px; height: 32px;
+border-radius: 50%;
+border: 2px solid var(--slds-n7);
+background: white;
+color: var(--slds-n4);
+font-size: 13px; font-weight: 700;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0; z-index: 1;
+transition: all .25s;
+}
+.cstep.active .cstep__num { border-color: var(--slds-brand); background: var(--slds-brand); color: white; }
+.cstep.done .cstep__num { border-color: var(--slds-brand); background: var(--slds-brand); color: white; }
+.cstep__label { font-size: 11px; font-weight: 700; color: var(--slds-n4); z-index: 1; white-space: nowrap; line-height:
+1.3; }
+.cstep__sub { font-size: 10px; color: var(--slds-n5); font-weight: 500; }
+.cstep.active .cstep__label { color: var(--slds-brand); }
+.cstep.done .cstep__label { color: var(--slds-success); }
+
+/* ---- Two-column body ---- */
+.co-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; padding: 20px 24px; align-items: start; }
+@media (max-width: 900px) { .co-grid { grid-template-columns: 1fr; } }
+
+/* ---- Address cards ---- */
+.addr-cards-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 12px;
+margin-bottom: 4px;
+}
+.addr-card {
+border: 2px solid var(--slds-n7);
+border-radius: 6px;
+padding: 13px 14px;
+cursor: pointer;
+transition: border-color .15s, background .15s;
+position: relative;
+}
+.addr-card:hover { border-color: var(--slds-brand-accent); background: #F8FBFF; }
+.addr-card.selected { border-color: var(--slds-brand); background: var(--slds-brand-light); }
+.addr-card__check {
+position: absolute; top: 11px; right: 11px;
+width: 18px; height: 18px; border-radius: 50%;
+border: 2px solid var(--slds-n7); background: white;
+display: flex; align-items: center; justify-content: center;
+transition: all .15s;
+}
+.addr-card.selected .addr-card__check { border-color: var(--slds-brand); background: var(--slds-brand); }
+.addr-card__tag {
+display: inline-block;
+font-size: 10px; font-weight: 700;
+text-transform: uppercase; letter-spacing: .05em;
+padding: 2px 6px; border-radius: 10px; margin-bottom: 6px;
+}
+.addr-card__tag.home { background: #D8EDFF; color: #014486; }
+.addr-card__tag.office { background: #D4F5DF; color: #1A4D2E; }
+.addr-card__tag.warehouse { background: #F3E6FF; color: #5A1BA9; }
+.addr-card__tag.store { background: #FEF0C3; color: #5A3600; }
+.addr-card__name { font-size: 12px; font-weight: 700; color: var(--slds-n1); margin-bottom: 2px; }
+.addr-card__line { font-size: 11px; color: var(--slds-n3); line-height: 1.5; }
+.addr-card__phone { font-size: 11px; color: var(--slds-n4); margin-top: 4px; }
+.addr-add-card {
+border: 2px dashed var(--slds-n7);
+border-radius: 6px;
+padding: 18px 14px;
+cursor: pointer;
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+gap: 5px; color: var(--slds-n4);
+transition: border-color .15s, color .15s;
+min-height: 80px;
+}
+.addr-add-card:hover { border-color: var(--slds-brand); color: var(--slds-brand); }
+
+/* ---- Watcher email tags ---- */
+.watcher-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.watcher-tag {
+display: flex; align-items: center; gap: 5px;
+background: var(--slds-n9); border: 1px solid var(--slds-n7);
+border-radius: 12px; padding: 2px 8px 2px 10px;
+font-size: 11px; color: var(--slds-n2); font-weight: 600;
+}
+.watcher-tag button { background: none; border: none; cursor: pointer; color: var(--slds-n5); font-size: 14px;
+line-height: 1; padding: 0 0 1px 2px; }
+.watcher-tag button:hover { color: var(--slds-error); }
+
+/* ---- File upload drop zone ---- */
+.file-drop {
+border: 2px dashed var(--slds-n7);
+border-radius: 6px;
+padding: 22px 16px;
+text-align: center;
+cursor: pointer;
+transition: border-color .15s, background .15s;
+}
+.file-drop:hover, .file-drop.dragover { border-color: var(--slds-brand); background: var(--slds-brand-light); }
+.file-list { margin-top: 8px; display: flex; flex-direction: column; gap: 5px; }
+.file-item {
+display: flex; align-items: center; gap: 8px;
+font-size: 11px;
+background: var(--slds-n10); border: 1px solid var(--slds-n7);
+border-radius: 4px; padding: 5px 8px; color: var(--slds-n2);
+}
+.file-item svg { flex-shrink: 0; color: var(--slds-brand); }
+.file-item span:first-of-type { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-item button { background: none; border: none; cursor: pointer; color: var(--slds-n5); padding: 0; font-size: 14px;
+line-height: 1; }
+.file-item button:hover { color: var(--slds-error); }
+
+/* ---- Order summary sidebar ---- */
+.oc-item { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--slds-n8); }
+.oc-item:last-child { border-bottom: none; }
+.oc-item__img { width: 32px; height: 32px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background:
+var(--slds-n9); }
+.oc-item__name { font-size: 11px; font-weight: 600; color: var(--slds-n1); line-height: 1.3; }
+.oc-item__meta { font-size: 10px; color: var(--slds-n4); }
+.oc-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
+.oc-row .l { color: var(--slds-n4); }
+.oc-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: 800; border-top: 2px solid
+var(--slds-n7); margin-top: 8px; padding-top: 8px; }
+
+/* ---- Review section ---- */
+.review-addr-box { background: var(--slds-brand-light); border: 1px solid #91CCFF; border-radius: 6px; padding: 12px
+14px; }
+.review-sec-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color:
+var(--slds-n4); margin-bottom: 10px; }
+.review-grid { display: grid; grid-template-columns: 150px 1fr; gap: 4px 12px; font-size: 12px; }
+.review-grid .rl { color: var(--slds-n4); }
+.review-grid .rv { font-weight: 600; color: var(--slds-n1); }
+
+/* ---- Success ---- */
+.success-wrap { text-align: center; padding: 56px 32px 40px; }
+.success-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--slds-success-bg); display: flex;
+align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success-icon svg { width: 36px; height: 36px; color: var(--slds-success); }
+.success-id { font-size: 22px; font-weight: 800; color: var(--slds-n1); margin-bottom: 6px; }
+.success-sub { font-size: 14px; color: var(--slds-n4); margin-bottom: 24px; line-height: 1.6; }
+.success-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+.success-chip { padding: 5px 12px; border-radius: 20px; background: var(--slds-n10); border: 1px solid var(--slds-n7);
+font-size: 11px; font-weight: 700; color: var(--slds-n3); }
+.success-chip span { color: var(--slds-n4); font-weight: 500; margin-right: 3px; }
+
+/* ---- Misc ---- */
+.req { color: var(--slds-error); margin-left: 2px; }
+.form-sec-hdr { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color:
+var(--slds-n4); padding-bottom: 8px; border-bottom: 1px solid var(--slds-n8); margin: 0 0 14px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+@media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+</style>
+</head>
+
+<body>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
+
+    <div class="slds-body">
+
+        <!-- ── Page Header ── -->
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-order">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">New Order</div>
+                    <div class="slds-list-subtitle" id="page-subtitle">Step 1 of 3 &mdash; Select Delivery Address</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <a href="forward-order-list.html" class="slds-btn slds-btn-neutral">Cancel</a>
+            </div>
+        </div>
+
+        <!-- ── 4-Step Stepper ── -->
+        <div class="checkout-stepper">
+            <div class="cstep active" id="si-1">
+                <div class="cstep__num" id="sn-1">1</div>
+                <div>
+                    <div class="cstep__label">Delivery Address</div>
+                    <div class="cstep__sub">Select or add</div>
+                </div>
+            </div>
+            <div class="cstep" id="si-2">
+                <div class="cstep__num" id="sn-2">2</div>
+                <div>
+                    <div class="cstep__label">Order Details</div>
+                    <div class="cstep__sub">Contact &amp; schedule</div>
+                </div>
+            </div>
+            <div class="cstep" id="si-3">
+                <div class="cstep__num" id="sn-3">3</div>
+                <div>
+                    <div class="cstep__label">Confirm Order</div>
+                    <div class="cstep__sub">Review &amp; place</div>
+                </div>
+            </div>
+            <div class="cstep" id="si-4">
+                <div class="cstep__num" id="sn-4">4</div>
+                <div>
+                    <div class="cstep__label">Order Placed</div>
+                    <div class="cstep__sub">Done</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             STEP 1 — DELIVERY ADDRESS
+             ═══════════════════════════════════════════════════ -->
+        <div id="step-1" class="co-grid">
+            <!-- Left: address cards -->
+            <div>
+                <div style="font-size:13px;font-weight:700;color:var(--slds-n1);margin-bottom:14px;">
+                    Select a delivery address for this order
+                </div>
+                <div class="addr-cards-grid" id="address-grid"><!-- rendered by JS --></div>
+
+                <!-- Inline add-new address form (hidden by default) -->
+                <div id="new-addr-form"
+                    style="display:none;margin-top:14px;background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:6px;padding:16px;">
+                    <div class="form-sec-hdr">New Delivery Address</div>
+                    <div class="grid-2" style="margin-bottom:10px;">
+                        <div>
+                            <div class="slds-form-label">Full Name <span class="req">*</span></div>
+                            <input class="slds-input" id="na-name" placeholder="e.g. Vikram Malhotra">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Company</div>
+                            <input class="slds-input" id="na-company" placeholder="e.g. Nexus Corp">
+                        </div>
+                    </div>
+                    <div style="margin-bottom:10px;">
+                        <div class="slds-form-label">Street Address <span class="req">*</span></div>
+                        <input class="slds-input" id="na-street" placeholder="House/flat, street, locality">
+                    </div>
+                    <div class="grid-3" style="margin-bottom:10px;">
+                        <div>
+                            <div class="slds-form-label">City <span class="req">*</span></div>
+                            <input class="slds-input" id="na-city" placeholder="City">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">State <span class="req">*</span></div>
+                            <select class="slds-select" id="na-state">
+                                <option value="">Select</option>
+                                <option>Maharashtra</option>
+                                <option>Delhi</option>
+                                <option>Karnataka</option>
+                                <option>Telangana</option>
+                                <option>Tamil Nadu</option>
+                                <option>Gujarat</option>
+                                <option>Rajasthan</option>
+                                <option>West Bengal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="slds-form-label">PIN Code <span class="req">*</span></div>
+                            <input class="slds-input" id="na-pin" placeholder="400001" maxlength="6">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div>
+                            <div class="slds-form-label">Phone <span class="req">*</span></div>
+                            <input class="slds-input" id="na-phone" placeholder="+91 98000 00000">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Label</div>
+                            <select class="slds-select" id="na-label">
+                                <option value="office">Office</option>
+                                <option value="home">Home</option>
+                                <option value="warehouse">Warehouse</option>
+                                <option value="store">Store</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:14px;">
+                        <button class="slds-btn slds-btn-brand slds-btn-sm" onclick="saveNewAddress()">Save &amp;
+                            Select</button>
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm"
+                            onclick="document.getElementById('new-addr-form').style.display='none'">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: order summary sidebar -->
+            <div>
+                <div class="slds-card" style="padding:14px;">
+                    <div class="form-sec-hdr" style="margin-bottom:10px;">Order Summary</div>
+                    <div id="s1-items"></div>
+                    <div style="margin-top:10px;" id="s1-totals"></div>
+                </div>
+                <button class="slds-btn slds-btn-brand" style="width:100%;justify-content:center;margin-top:12px;"
+                    onclick="goToStep2()">
+                    Continue to Order Details
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        style="width:14px;height:14px;margin-left:6px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             STEP 2 — ORDER DETAILS (all CSV fields)
+             ═══════════════════════════════════════════════════ -->
+        <div id="step-2" style="display:none;" class="co-grid">
+            <!-- Left: the full form -->
+            <div>
+
+                <!-- Contact Information -->
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div class="form-sec-hdr">Contact Information</div>
+                    <div class="grid-2" style="margin-bottom:12px;">
+                        <div>
+                            <div class="slds-form-label">Contact Person Name <span class="req">*</span></div>
+                            <input class="slds-input" id="f-contact-name" placeholder="e.g. Vikram Malhotra">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Contact Person Phone No. <span class="req">*</span></div>
+                            <input class="slds-input" id="f-contact-phone" placeholder="+91 98000 00000" type="tel">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="slds-form-label">
+                            Watchers Email
+                            <span style="font-size:10px;color:var(--slds-n4);font-weight:500;margin-left:4px;">(type
+                                email and press Enter)</span>
+                        </div>
+                        <input class="slds-input" id="f-watcher-input" placeholder="watcher@example.com"
+                            onkeydown="addWatcher(event)">
+                        <div class="watcher-tags" id="watcher-tags"></div>
+                    </div>
+                </div>
+
+                <!-- Order Configuration -->
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div class="form-sec-hdr">Order Configuration</div>
+                    <div class="grid-3" style="margin-bottom:12px;">
+                        <div>
+                            <div class="slds-form-label">Order Type <span class="req">*</span></div>
+                            <select class="slds-select" id="f-order-type">
+                                <option value="">Select type</option>
+                                <option value="B2B">B2B</option>
+                                <option value="B2C">B2C</option>
+                                <option value="Marketplace">Marketplace</option>
+                                <option value="Direct">Direct</option>
+                                <option value="Wholesale">Wholesale</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Order Priority <span class="req">*</span></div>
+                            <select class="slds-select" id="f-order-priority">
+                                <option value="">Select priority</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="High">High</option>
+                                <option value="Normal">Normal</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Order Reason <span class="req">*</span></div>
+                            <select class="slds-select" id="f-order-reason">
+                                <option value="">Select reason</option>
+                                <option value="New Sale">New Sale</option>
+                                <option value="Replacement">Replacement</option>
+                                <option value="Exchange">Exchange</option>
+                                <option value="Replenishment">Replenishment</option>
+                                <option value="Demo">Demo</option>
+                                <option value="Gifting">Gifting</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div>
+                            <div class="slds-form-label">Carrier</div>
+                            <select class="slds-select" id="f-carrier">
+                                <option>Delhivery</option>
+                                <option>Blue Dart</option>
+                                <option>Ecom Express</option>
+                                <option>DTDC</option>
+                                <option>India Post</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Delivery Speed</div>
+                            <select class="slds-select" id="f-speed" onchange="updateSummary()">
+                                <option value="standard">Standard (3-5 days) — Free</option>
+                                <option value="express">Express (1-2 days)</option>
+                                <option value="same">Same Day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule & Dates -->
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div class="form-sec-hdr">Schedule &amp; Dates</div>
+                    <div class="grid-3">
+                        <div>
+                            <div class="slds-form-label">Delivery Date <span class="req">*</span></div>
+                            <input class="slds-input" id="f-delivery-date" type="datetime-local">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Dispatch Date</div>
+                            <input class="slds-input" id="f-dispatch-date" type="datetime-local">
+                        </div>
+                        <div>
+                            <div class="slds-form-label">Pickup Date</div>
+                            <input class="slds-input" id="f-pickup-date" type="datetime-local">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback & Attachments -->
+                <div class="slds-card" style="padding:16px;">
+                    <div class="form-sec-hdr">Notes &amp; Attachments</div>
+                    <div style="margin-bottom:14px;">
+                        <div class="slds-form-label">Feedback / Special Instructions</div>
+                        <textarea class="slds-textarea" id="f-feedback" rows="3"
+                            placeholder="Any special delivery, packing, or handling instructions..."></textarea>
+                    </div>
+                    <div>
+                        <div class="slds-form-label">Attachments</div>
+                        <div class="file-drop" id="file-drop-zone"
+                            onclick="document.getElementById('file-input').click()"
+                            ondragover="event.preventDefault();this.classList.add('dragover')"
+                            ondragleave="this.classList.remove('dragover')" ondrop="handleFileDrop(event)">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="width:28px;height:28px;color:var(--slds-n5);margin:0 auto 8px;display:block;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <div style="font-size:12px;font-weight:600;color:var(--slds-n3);">
+                                Click to upload or drag &amp; drop files here
+                            </div>
+                            <div style="font-size:11px;color:var(--slds-n5);margin-top:3px;">
+                                PDF, Excel, images — up to 10 MB each
+                            </div>
+                        </div>
+                        <input type="file" id="file-input" multiple style="display:none"
+                            onchange="handleFileSelect(this.files)">
+                        <div class="file-list" id="file-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: running summary -->
+            <div>
+                <div class="slds-card" style="padding:14px;">
+                    <div class="form-sec-hdr" style="margin-bottom:10px;">Order Summary</div>
+                    <div id="s2-items"></div>
+                    <div style="margin-top:10px;" id="s2-totals"></div>
+                </div>
+
+                <!-- Ship-to address recap -->
+                <div class="slds-card" style="padding:14px;margin-top:12px;">
+                    <div class="form-sec-hdr" style="margin-bottom:8px;">
+                        Ship To
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm" style="float:right;margin-top:-4px;"
+                            onclick="gotoStep(1)">Change</button>
+                    </div>
+                    <div id="s2-addr" style="font-size:12px;color:var(--slds-n3);line-height:1.6;"></div>
+                </div>
+
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="slds-btn slds-btn-neutral" style="flex:1;justify-content:center;"
+                        onclick="gotoStep(1)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="width:13px;height:13px;margin-right:4px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>Back
+                    </button>
+                    <button class="slds-btn slds-btn-brand" style="flex:2;justify-content:center;"
+                        onclick="goToStep3()">
+                        Review Order
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="width:13px;height:13px;margin-left:5px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             STEP 3 — CONFIRM ORDER
+             ═══════════════════════════════════════════════════ -->
+        <div id="step-3" style="display:none;" class="co-grid">
+            <!-- Left: full review -->
+            <div>
+                <!-- Address -->
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                        <div class="review-sec-title" style="margin:0;">Delivery Address</div>
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="gotoStep(1)">Change</button>
+                    </div>
+                    <div class="review-addr-box" id="rev-addr"></div>
+                </div>
+
+                <!-- Contact info -->
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div class="review-sec-title">Contact Information</div>
+                    <div class="review-grid" id="rev-contact"></div>
+                </div>
+
+                <!-- Order config -->
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                        <div class="review-sec-title" style="margin:0;">Order Configuration</div>
+                        <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="gotoStep(2)">Edit</button>
+                    </div>
+                    <div class="review-grid" id="rev-config"></div>
+                </div>
+
+                <!-- Items -->
+                <div class="slds-card" style="padding:16px;margin-bottom:16px;">
+                    <div class="review-sec-title">Items to Dispatch</div>
+                    <div id="rev-items"></div>
+                </div>
+
+                <!-- Feedback & files -->
+                <div class="slds-card" style="padding:16px;">
+                    <div class="review-sec-title">Notes &amp; Attachments</div>
+                    <div id="rev-notes" style="font-size:12px;color:var(--slds-n3);"></div>
+                    <div id="rev-files" style="margin-top:8px;"></div>
+                </div>
+            </div>
+
+            <!-- Right: totals + place -->
+            <div>
+                <div class="slds-card" style="padding:14px;">
+                    <div class="form-sec-hdr" style="margin-bottom:10px;">Final Bill</div>
+                    <div id="rev-totals"></div>
+                </div>
+
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="slds-btn slds-btn-neutral" style="flex:1;justify-content:center;"
+                        onclick="gotoStep(2)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="width:13px;height:13px;margin-right:4px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>Back
+                    </button>
+                    <button class="slds-btn slds-btn-brand" style="flex:2;justify-content:center;"
+                        onclick="placeOrder()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="width:13px;height:13px;margin-right:5px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>Place Order
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             STEP 4 — ORDER PLACED (success)
+             ═══════════════════════════════════════════════════ -->
+        <div id="step-4" style="display:none;">
+            <div class="success-wrap">
+                <div class="success-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="success-id" id="success-order-id"></div>
+                <div class="success-sub">
+                    Your order has been placed successfully.<br>
+                    A confirmation &amp; tracking notification will be sent to the contact and all watchers.
+                </div>
+                <div class="success-chips" id="success-chips"></div>
+                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                    <a href="forward-order-detail.html" class="slds-btn slds-btn-brand">View Order Details</a>
+                    <a href="forward-order-list.html" class="slds-btn slds-btn-neutral">Back to Orders</a>
+                    <a href="forward-order-create.html" class="slds-btn slds-btn-neutral">Place Another Order</a>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /.slds-body -->
+
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('forward-order', 'New Order');
+
+        // ── Order items (simulate a cart) ────────────────────────────────
+        const ORDER_ITEMS = [
+            { id: 1, name: 'ProBook Laptop 15"', sku: 'LP-PRO-001', qty: 2, img: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=48&q=80' },
+            { id: 7, name: 'NoiseFree TWS Earbuds', sku: 'EB-NF-007', qty: 4, img: 'https://images.unsplash.com/photo-1590658268037-6bf12165cd8b?w=48&q=80' },
+            { id: 11, name: 'SteadyClick Pro Mouse', sku: 'MS-STD-011', qty: 3, img: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=48&q=80' },
+        ];
+
+        // ── Saved addresses ──────────────────────────────────────────────
+        let ADDRESSES = [
+            { id: 1, label: 'office', name: 'Nexus Corp HQ', company: 'Nexus Corp', street: '14, Nariman Point, Ballard Estate', city: 'Mumbai', state: 'Maharashtra', pin: '400021', phone: '+91 98200 11000' },
+            { id: 2, label: 'warehouse', name: 'Delhi Distribution', company: 'Vertex Solutions', street: 'Plot 22, Sector 63, NOIDA', city: 'New Delhi', state: 'Delhi', pin: '201301', phone: '+91 98100 22000' },
+            { id: 3, label: 'office', name: 'Apex Bangalore', company: 'Apex Industries', street: 'No 8, Church St, Richmond Town', city: 'Bengaluru', state: 'Karnataka', pin: '560025', phone: '+91 80408 33000' },
+            { id: 4, label: 'store', name: 'Delta Hyderabad', company: 'Delta Systems', street: '501, Jubilee Hills, Road 45', city: 'Hyderabad', state: 'Telangana', pin: '500033', phone: '+91 40408 44000' },
+        ];
+
+        let selectedAddrId = null;
+        let watchers = [];
+        let attachedFiles = [];
+
+        // ── Money helpers ────────────────────────────────────────────────
+        const subtotal = () => ORDER_ITEMS.reduce((s, i) => s + i.price * i.qty, 0);
+        const shippingAmt = () => { const sp = document.getElementById('f-speed')?.value || 'standard'; return sp === 'express' ? 250 : sp === 'same' ? 500 : 0; };
+        const tax = () => Math.round(subtotal() * 0.18 * 100) / 100;
+        const grand = () => subtotal() + shippingAmt() + tax();
+        const fmt = n => '&#8377;' + Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2 });
+
+        const speedLabel = () => {
+            const sp = document.getElementById('f-speed')?.value || 'standard';
+            return sp === 'express' ? 'Express (1-2 days)' : sp === 'same' ? 'Same Day' : 'Standard (3-5 days)';
+        };
+        const etaDate = () => {
+            const d = new Date('2026-03-12');
+            const sp = document.getElementById('f-speed')?.value || 'standard';
+            d.setDate(d.getDate() + (sp === 'same' ? 1 : sp === 'express' ? 2 : 5));
+            return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        };
+
+        function totalsHTML() {
+            const sc = shippingAmt();
+            return `
+                <div class="oc-row"><span class="l">Subtotal (${ORDER_ITEMS.reduce((s, i) => s + i.qty, 0)} items)</span><span>${fmt(subtotal())}</span></div>
+                <div class="oc-row"><span class="l">Shipping</span><span>${sc === 0 ? '<span style="color:var(--slds-success);font-weight:600;">Free</span>' : fmt(sc)}</span></div>
+                <div class="oc-row"><span class="l">GST (18%)</span><span>${fmt(tax())}</span></div>
+                <div class="oc-total"><span>Total</span><span style="color:var(--slds-brand);">${fmt(grand())}</span></div>`;
+        }
+
+        function itemsHTML() {
+            return ORDER_ITEMS.map(i => `
+                <div class="oc-item">
+                    <img class="oc-item__img" src="${i.img}" alt="" onerror="this.style.display='none'">
+                    <div style="flex:1;min-width:0;">
+                        <div class="oc-item__name">${i.name}</div>
+                        <div class="oc-item__meta">${i.sku} &middot; Qty ${i.qty}</div>
+                    </div>
+                </div>`).join('');
+        }
+
+        // ── Address grid ─────────────────────────────────────────────────
+        function renderAddresses() {
+            document.getElementById('address-grid').innerHTML =
+                ADDRESSES.map(a => `
+                    <div class="addr-card${selectedAddrId === a.id ? ' selected' : ''}"
+                         onclick="selectAddr(${a.id})" id="ac-${a.id}">
+                        <div class="addr-card__check">
+                            ${selectedAddrId === a.id ? '<svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:11px;height:11px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : ''}
+                        </div>
+                        <span class="addr-card__tag ${a.label}">${a.label}</span>
+                        <div class="addr-card__name">${a.name}</div>
+                        <div class="addr-card__line">${a.street},</div>
+                        <div class="addr-card__line">${a.city}, ${a.state} ${a.pin}</div>
+                        <div class="addr-card__phone">${a.phone}</div>
+                    </div>`).join('') + `
+                <div class="addr-add-card"
+                     onclick="document.getElementById('new-addr-form').style.display='block'">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:22px;height:22px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span style="font-size:12px;font-weight:600;">Add New Address</span>
+                </div>`;
+        }
+
+        function selectAddr(id) { selectedAddrId = id; renderAddresses(); }
+
+        function saveNewAddress() {
+            const name = document.getElementById('na-name').value.trim();
+            const street = document.getElementById('na-street').value.trim();
+            const city = document.getElementById('na-city').value.trim();
+            const state = document.getElementById('na-state').value;
+            const pin = document.getElementById('na-pin').value.trim();
+            const phone = document.getElementById('na-phone').value.trim();
+            if (!name || !street || !city || !state || !pin || !phone) {
+                showToast('Please fill all required fields', 'error'); return;
+            }
+            const newId = ADDRESSES.length + 1;
+            ADDRESSES.push({
+                id: newId,
+                label: document.getElementById('na-label').value,
+                name,
+                company: document.getElementById('na-company').value.trim(),
+                street, city, state, pin, phone
+            });
+            selectedAddrId = newId;
+            document.getElementById('new-addr-form').style.display = 'none';
+            renderAddresses();
+            showToast('Address saved and selected', 'success');
+        }
+
+        // ── Watcher email tags ───────────────────────────────────────────
+        function addWatcher(e) {
+            if (e.key !== 'Enter') return;
+            e.preventDefault();
+            const val = document.getElementById('f-watcher-input').value.trim();
+            if (!val) return;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { showToast('Please enter a valid email address', 'error'); return; }
+            if (watchers.includes(val)) { showToast('Email already added', 'warning'); return; }
+            watchers.push(val);
+            document.getElementById('f-watcher-input').value = '';
+            renderWatcherTags();
+        }
+
+        function removeWatcher(email) {
+            watchers = watchers.filter(w => w !== email);
+            renderWatcherTags();
+        }
+
+        function renderWatcherTags() {
+            document.getElementById('watcher-tags').innerHTML = watchers.map(w =>
+                `<div class="watcher-tag">${w}<button onclick="removeWatcher('${w}')" title="Remove">&#215;</button></div>`
+            ).join('');
+        }
+
+        // ── File attachments ─────────────────────────────────────────────
+        function handleFileSelect(files) {
+            [...files].forEach(f => {
+                if (!attachedFiles.find(x => x.name === f.name)) attachedFiles.push(f);
+            });
+            renderFileList();
+        }
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            document.getElementById('file-drop-zone').classList.remove('dragover');
+            handleFileSelect(e.dataTransfer.files);
+        }
+
+        function removeFile(name) {
+            attachedFiles = attachedFiles.filter(f => f.name !== name);
+            renderFileList();
+        }
+
+        function renderFileList() {
+            document.getElementById('file-list').innerHTML = attachedFiles.map(f => `
+                <div class="file-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span>${f.name}</span>
+                    <span style="color:var(--slds-n5);flex-shrink:0;">${(f.size / 1024).toFixed(0)} KB</span>
+                    <button onclick="removeFile('${f.name}')" title="Remove">&#215;</button>
+                </div>`).join('');
+        }
+
+        function updateSummary() {
+            document.getElementById('s2-totals').innerHTML = totalsHTML();
+        }
+
+        // ── Step navigation ──────────────────────────────────────────────
+        const STEP_SUBTITLES = [
+            'Step 1 of 3 &mdash; Select Delivery Address',
+            'Step 2 of 3 &mdash; Order Details',
+            'Step 3 of 3 &mdash; Confirm &amp; Place Order',
+            'Order Placed Successfully'
+        ];
+
+        function gotoStep(n) {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('step-' + i).style.display = 'none';
+                const ind = document.getElementById('si-' + i);
+                ind.className = 'cstep' + (i < n ? ' done' : i === n ? ' active' : '');
+                document.getElementById('sn-' + i).innerHTML = i < n ? '&#10003;' : String(i);
+            }
+            document.getElementById('step-' + n).style.display = n <= 3 ? 'grid' : 'block';
+            document.getElementById('page-subtitle').innerHTML = STEP_SUBTITLES[n - 1];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToStep2() {
+            if (!selectedAddrId) { showToast('Please select a delivery address to continue', 'warning'); return; }
+            const a = ADDRESSES.find(x => x.id === selectedAddrId);
+            document.getElementById('s2-addr').innerHTML =
+                `<strong>${a.name}</strong>${a.company ? '<br>' + a.company : ''}<br>${a.street},<br>${a.city}, ${a.state} — ${a.pin}<br>${a.phone}`;
+            document.getElementById('s2-items').innerHTML = itemsHTML();
+            document.getElementById('s2-totals').innerHTML = totalsHTML();
+            gotoStep(2);
+        }
+
+        function goToStep3() {
+            // Validate required fields
+            const contactName = document.getElementById('f-contact-name').value.trim();
+            const contactPhone = document.getElementById('f-contact-phone').value.trim();
+            const orderType = document.getElementById('f-order-type').value;
+            const orderPrio = document.getElementById('f-order-priority').value;
+            const orderReason = document.getElementById('f-order-reason').value;
+            const delivDate = document.getElementById('f-delivery-date').value;
+
+            if (!contactName) { showToast('Contact Person Name is required', 'error'); return; }
+            if (!contactPhone) { showToast('Contact Phone Number is required', 'error'); return; }
+            if (!orderType) { showToast('Please select an Order Type', 'error'); return; }
+            if (!orderPrio) { showToast('Please select an Order Priority', 'error'); return; }
+            if (!orderReason) { showToast('Please select an Order Reason', 'error'); return; }
+            if (!delivDate) { showToast('Delivery Date is required', 'error'); return; }
+
+            // Populate review sections
+            const a = ADDRESSES.find(x => x.id === selectedAddrId);
+            document.getElementById('rev-addr').innerHTML = `
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                    <svg fill="none" stroke="var(--slds-brand)" viewBox="0 0 24 24" style="width:16px;height:16px;flex-shrink:0;margin-top:2px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <div style="font-size:12px;color:var(--slds-n3);line-height:1.6;">
+                        <strong>${a.name}</strong>${a.company ? '<br>' + a.company : ''}<br>
+                        ${a.street},<br>${a.city}, ${a.state} &mdash; ${a.pin}<br>${a.phone}
+                    </div>
+                </div>`;
+
+            document.getElementById('rev-contact').innerHTML = `
+                <span class="rl">Contact Name</span>  <span class="rv">${contactName}</span>
+                <span class="rl">Contact Phone</span> <span class="rv">${contactPhone}</span>
+                <span class="rl">Watchers</span>       <span class="rv">${watchers.length ? watchers.join(', ') : '<span style="color:var(--slds-n5);">None</span>'}</span>`;
+
+            const fmtDT = v => v ? new Date(v).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '&mdash;';
+            document.getElementById('rev-config').innerHTML = `
+                <span class="rl">Order Type</span>    <span class="rv">${document.getElementById('f-order-type').value}</span>
+                <span class="rl">Priority</span>       <span class="rv">${document.getElementById('f-order-priority').value}</span>
+                <span class="rl">Reason</span>         <span class="rv">${document.getElementById('f-order-reason').value}</span>
+                <span class="rl">Carrier</span>        <span class="rv">${document.getElementById('f-carrier').value}</span>
+                <span class="rl">Delivery Speed</span> <span class="rv">${speedLabel()}</span>
+                <span class="rl">Delivery Date</span>  <span class="rv">${fmtDT(delivDate)}</span>
+                <span class="rl">Dispatch Date</span>  <span class="rv">${fmtDT(document.getElementById('f-dispatch-date').value)}</span>
+                <span class="rl">Pickup Date</span>    <span class="rv">${fmtDT(document.getElementById('f-pickup-date').value)}</span>`;
+
+            document.getElementById('rev-items').innerHTML = itemsHTML();
+            document.getElementById('rev-totals').innerHTML = totalsHTML();
+
+            const feedback = document.getElementById('f-feedback').value.trim();
+            document.getElementById('rev-notes').innerHTML = feedback
+                ? `<div style="background:var(--slds-n10);border-radius:4px;padding:10px 12px;border:1px solid var(--slds-n8);">${feedback}</div>`
+                : '<span style="color:var(--slds-n5);">No special instructions.</span>';
+
+            document.getElementById('rev-files').innerHTML = attachedFiles.length
+                ? attachedFiles.map(f => `
+                    <div class="file-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>${f.name}</span>
+                        <span style="color:var(--slds-n5);flex-shrink:0;">${(f.size / 1024).toFixed(0)} KB</span>
+                    </div>`).join('')
+                : '';
+
+            gotoStep(3);
+        }
+
+        function placeOrder() {
+            const orderId = 'ORD-FWD-' + (6700 + Math.floor(Math.random() * 100));
+            const a = ADDRESSES.find(x => x.id === selectedAddrId);
+            document.getElementById('success-order-id').textContent = orderId;
+            document.getElementById('success-chips').innerHTML = `
+                <div class="success-chip"><span>Ship To</span>${a.name}</div>
+                <div class="success-chip"><span>Type</span>${document.getElementById('f-order-type').value}</div>
+                <div class="success-chip"><span>Priority</span>${document.getElementById('f-order-priority').value}</div>
+                <div class="success-chip"><span>Carrier</span>${document.getElementById('f-carrier').value}</div>
+                <div class="success-chip"><span>ETA</span>${etaDate()}</div>
+                <div class="success-chip"><span>Total</span>${fmt(grand())}</div>`;
+            gotoStep(4);
+            showToast(orderId + ' placed successfully!', 'success', 'Order Confirmed');
+            if (watchers.length) setTimeout(() => showToast('Notifications sent to ' + watchers.length + ' watcher(s)', 'info'), 1400);
+        }
+
+        // ── Init ─────────────────────────────────────────────────────────
+        renderAddresses();
+        document.getElementById('s1-items').innerHTML = itemsHTML();
+        document.getElementById('s1-totals').innerHTML = totalsHTML();
+    </script>
+</body>
+
+</html>

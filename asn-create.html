@@ -1,214 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New ASN — PartnerHub</title>
-  <link rel="stylesheet" href="css/slds.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New ASN — PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
 </head>
+
 <body>
-  <div id="slds-global-header-container"></div>
-  <div id="slds-app-nav-container"></div>
-  <div id="slds-workspace-tabs-container"></div>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
 
-  <div class="slds-body">
-    <div class="slds-breadcrumb">
-      <a href="dashboard.html">Home</a>
-      <span class="slds-breadcrumb__sep">›</span>
-      <a href="asn-list.html">ASN</a>
-      <span class="slds-breadcrumb__sep">›</span>
-      <span class="slds-breadcrumb__current">New ASN</span>
+    <div class="slds-body">
+        <div class="slds-breadcrumb">
+            <a href="dashboard.html">Home</a>
+            <span class="slds-breadcrumb__sep">›</span>
+            <a href="asn-list.html">ASN</a>
+            <span class="slds-breadcrumb__sep">›</span>
+            <span class="slds-breadcrumb__current">New ASN</span>
+        </div>
+
+        <div class="slds-record-header-card">
+            <div class="slds-record-header-inner">
+                <div class="slds-record-header-top">
+                    <div class="slds-icon-std ic-asn">
+                        <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="slds-record-subtitle">ASN</div>
+                        <div class="slds-record-title">Create New Advance Shipment Notice</div>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <a href="asn-list.html" class="slds-btn slds-btn-neutral">Cancel</a>
+                        <button class="slds-btn slds-btn-brand" onclick="submitASN()">Save ASN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding:24px;display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1200px;">
+
+            <!-- Main Form -->
+            <div style="display:flex;flex-direction:column;gap:16px;">
+
+                <!-- ASN Info -->
+                <div class="slds-card">
+                    <div class="slds-card__header">
+                        <div class="slds-card__header-title">ASN Information</div>
+                    </div>
+                    <div class="slds-card__body">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Supplier <span
+                                        style="color:var(--slds-error);">*</span></label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" class="slds-input" placeholder="Supplier name"
+                                        id="supplier-name">
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">PO Reference <span
+                                        style="color:var(--slds-error);">*</span></label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" class="slds-input" placeholder="e.g. PO-2024-1234" id="po-ref">
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Expected Arrival Date <span
+                                        style="color:var(--slds-error);">*</span></label>
+                                <div class="slds-form-element__control">
+                                    <input type="date" class="slds-input" id="expected-date">
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Target Warehouse <span
+                                        style="color:var(--slds-error);">*</span></label>
+                                <div class="slds-form-element__control">
+                                    <select class="slds-select" id="warehouse">
+                                        <option value="">— Select Warehouse —</option>
+                                        <option>WH-MUM-01 · Mumbai</option>
+                                        <option>WH-DEL-02 · Delhi</option>
+                                        <option>WH-BLR-01 · Bengaluru</option>
+                                        <option>WH-HYD-01 · Hyderabad</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Carrier</label>
+                                <div class="slds-form-element__control">
+                                    <select class="slds-select" id="carrier">
+                                        <option value="">— Select Carrier —</option>
+                                        <option>FedEx</option>
+                                        <option>Delhivery</option>
+                                        <option>Blue Dart</option>
+                                        <option>Xpressbees</option>
+                                        <option>Ecom Express</option>
+                                        <option>DTDC</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Tracking Number</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" class="slds-input" placeholder="Carrier tracking number"
+                                        id="tracking-num">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">Notes</label>
+                            <div class="slds-form-element__control">
+                                <textarea class="slds-textarea" id="asn-notes"
+                                    placeholder="Internal notes about this ASN..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <div class="slds-card">
+                    <div class="slds-card__header">
+                        <div class="slds-card__header-title">Items in Shipment</div>
+                        <div class="slds-card__header-action">
+                            <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="addAsnRow()">+ Add
+                                Item</button>
+                        </div>
+                    </div>
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th>SKU / Product</th>
+                                <th>Description</th>
+                                <th>Qty Expected</th>
+                                <th>MRP</th>
+                                <th>Batch / Lot</th>
+                                <th>Expiry</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="asn-items">
+                            <tr data-row="1">
+                                <td><input type="text" class="slds-input" placeholder="SKU-XXXX"
+                                        style="height:28px;font-size:12px;"></td>
+                                <td><input type="text" class="slds-input" placeholder="Product description"
+                                        style="height:28px;font-size:12px;"></td>
+                                <td><input type="number" class="slds-input" placeholder="0" min="0"
+                                        style="height:28px;font-size:12px;width:80px;"></td>
+                                <td><input type="number" class="slds-input" placeholder="0.00" step="0.01" min="0"
+                                        style="height:28px;font-size:12px;width:90px;"></td>
+                                <td><input type="text" class="slds-input" placeholder="Optional"
+                                        style="height:28px;font-size:12px;"></td>
+                                <td><input type="date" class="slds-input" style="height:28px;font-size:12px;"></td>
+                                <td><button class="slds-btn slds-btn-icon slds-btn-sm"
+                                        onclick="this.closest('tr').remove()" title="Remove">✕</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div
+                        style="padding:12px 24px;background:var(--slds-n10);display:flex;gap:16px;font-size:12px;color:var(--slds-n4);">
+                        <span>Total Rows: <b id="row-count">1</b></span>
+                        <span>Total Units: <b id="total-units">0</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div style="display:flex;flex-direction:column;gap:12px;">
+
+                <div class="slds-highlight-panel">
+                    <div class="slds-highlight-panel__header">Summary</div>
+                    <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:var(--slds-n4);">Status</span>
+                            <span class="slds-badge slds-badge-warning">Draft</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:var(--slds-n4);">Total Line Items</span>
+                            <span id="sb-lines">1</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:var(--slds-n4);">Total Units</span>
+                            <span id="sb-units">—</span>
+                        </div>
+                        <hr style="border:none;border-top:1px solid var(--slds-n7);margin:4px 0;">
+                        <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="submitASN()">Save &amp;
+                            Create ASN</button>
+                        <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="submitASN('draft')">Save
+                            as Draft</button>
+                    </div>
+                </div>
+
+                <div class="slds-highlight-panel">
+                    <div class="slds-highlight-panel__header">Upload Documents</div>
+                    <div class="slds-highlight-panel__body">
+                        <div id="drop-zone"
+                            style="border:2px dashed var(--slds-n7);border-radius:4px;padding:20px;text-align:center;cursor:pointer;transition:border-color 0.15s;"
+                            onmouseover="this.style.borderColor='var(--slds-brand)'"
+                            onmouseout="this.style.borderColor='var(--slds-n7)'">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="width:24px;height:24px;color:var(--slds-n5);margin:0 auto 6px;display:block;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p style="font-size:12px;color:var(--slds-n4);margin:0;">Drop files or <span
+                                    style="color:var(--slds-brand);font-weight:600;">browse</span></p>
+                            <p style="font-size:11px;color:var(--slds-n5);margin:4px 0 0;">Packing list, invoice, BOL
+                            </p>
+                            <input type="file" style="display:none;" multiple accept=".pdf,.xlsx,.csv,.jpg">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-highlight-panel">
+                    <div class="slds-highlight-panel__header">Receiving Instructions</div>
+                    <div class="slds-highlight-panel__body"
+                        style="font-size:12px;color:var(--slds-n4);line-height:1.6;">
+                        <ul style="padding-left:16px;margin:0;">
+                            <li>Inspect for damage on arrival.</li>
+                            <li>Count and verify against ASN.</li>
+                            <li>Record any discrepancies before signing.</li>
+                            <li>Mark items with batch/lot if provided.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="slds-record-header-card">
-      <div class="slds-record-header-inner">
-        <div class="slds-record-header-top">
-          <div class="slds-icon-std ic-asn">
-            <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-          </div>
-          <div style="flex:1;">
-            <div class="slds-record-subtitle">ASN</div>
-            <div class="slds-record-title">Create New Advance Shipment Notice</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <a href="asn-list.html" class="slds-btn slds-btn-neutral">Cancel</a>
-            <button class="slds-btn slds-btn-brand" onclick="submitASN()">Save ASN</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('asn', 'New ASN', 'New ASN', 'asn');
 
-    <div style="padding:24px;display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1200px;">
-
-      <!-- Main Form -->
-      <div style="display:flex;flex-direction:column;gap:16px;">
-
-        <!-- ASN Info -->
-        <div class="slds-card">
-          <div class="slds-card__header">
-            <div class="slds-card__header-title">ASN Information</div>
-          </div>
-          <div class="slds-card__body">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Supplier <span style="color:var(--slds-error);">*</span></label>
-                <div class="slds-form-element__control">
-                  <input type="text" class="slds-input" placeholder="Supplier name" id="supplier-name">
-                </div>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">PO Reference <span style="color:var(--slds-error);">*</span></label>
-                <div class="slds-form-element__control">
-                  <input type="text" class="slds-input" placeholder="e.g. PO-2024-1234" id="po-ref">
-                </div>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Expected Arrival Date <span style="color:var(--slds-error);">*</span></label>
-                <div class="slds-form-element__control">
-                  <input type="date" class="slds-input" id="expected-date">
-                </div>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Target Warehouse <span style="color:var(--slds-error);">*</span></label>
-                <div class="slds-form-element__control">
-                  <select class="slds-select" id="warehouse">
-                    <option value="">— Select Warehouse —</option>
-                    <option>WH-MUM-01 · Mumbai</option>
-                    <option>WH-DEL-02 · Delhi</option>
-                    <option>WH-BLR-01 · Bengaluru</option>
-                    <option>WH-HYD-01 · Hyderabad</option>
-                  </select>
-                </div>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Carrier</label>
-                <div class="slds-form-element__control">
-                  <select class="slds-select" id="carrier">
-                    <option value="">— Select Carrier —</option>
-                    <option>FedEx</option><option>Delhivery</option>
-                    <option>Blue Dart</option><option>Xpressbees</option>
-                    <option>Ecom Express</option><option>DTDC</option>
-                  </select>
-                </div>
-              </div>
-              <div class="slds-form-element">
-                <label class="slds-form-element__label">Tracking Number</label>
-                <div class="slds-form-element__control">
-                  <input type="text" class="slds-input" placeholder="Carrier tracking number" id="tracking-num">
-                </div>
-              </div>
-            </div>
-            <div class="slds-form-element">
-              <label class="slds-form-element__label">Notes</label>
-              <div class="slds-form-element__control">
-                <textarea class="slds-textarea" id="asn-notes" placeholder="Internal notes about this ASN..."></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Items Table -->
-        <div class="slds-card">
-          <div class="slds-card__header">
-            <div class="slds-card__header-title">Items in Shipment</div>
-            <div class="slds-card__header-action">
-              <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="addAsnRow()">+ Add Item</button>
-            </div>
-          </div>
-          <table class="slds-table">
-            <thead>
-              <tr>
-                <th>SKU / Product</th>
-                <th>Description</th>
-                <th>Qty Expected</th>
-                <th>MRP</th>
-                <th>Batch / Lot</th>
-                <th>Expiry</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="asn-items">
-              <tr data-row="1">
-                <td><input type="text" class="slds-input" placeholder="SKU-XXXX" style="height:28px;font-size:12px;"></td>
-                <td><input type="text" class="slds-input" placeholder="Product description" style="height:28px;font-size:12px;"></td>
-                <td><input type="number" class="slds-input" placeholder="0" min="0" style="height:28px;font-size:12px;width:80px;"></td>
-                <td><input type="number" class="slds-input" placeholder="0.00" step="0.01" min="0" style="height:28px;font-size:12px;width:90px;"></td>
-                <td><input type="text" class="slds-input" placeholder="Optional" style="height:28px;font-size:12px;"></td>
-                <td><input type="date" class="slds-input" style="height:28px;font-size:12px;"></td>
-                <td><button class="slds-btn slds-btn-icon slds-btn-sm" onclick="this.closest('tr').remove()" title="Remove">✕</button></td>
-              </tr>
-            </tbody>
-          </table>
-          <div style="padding:12px 24px;background:var(--slds-n10);display:flex;gap:16px;font-size:12px;color:var(--slds-n4);">
-            <span>Total Rows: <b id="row-count">1</b></span>
-            <span>Total Units: <b id="total-units">0</b></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Sidebar -->
-      <div style="display:flex;flex-direction:column;gap:12px;">
-
-        <div class="slds-highlight-panel">
-          <div class="slds-highlight-panel__header">Summary</div>
-          <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;justify-content:space-between;font-size:13px;">
-              <span style="color:var(--slds-n4);">Status</span>
-              <span class="slds-badge slds-badge-warning">Draft</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;">
-              <span style="color:var(--slds-n4);">Total Line Items</span>
-              <span id="sb-lines">1</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;">
-              <span style="color:var(--slds-n4);">Total Units</span>
-              <span id="sb-units">—</span>
-            </div>
-            <hr style="border:none;border-top:1px solid var(--slds-n7);margin:4px 0;">
-            <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="submitASN()">Save &amp; Create ASN</button>
-            <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="submitASN('draft')">Save as Draft</button>
-          </div>
-        </div>
-
-        <div class="slds-highlight-panel">
-          <div class="slds-highlight-panel__header">Upload Documents</div>
-          <div class="slds-highlight-panel__body">
-            <div id="drop-zone" style="border:2px dashed var(--slds-n7);border-radius:4px;padding:20px;text-align:center;cursor:pointer;transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--slds-brand)'" onmouseout="this.style.borderColor='var(--slds-n7)'">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:24px;height:24px;color:var(--slds-n5);margin:0 auto 6px;display:block;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-              <p style="font-size:12px;color:var(--slds-n4);margin:0;">Drop files or <span style="color:var(--slds-brand);font-weight:600;">browse</span></p>
-              <p style="font-size:11px;color:var(--slds-n5);margin:4px 0 0;">Packing list, invoice, BOL</p>
-              <input type="file" style="display:none;" multiple accept=".pdf,.xlsx,.csv,.jpg">
-            </div>
-          </div>
-        </div>
-
-        <div class="slds-highlight-panel">
-          <div class="slds-highlight-panel__header">Receiving Instructions</div>
-          <div class="slds-highlight-panel__body" style="font-size:12px;color:var(--slds-n4);line-height:1.6;">
-            <ul style="padding-left:16px;margin:0;">
-              <li>Inspect for damage on arrival.</li>
-              <li>Count and verify against ASN.</li>
-              <li>Record any discrepancies before signing.</li>
-              <li>Mark items with batch/lot if provided.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="slds-toast-zone" class="slds-toast-zone"></div>
-  <script src="js/app.js"></script>
-  <script>
-    initPage('asn', 'New ASN', 'New ASN', 'asn');
-
-    function addAsnRow() {
-      const tbody = document.getElementById('asn-items');
-      const rows = tbody.querySelectorAll('tr');
-      const num = rows.length + 1;
-      const tr = document.createElement('tr');
-      tr.dataset.row = num;
-      tr.innerHTML = `
+        function addAsnRow() {
+            const tbody = document.getElementById('asn-items');
+            const rows = tbody.querySelectorAll('tr');
+            const num = rows.length + 1;
+            const tr = document.createElement('tr');
+            tr.dataset.row = num;
+            tr.innerHTML = `
         <td><input type="text" class="slds-input" placeholder="SKU-XXXX" style="height:28px;font-size:12px;"></td>
         <td><input type="text" class="slds-input" placeholder="Product description" style="height:28px;font-size:12px;"></td>
         <td><input type="number" class="slds-input" placeholder="0" min="0" style="height:28px;font-size:12px;width:80px;"></td>
@@ -216,23 +251,24 @@
         <td><input type="text" class="slds-input" placeholder="Optional" style="height:28px;font-size:12px;"></td>
         <td><input type="date" class="slds-input" style="height:28px;font-size:12px;"></td>
         <td><button class="slds-btn slds-btn-icon slds-btn-sm" onclick="this.closest('tr').remove()" title="Remove">✕</button></td>`;
-      tbody.appendChild(tr);
-      document.getElementById('row-count').textContent = tbody.querySelectorAll('tr').length;
-      document.getElementById('sb-lines').textContent = tbody.querySelectorAll('tr').length;
-    }
+            tbody.appendChild(tr);
+            document.getElementById('row-count').textContent = tbody.querySelectorAll('tr').length;
+            document.getElementById('sb-lines').textContent = tbody.querySelectorAll('tr').length;
+        }
 
-    function submitASN(mode) {
-      const supplier = document.getElementById('supplier-name').value.trim();
-      const po = document.getElementById('po-ref').value.trim();
-      if (!supplier || !po) { showToast('Please fill in required fields.', 'error', 'Validation Error'); return; }
-      const asnId = 'ASN-' + Math.floor(Math.random() * 90000 + 10000);
-      sessionStorage.setItem('new_asn', JSON.stringify({ id: asnId, supplier, po }));
-      showToast((mode === 'draft' ? 'Draft saved!' : `ASN ${asnId} created successfully!`), 'success', 'Success');
-      setTimeout(() => { window.location.href = 'asn-list.html'; }, 1500);
-    }
+        function submitASN(mode) {
+            const supplier = document.getElementById('supplier-name').value.trim();
+            const po = document.getElementById('po-ref').value.trim();
+            if (!supplier || !po) { showToast('Please fill in required fields.', 'error', 'Validation Error'); return; }
+            const asnId = 'ASN-' + Math.floor(Math.random() * 90000 + 10000);
+            sessionStorage.setItem('new_asn', JSON.stringify({ id: asnId, supplier, po }));
+            showToast((mode === 'draft' ? 'Draft saved!' : `ASN ${asnId} created successfully!`), 'success', 'Success');
+            setTimeout(() => { window.location.href = 'asn-list.html'; }, 1500);
+        }
 
-    const dropZone = document.getElementById('drop-zone');
-    dropZone.addEventListener('click', () => dropZone.querySelector('input').click());
-  </script>
+        const dropZone = document.getElementById('drop-zone');
+        dropZone.addEventListener('click', () => dropZone.querySelector('input').click());
+    </script>
 </body>
+
 </html>
