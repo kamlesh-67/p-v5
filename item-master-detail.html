@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Detail — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+    <div class="slds-breadcrumb">
+      <a href="dashboard.html">Home</a><span class="slds-breadcrumb__sep">›</span>
+      <a href="item-master-list.html">Item Master</a><span class="slds-breadcrumb__sep">›</span>
+      <span class="slds-breadcrumb__current">UltraBook Pro 15"</span>
+    </div>
+
+    <div class="slds-record-header-card">
+      <div class="slds-record-header-inner">
+        <div class="slds-record-header-top">
+          <div style="width:56px;height:56px;border-radius:6px;overflow:hidden;border:1px solid var(--slds-n7);flex-shrink:0;">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&q=80" style="width:100%;height:100%;object-fit:cover;" alt="UltraBook Pro">
+          </div>
+          <div style="flex:1;">
+            <div class="slds-record-subtitle" style="display:flex;align-items:center;gap:6px;">
+              <span class="slds-badge slds-badge-success">Active</span>
+              <span style="color:var(--slds-n4);">Electronics · SKU-3001</span>
+            </div>
+            <div class="slds-record-title">UltraBook Pro 15-inch Laptop</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="slds-btn slds-btn-neutral" onclick="showToast('Item deactivated','warning')">Deactivate</button>
+            <button class="slds-btn slds-btn-neutral" onclick="showToast('Duplicated','success')">Duplicate SKU</button>
+            <button class="slds-btn slds-btn-brand">Edit</button>
+          </div>
+        </div>
+      </div>
+      <div class="slds-record-metadata">
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">SKU</span><span class="slds-record-metadata-value">SKU-3001</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Category</span><span class="slds-record-metadata-value">Electronics</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">MRP</span><span class="slds-record-metadata-value" style="font-weight:700;color:var(--slds-brand);">₹89,999</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">GST</span><span class="slds-record-metadata-value">18%</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">HSN</span><span class="slds-record-metadata-value">8471</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Weight</span><span class="slds-record-metadata-value">1.8 kg</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Total Stock</span><span class="slds-record-metadata-value" style="color:var(--slds-success);font-weight:700;">247 units</span></div>
+      </div>
+      <div class="slds-tabs-bar">
+        <div class="slds-tab-item active" data-tab="summary">Summary</div>
+        <div class="slds-tab-item" data-tab="stock">Stock by Warehouse</div>
+        <div class="slds-tab-item" data-tab="history">Movement History</div>
+        <div class="slds-tab-item" data-tab="details">Details</div>
+      </div>
+    </div>
+
+    <!-- Summary Tab -->
+    <div id="tab-summary" class="slds-tab-content active" style="padding:16px 24px;">
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Product images gallery -->
+          <div class="slds-card">
+            <div class="slds-card__header"><div class="slds-card__header-title">Product Images</div></div>
+            <div class="slds-card__body" style="display:flex;gap:12px;flex-wrap:wrap;">
+              <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&q=80" style="width:120px;height:90px;object-fit:cover;border-radius:4px;border:2px solid var(--slds-brand);" alt="main">
+              <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=200&q=80" style="width:120px;height:90px;object-fit:cover;border-radius:4px;border:1px solid var(--slds-n7);cursor:pointer;" alt="side">
+              <div style="width:120px;height:90px;border:2px dashed var(--slds-n7);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--slds-n5);font-size:24px;">+</div>
+            </div>
+          </div>
+
+          <!-- KPI strip inside summary -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+            <div class="slds-kpi-card">
+              <div class="slds-kpi-label">Total Stock</div>
+              <div class="slds-kpi-value">247</div>
+              <div class="slds-kpi-trend up">▲ 12 this week</div>
+            </div>
+            <div class="slds-kpi-card">
+              <div class="slds-kpi-label">Reserved</div>
+              <div class="slds-kpi-value">38</div>
+              <div class="slds-kpi-trend neutral">Pending orders</div>
+            </div>
+            <div class="slds-kpi-card">
+              <div class="slds-kpi-label">Available</div>
+              <div class="slds-kpi-value" style="color:var(--slds-success);">209</div>
+              <div class="slds-kpi-trend up">Ready to ship</div>
+            </div>
+            <div class="slds-kpi-card">
+              <div class="slds-kpi-label">Damaged</div>
+              <div class="slds-kpi-value" style="color:var(--slds-error);">3</div>
+              <div class="slds-kpi-trend down">▼ 1 this week</div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="slds-card">
+            <div class="slds-card__header"><div class="slds-card__header-title">Product Description</div></div>
+            <div class="slds-card__body" style="font-size:13px;color:var(--slds-n3);line-height:1.6;">
+              The UltraBook Pro 15" delivers exceptional performance for professionals. Powered by the latest Intel Core i7 processor with 16GB RAM and 512GB NVMe SSD. Features a stunning 4K IPS display, Thunderbolt 4 connectivity, and up to 12 hours battery life.
+              <br><br>
+              <b>Key Specifications:</b>
+              <ul style="margin:8px 0;padding-left:20px;">
+                <li>Intel Core i7-13700H · 16GB LPDDR5 · 512GB SSD</li>
+                <li>15.6" 4K IPS Display · 144Hz · 100% sRGB</li>
+                <li>Thunderbolt 4 × 2 · USB-A × 3 · HDMI 2.1</li>
+                <li>73Wh Battery · 65W USB-C Fast Charging</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Pricing</div>
+            <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">MRP</span><span style="font-weight:700;">₹89,999</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">Cost Price</span><span>₹72,000</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">Selling Price</span><span style="color:var(--slds-brand);font-weight:700;">₹85,999</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">Discount</span><span style="color:var(--slds-success);">4.4% off</span></div>
+              <hr style="border:none;border-top:1px solid var(--slds-n7);">
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">GST (18%)</span><span>₹15,479</span></div>
+              <div style="display:flex;justify-content:space-between;font-weight:700;font-size:14px;"><span>Total w/ GST</span><span style="color:var(--slds-n1);">₹1,01,478</span></div>
+            </div>
+          </div>
+
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Quick Actions</div>
+            <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;">
+              <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="showToast('Stock adjustment opened','info')">Adjust Stock</button>
+              <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="showToast('ASN creation navigating...','info')">Create ASN</button>
+              <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="showToast('Reorder placed!','success')">Place Reorder</button>
+            </div>
+          </div>
+
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Physical</div>
+            <div class="slds-highlight-panel__body" style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">Weight</span><span>1.8 kg</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">Dimensions</span><span>36 × 24 × 1.8 cm</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">Units/Carton</span><span>4</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--slds-n4);">Storage</span><span>Ambient</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stock by Warehouse Tab -->
+    <div id="tab-stock" class="slds-tab-content" style="padding:16px 24px;">
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">Stock by Warehouse</div></div>
+        <table class="slds-table">
+          <thead><tr><th>Warehouse</th><th>Location</th><th>On Hand</th><th>Reserved</th><th>Available</th><th>Damaged</th><th>Reorder Level</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600;">WH-MUM-01</td><td style="color:var(--slds-n4);">Mumbai, MH</td><td>120</td><td>15</td><td style="color:var(--slds-success);font-weight:700;">105</td><td style="color:var(--slds-error);">1</td><td>20</td><td><span class="slds-badge slds-badge-success">OK</span></td></tr>
+            <tr><td style="font-weight:600;">WH-DEL-02</td><td style="color:var(--slds-n4);">Delhi, DL</td><td>85</td><td>18</td><td style="color:var(--slds-success);font-weight:700;">67</td><td>0</td><td>20</td><td><span class="slds-badge slds-badge-success">OK</span></td></tr>
+            <tr><td style="font-weight:600;">WH-BLR-01</td><td style="color:var(--slds-n4);">Bengaluru, KA</td><td>32</td><td>5</td><td style="color:var(--slds-warning);font-weight:700;">27</td><td style="color:var(--slds-error);">2</td><td>30</td><td><span class="slds-badge slds-badge-warning">Low</span></td></tr>
+            <tr><td style="font-weight:600;">WH-HYD-01</td><td style="color:var(--slds-n4);">Hyderabad, TS</td><td>10</td><td>0</td><td style="color:var(--slds-error);font-weight:700;">10</td><td>0</td><td>20</td><td><span class="slds-badge slds-badge-error">Reorder!</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Movement History Tab -->
+    <div id="tab-history" class="slds-tab-content" style="padding:16px 24px;">
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">Stock Movement History</div></div>
+        <table class="slds-table">
+          <thead><tr><th>Date</th><th>Reference</th><th>Type</th><th>Qty</th><th>Balance</th><th>Warehouse</th><th>User</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--slds-n4);">Dec 24</td><td><a href="asn-detail.html" class="slds-text-link">ASN-20241</a></td><td><span class="slds-badge slds-badge-success">IN</span></td><td style="color:var(--slds-success);">+50</td><td>247</td><td>WH-MUM-01</td><td>Priya N.</td></tr>
+            <tr><td style="color:var(--slds-n4);">Dec 22</td><td><a href="forward-order-detail.html" class="slds-text-link">ORD-FWD-6672</a></td><td><span class="slds-badge slds-badge-error">OUT</span></td><td style="color:var(--slds-error);">-2</td><td>197</td><td>WH-MUM-01</td><td>System</td></tr>
+            <tr><td style="color:var(--slds-n4);">Dec 20</td><td><a href="return-order-detail.html" class="slds-text-link">RET-10428</a></td><td><span class="slds-badge slds-badge-info">RETURN</span></td><td style="color:var(--slds-info);">+1</td><td>199</td><td>WH-MUM-01</td><td>System</td></tr>
+            <tr><td style="color:var(--slds-n4);">Dec 18</td><td>ADJ-00012</td><td><span class="slds-badge slds-badge-warning">ADJ</span></td><td style="color:var(--slds-warning);">-3</td><td>198</td><td>WH-BLR-01</td><td>Sanjay K.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Details Tab -->
+    <div id="tab-details" class="slds-tab-content" style="padding:16px 24px;">
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">Full Product Details</div></div>
+        <div class="slds-detail-grid">
+          <div class="slds-detail-field"><span class="slds-detail-label">Item Name</span><span class="slds-detail-value">UltraBook Pro 15-inch Laptop</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">SKU</span><span class="slds-detail-value">SKU-3001</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Barcode</span><span class="slds-detail-value">4902224700001</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Category</span><span class="slds-detail-value">Electronics</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Brand</span><span class="slds-detail-value">TechPro</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">MRP</span><span class="slds-detail-value">₹89,999</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Cost Price</span><span class="slds-detail-value">₹72,000</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Selling Price</span><span class="slds-detail-value">₹85,999</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">HSN Code</span><span class="slds-detail-value">8471</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">GST Rate</span><span class="slds-detail-value">18%</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Weight</span><span class="slds-detail-value">1.800 kg</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Dimensions</span><span class="slds-detail-value">36 × 24 × 1.8 cm</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Units / Carton</span><span class="slds-detail-value">4</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Storage Type</span><span class="slds-detail-value">Ambient</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Reorder Level</span><span class="slds-detail-value">20 units</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Created On</span><span class="slds-detail-value">Jan 15, 2024</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Created By</span><span class="slds-detail-value">Admin</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Status</span><span class="slds-detail-value"><span class="slds-badge slds-badge-success">Active</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+  <script src="js/app.js"></script>
+  <script>
+    initPage('item-master', 'UltraBook Pro 15"', 'UltraBook Pro 15"', 'product');
+    initTabs();
+  </script>
+</body>
+</html>

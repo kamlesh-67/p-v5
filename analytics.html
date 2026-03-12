@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+
+    <div class="slds-list-header">
+      <div class="slds-list-header__icon-title">
+        <div class="slds-icon-std ic-report">
+          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div>
+          <div class="slds-list-title">Analytics &amp; Reports</div>
+          <div class="slds-list-subtitle">Business intelligence · Last 90 days</div>
+        </div>
+      </div>
+      <div class="slds-list-actions">
+        <select class="slds-select" style="height:32px;padding:0 28px 0 10px;min-width:150px;" onchange="showToast('Period updated','info')">
+          <option>Last 7 Days</option><option>Last 30 Days</option>
+          <option selected>Last 90 Days</option><option>This Year</option><option>Custom Range</option>
+        </select>
+        <button class="slds-btn slds-btn-neutral" onclick="exportData()">Export Report</button>
+        <button class="slds-btn slds-btn-brand" onclick="showToast('Scheduled report set','success')">Schedule</button>
+      </div>
+    </div>
+
+    <!-- Top KPI Cards -->
+    <div style="padding:16px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:grid;grid-template-columns:repeat(6,1fr);gap:12px;">
+      <div class="slds-kpi-card">
+        <div class="slds-kpi-label">Total Orders</div>
+        <div class="slds-kpi-value">284</div>
+        <div class="slds-kpi-trend up">▲ 12% vs prior</div>
+      </div>
+      <div class="slds-kpi-card">
+        <div class="slds-kpi-label">Revenue</div>
+        <div class="slds-kpi-value" style="font-size:22px;">₹18.4L</div>
+        <div class="slds-kpi-trend up">▲ 8.3%</div>
+      </div>
+      <div class="slds-kpi-card">
+        <div class="slds-kpi-label">Fulfilment Rate</div>
+        <div class="slds-kpi-value">96.4%</div>
+        <div class="slds-kpi-trend up">▲ 1.2%</div>
+      </div>
+      <div class="slds-kpi-card">
+        <div class="slds-kpi-label">Avg Dispatch Time</div>
+        <div class="slds-kpi-value">1.8d</div>
+        <div class="slds-kpi-trend down">▼ 0.3d</div>
+      </div>
+      <div class="slds-kpi-card">
+        <div class="slds-kpi-label">Return Rate</div>
+        <div class="slds-kpi-value">4.2%</div>
+        <div class="slds-kpi-trend down">▼ 0.8%</div>
+      </div>
+      <div class="slds-kpi-card">
+        <div class="slds-kpi-label">Damaged Stock</div>
+        <div class="slds-kpi-value" style="color:var(--slds-error);">08</div>
+        <div class="slds-kpi-trend down">▼ 2 vs prior</div>
+      </div>
+    </div>
+
+    <div style="padding:16px 24px;display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Row 1: Order Volume + Category Breakdown -->
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;">
+        <div class="slds-card">
+          <div class="slds-card__header">
+            <div class="slds-card__header-title">Order Volume — Last 12 Weeks</div>
+            <div style="display:flex;gap:8px;font-size:11px;align-items:center;">
+              <span style="display:inline-flex;align-items:center;gap:3px;"><span style="width:10px;height:10px;background:#0176D3;border-radius:2px;display:inline-block;"></span>Forward</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;"><span style="width:10px;height:10px;background:#E07AB8;border-radius:2px;display:inline-block;"></span>Returns</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;"><span style="width:10px;height:10px;background:#54A77B;border-radius:2px;display:inline-block;"></span>ASN</span>
+            </div>
+          </div>
+          <div class="slds-card__body" style="padding:16px;">
+            <canvas id="orderVolumeChart" height="90"></canvas>
+          </div>
+        </div>
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Orders by Category</div></div>
+          <div class="slds-card__body" style="display:flex;flex-direction:column;gap:4px;">
+            <canvas id="categoryChart" height="140"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Channel Breakdown + Fulfilment Trend -->
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;">
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Orders by Channel</div></div>
+          <div class="slds-card__body" style="padding:16px;">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Direct</span><span style="font-weight:700;">38%</span></div>
+                <div style="height:6px;background:var(--slds-n8);border-radius:3px;"><div style="height:100%;width:38%;background:var(--slds-brand);border-radius:3px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Amazon</span><span style="font-weight:700;">27%</span></div>
+                <div style="height:6px;background:var(--slds-n8);border-radius:3px;"><div style="height:100%;width:27%;background:var(--slds-warning-accent);border-radius:3px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Flipkart</span><span style="font-weight:700;">19%</span></div>
+                <div style="height:6px;background:var(--slds-n8);border-radius:3px;"><div style="height:100%;width:19%;background:#E07AB8;border-radius:3px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Meesho</span><span style="font-weight:700;">10%</span></div>
+                <div style="height:6px;background:var(--slds-n8);border-radius:3px;"><div style="height:100%;width:10%;background:var(--slds-success);border-radius:3px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Other</span><span style="font-weight:700;">6%</span></div>
+                <div style="height:6px;background:var(--slds-n8);border-radius:3px;"><div style="height:100%;width:6%;background:var(--slds-n5);border-radius:3px;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Fulfilment Rate Trend</div></div>
+          <div class="slds-card__body" style="padding:16px;">
+            <canvas id="fulfilmentChart" height="90"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Warehouse Performance + Top SKUs -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Warehouse Performance</div></div>
+          <table class="slds-table">
+            <thead>
+              <tr><th>Warehouse</th><th style="text-align:right;">Orders</th><th style="text-align:right;">Dispatch Rate</th><th style="text-align:right;">Avg Time</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="font-weight:600;">WH-MUM-01</td><td style="text-align:right;">112</td><td style="text-align:right;color:var(--slds-success);">98.2%</td><td style="text-align:right;color:var(--slds-n4);">1.4d</td><td><span class="slds-badge slds-badge-success">Optimal</span></td></tr>
+              <tr><td style="font-weight:600;">WH-DEL-02</td><td style="text-align:right;">89</td><td style="text-align:right;color:var(--slds-success);">96.6%</td><td style="text-align:right;color:var(--slds-n4);">1.9d</td><td><span class="slds-badge slds-badge-success">Good</span></td></tr>
+              <tr><td style="font-weight:600;">WH-BLR-01</td><td style="text-align:right;">56</td><td style="text-align:right;color:var(--slds-warning);">92.1%</td><td style="text-align:right;color:var(--slds-n4);">2.4d</td><td><span class="slds-badge slds-badge-warning">Capacity!</span></td></tr>
+              <tr><td style="font-weight:600;">WH-HYD-01</td><td style="text-align:right;">27</td><td style="text-align:right;color:var(--slds-success);">97.4%</td><td style="text-align:right;color:var(--slds-n4);">1.6d</td><td><span class="slds-badge slds-badge-success">Good</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Top 5 SKUs by Orders</div></div>
+          <div class="slds-card__body" style="padding:0;">
+            <table class="slds-table">
+              <thead>
+                <tr><th>SKU</th><th>Item</th><th style="text-align:right;">Orders</th><th style="text-align:right;">Revenue</th></tr>
+              </thead>
+              <tbody id="top-skus"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Returns Analysis -->
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">Returns Analysis</div></div>
+        <div class="slds-card__body">
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;text-align:center;">
+            <div>
+              <div style="font-size:28px;font-weight:700;color:var(--slds-n1);">24</div>
+              <div style="font-size:11px;color:var(--slds-n4);font-weight:600;text-transform:uppercase;margin-top:2px;">Total Returns</div>
+            </div>
+            <div>
+              <div style="font-size:28px;font-weight:700;color:var(--slds-error);">4.2%</div>
+              <div style="font-size:11px;color:var(--slds-n4);font-weight:600;text-transform:uppercase;margin-top:2px;">Return Rate</div>
+            </div>
+            <div>
+              <div style="font-size:28px;font-weight:700;color:var(--slds-warning);">9</div>
+              <div style="font-size:11px;color:var(--slds-n4);font-weight:600;text-transform:uppercase;margin-top:2px;">Damaged Items</div>
+            </div>
+            <div>
+              <div style="font-size:28px;font-weight:700;color:var(--slds-success);">₹23,400</div>
+              <div style="font-size:11px;color:var(--slds-n4);font-weight:600;text-transform:uppercase;margin-top:2px;">Refunds Issued</div>
+            </div>
+            <div>
+              <div style="font-size:28px;font-weight:700;color:var(--slds-brand);">3.2d</div>
+              <div style="font-size:11px;color:var(--slds-n4);font-weight:600;text-transform:uppercase;margin-top:2px;">Avg Return Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+  <script src="js/app.js"></script>
+  <script>
+    initPage('analytics', 'Analytics');
+
+    // Order Volume Chart
+    const weeks = ['W41','W42','W43','W44','W45','W46','W47','W48','W49','W50','W51','W52'];
+    new Chart(document.getElementById('orderVolumeChart'), {
+      type: 'bar',
+      data: {
+        labels: weeks,
+        datasets: [
+          { label: 'Forward Orders', data: [18,22,25,20,31,28,24,35,29,32,38,42], backgroundColor: '#0176D3' },
+          { label: 'Returns', data: [2,3,2,4,3,2,5,4,3,4,5,3], backgroundColor: '#E07AB8' },
+          { label: 'ASN', data: [3,4,5,3,6,4,5,7,4,5,6,8], backgroundColor: '#54A77B' }
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: '#f3f3f3' } } } }
+    });
+
+    // Category Chart
+    new Chart(document.getElementById('categoryChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Electronics', 'Wearables', 'Accessories', 'Audio', 'Other'],
+        datasets: [{ data: [42, 18, 16, 14, 10], backgroundColor: ['#0176D3','#54A77B','#FCB95B','#E07AB8','#9B6293'], borderWidth: 0 }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { padding: 8, font: { size: 11 } } } }, cutout: '65%' }
+    });
+
+    // Fulfilment Chart
+    new Chart(document.getElementById('fulfilmentChart'), {
+      type: 'line',
+      data: {
+        labels: weeks,
+        datasets: [{ label: 'Fulfilment %', data: [94.1,95.2,93.8,96.1,95.4,97.2,96.8,96.4,97.1,95.9,97.8,96.4], borderColor: '#0176D3', backgroundColor: 'rgba(1,118,211,0.08)', fill: true, tension: 0.4, pointRadius: 3 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { min: 90, max: 100, grid: { color: '#f3f3f3' } }, x: { grid: { display: false } } } }
+    });
+
+    // Top SKUs
+    document.getElementById('top-skus').innerHTML = PH_PRODUCTS.slice(0,5).map((p, i) => {
+      const orders = [67, 54, 48, 41, 36][i];
+      const rev = [p.price * orders].map(v => '₹' + (v||0).toLocaleString('en-IN'));
+      return `<tr><td><a href="item-master-detail.html" class="slds-text-link" style="font-weight:600;">${p.sku||'SKU-'+p.id}</a></td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name}</td><td style="text-align:right;font-weight:600;">${orders}</td><td style="text-align:right;color:var(--slds-success);font-weight:600;">${rev}</td></tr>`;
+    }).join('');
+  </script>
+</body>
+</html>

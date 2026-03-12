@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forward Order Detail — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+  <style>
+    /* Order Totals Mini Panel (left sidebar panel — like screenshot left widget) */
+    .order-totals-card { background:white; border:1px solid var(--slds-n7); border-radius:4px; overflow:hidden; box-shadow:var(--slds-shadow-2); }
+    .order-totals-header { padding:12px 16px; background:var(--slds-brand-darker); color:white; display:flex; align-items:center; gap:8px; }
+    .order-totals-header .ot-icon { width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center; }
+    .order-totals-header h3 { font-size:14px; font-weight:700; }
+    .order-totals-body { padding:16px; }
+    .ot-line { display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-size:13px; border-bottom:1px solid var(--slds-n8); }
+    .ot-line:last-child { border-bottom:none; }
+    .ot-line .ot-label { color:var(--slds-n4); }
+    .ot-line .ot-value { font-weight:600; color:var(--slds-n1); }
+    .ot-total { margin-top:8px; padding-top:8px; border-top:2px solid var(--slds-n7); display:flex; justify-content:space-between; font-size:15px; font-weight:700; }
+    .ot-actions { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+
+    /* Product table inside detail */
+    .items-table th, .items-table td { padding:8px 12px; font-size:13px; }
+    .items-table th:first-child, .items-table td:first-child { padding-left:16px; }
+    .items-table th { font-size:10px; }
+    .items-table img { width:36px;height:36px;object-fit:cover;border-radius:4px;border:1px solid var(--slds-n7); }
+
+    /* Shipment section */
+    .shipment-row { display:grid; grid-template-columns:130px 1fr 60px auto auto; gap:12px; align-items:center; padding:10px 16px; border-bottom:1px solid var(--slds-n8); font-size:13px; }
+    .shipment-header-row { grid-template-columns:130px 1fr 60px auto auto; display:grid; gap:12px; padding:8px 16px; font-size:10px; font-weight:700; color:var(--slds-n4); text-transform:uppercase; letter-spacing:.06em; background:var(--slds-n10); border-bottom:1px solid var(--slds-n7); }
+
+    /* Timeline steps */
+    .timeline-steps { display:flex; align-items:flex-start; padding:16px; gap:0; position:relative; }
+    .timeline-step { flex:1; display:flex; flex-direction:column; align-items:center; position:relative; }
+    .timeline-step::before { content:''; position:absolute; top:14px; left:calc(-50%); right:calc(50%); height:2px; background:var(--slds-n7); z-index:0; }
+    .timeline-step:first-child::before { display:none; }
+    .timeline-dot { width:28px;height:28px;border-radius:50%;border:2px solid var(--slds-n7);background:white;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:all .2s; }
+    .timeline-dot.done { border-color:var(--slds-brand);background:var(--slds-brand); }
+    .timeline-dot.done svg { color:white; }
+    .timeline-dot.current { border-color:var(--slds-brand);background:var(--slds-brand-light); }
+    .timeline-dot svg { width:14px;height:14px;color:var(--slds-n5); }
+    .timeline-step.done::before { background:var(--slds-brand); }
+    .timeline-label { font-size:10px;font-weight:700;color:var(--slds-n4);margin-top:6px;text-align:center;text-transform:uppercase;letter-spacing:.04em; }
+    .timeline-date { font-size:11px;color:var(--slds-n5);margin-top:2px;text-align:center; }
+
+    /* Payments section */
+    .payment-summary { padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--slds-n8); }
+  </style>
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+
+    <!-- Breadcrumb -->
+    <div class="slds-breadcrumb">
+      <a href="dashboard.html">Home</a>
+      <span class="slds-breadcrumb__sep">›</span>
+      <a href="forward-order-list.html">Forward Orders</a>
+      <span class="slds-breadcrumb__sep">›</span>
+      <span class="slds-breadcrumb__current">ORD-FWD-6672</span>
+    </div>
+
+    <!-- Record Header Card -->
+    <div class="slds-record-header-card">
+      <div class="slds-record-header-inner">
+        <div class="slds-record-top">
+          <!-- Icon -->
+          <div class="slds-icon-std ic-order">
+            <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <!-- Title -->
+          <div class="slds-record-title-wrap">
+            <div class="slds-record-type">Forward Order</div>
+            <div class="slds-record-name">Order Summary &nbsp; <span style="color:var(--slds-brand);">ORD-FWD-6672</span></div>
+          </div>
+          <!-- Actions -->
+          <div class="slds-record-actions">
+            <button class="slds-btn slds-btn-brand">Edit Order</button>
+            <button class="slds-btn slds-btn-neutral">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export PO
+            </button>
+            <button class="slds-btn slds-btn-neutral">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metadata Row -->
+        <div class="slds-record-metadata">
+          <div class="slds-record-meta-item">
+            <div class="slds-record-meta-label">Account Name</div>
+            <div class="slds-record-meta-value link">Nexus Corp</div>
+          </div>
+          <div class="slds-record-meta-item">
+            <div class="slds-record-meta-label">Order Date</div>
+            <div class="slds-record-meta-value">Mar 10, 2024 · 2:49 PM</div>
+          </div>
+          <div class="slds-record-meta-item">
+            <div class="slds-record-meta-label">Sales Channel</div>
+            <div class="slds-record-meta-value">Online Order</div>
+          </div>
+          <div class="slds-record-meta-item">
+            <div class="slds-record-meta-label">Channel Type</div>
+            <div class="slds-record-meta-value">Direct B2B</div>
+          </div>
+          <div class="slds-record-meta-item">
+            <div class="slds-record-meta-label">Order Status</div>
+            <div class="slds-record-meta-value"><span class="slds-badge slds-badge-info">Processing</span></div>
+          </div>
+          <div class="slds-record-meta-item">
+            <div class="slds-record-meta-label">Warehouse</div>
+            <div class="slds-record-meta-value">WH-MUM-01</div>
+          </div>
+          <div class="slds-record-meta-item" style="min-width:180px;">
+            <div class="slds-record-meta-label">Billing Address</div>
+            <div class="slds-record-meta-value" style="line-height:1.5;">Vikram Malhotra<br><span style="color:var(--slds-n4);font-size:12px;">12, Bandra West, Mumbai 400050</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Path -->
+      <div class="slds-path-wrap">
+        <div class="slds-path-step done">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Order Placed
+        </div>
+        <div class="slds-path-step done">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirmed
+        </div>
+        <div class="slds-path-step current">Warehouse Processing</div>
+        <div class="slds-path-step">Ready to Ship</div>
+        <div class="slds-path-step">Shipped</div>
+        <div class="slds-path-step won">Delivered</div>
+      </div>
+
+      <!-- Record Tabs -->
+      <div class="slds-record-tabs" data-tab-group>
+        <div class="slds-record-tab active" data-tab="summary" onclick="switchTab('summary','pane-summary')">Summary</div>
+        <div class="slds-record-tab" data-tab="related" onclick="switchTab('related','pane-related')">Related</div>
+        <div class="slds-record-tab" data-tab="details" onclick="switchTab('details','pane-details')">Details</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="slds-content-lg" style="background:var(--slds-n9);">
+
+      <!-- SUMMARY TAB -->
+      <div class="slds-tab-pane active" data-pane="pane-summary">
+        <div class="slds-grid-aside">
+
+          <!-- Main Content -->
+          <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <!-- Pick up in Store -->
+            <div class="slds-card">
+              <div style="padding:10px 16px;background:#FFF8E7;border-bottom:1px solid #F5C842;display:flex;align-items:center;gap:8px;">
+                <svg fill="none" stroke="#A96404" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span style="font-size:12px;font-weight:700;color:#A96404;">Pick up at Warehouse: WH-MUM-01,</span>
+                <span style="font-size:12px;color:#A96404;">APMC Road, Bhandup, Mumbai 400078</span>
+              </div>
+
+              <!-- Product Details Table -->
+              <div class="slds-section-header" style="margin-top:0;">Product Details</div>
+              <div class="slds-table-wrap">
+                <table class="slds-table items-table">
+                  <thead>
+                    <tr>
+                      <th>Product Details</th>
+                      <th>Status</th>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                      <th>Adjustments</th>
+                      <th>Tax</th>
+                      <th style="text-align:right;">Item Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=80&q=80" alt="">
+                          <div>
+                            <div style="font-size:13px;font-weight:500;color:var(--slds-brand);cursor:pointer;">ProBook Laptop 15"</div>
+                            <div style="font-size:11px;color:var(--slds-n5);">LP-PRO-001 · Black</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="slds-badge slds-badge-warning" style="font-size:10px;">Ready for Pickup</span></td>
+                      <td>1</td>
+                      <td>₹1,249.99</td>
+                      <td style="color:var(--slds-n4);">₹0.00</td>
+                      <td style="color:var(--slds-n4);">₹112.50</td>
+                      <td style="text-align:right;font-weight:600;">₹1,362.49</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&q=80" alt="">
+                          <div>
+                            <div style="font-size:13px;font-weight:500;color:var(--slds-brand);cursor:pointer;">AudioMax Pro Headphones</div>
+                            <div style="font-size:11px;color:var(--slds-n5);">HP-AUD-002 · Midnight Black</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="slds-badge slds-badge-warning" style="font-size:10px;">Ready for Pickup</span></td>
+                      <td>2</td>
+                      <td>₹299.99</td>
+                      <td style="color:var(--slds-n4);">₹0.00</td>
+                      <td style="color:var(--slds-n4);">₹54.00</td>
+                      <td style="text-align:right;font-weight:600;">₹653.98</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Shipping To section -->
+            <div class="slds-card">
+              <div class="slds-section-header" style="margin-top:0;border-top:none;">
+                Shipping To: &nbsp; <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:13px;color:var(--slds-n3);">Vikram Malhotra &nbsp; 12, Bandra West, Mumbai – 400050</span>
+              </div>
+              <div class="slds-table-wrap">
+                <table class="slds-table items-table">
+                  <thead>
+                    <tr>
+                      <th>Product Details</th>
+                      <th>Status</th>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                      <th>Adjustments</th>
+                      <th>Tax</th>
+                      <th style="text-align:right;">Item Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=80" alt="">
+                          <div>
+                            <div style="font-size:13px;font-weight:500;color:var(--slds-brand);cursor:pointer;">Precision Watch Executive</div>
+                            <div style="font-size:11px;color:var(--slds-n5);">WT-PRE-003 · Silver</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="slds-badge slds-badge-purple" style="font-size:10px;">Shipped</span></td>
+                      <td>1</td>
+                      <td>₹599.99</td>
+                      <td style="color:var(--slds-n4);">₹0.00</td>
+                      <td style="color:var(--slds-n4);">₹54.00</td>
+                      <td style="text-align:right;font-weight:600;">₹653.99</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=80&q=80" alt="">
+                          <div>
+                            <div style="font-size:13px;font-weight:500;color:var(--slds-brand);cursor:pointer;">CapturePlus DSLR Camera</div>
+                            <div style="font-size:11px;color:var(--slds-n5);">CM-CAP-004 · Black One Size</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="slds-badge slds-badge-purple" style="font-size:10px;">Shipped</span></td>
+                      <td>1</td>
+                      <td>₹899.99</td>
+                      <td style="color:var(--slds-n4);">₹0.00</td>
+                      <td style="color:var(--slds-n4);">₹81.00</td>
+                      <td style="text-align:right;font-weight:600;">₹980.99</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Shipments -->
+            <div class="slds-card">
+              <div class="slds-card__header">
+                <div class="slds-icon-std slds-icon-std-sm ic-asn" style="background:#1589EE;">
+                  <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0H3m11 0h3"/></svg>
+                </div>
+                <span class="slds-card__header-title">Shipments</span>
+              </div>
+              <div class="slds-card__body--no-pad">
+                <div class="shipment-header-row">
+                  <div>Shipping Method</div>
+                  <div>Address</div>
+                  <div>Items</div>
+                  <div>Tracking</div>
+                  <div style="text-align:right;">Shipping Total</div>
+                </div>
+                <div class="shipment-row">
+                  <div style="font-size:12px;font-weight:600;">Warehouse Pickup</div>
+                  <div style="font-size:12px;color:var(--slds-n3);">WH-MUM-01, APMC Road, Bhandup</div>
+                  <div style="font-size:12px;">2</div>
+                  <div><span class="slds-badge slds-badge-warning" style="font-size:10px;">Ready for Pickup</span></div>
+                  <div style="text-align:right;font-size:12px;font-weight:600;">₹0.00</div>
+                </div>
+                <div class="shipment-row">
+                  <div style="font-size:12px;font-weight:600;">FedEx Express</div>
+                  <div style="font-size:12px;color:var(--slds-n3);">12, Bandra West, Mumbai 400050</div>
+                  <div style="font-size:12px;">2</div>
+                  <div><a href="#" class="slds-text-link" style="font-size:12px;font-weight:600;">FX2504684627</a></div>
+                  <div style="text-align:right;font-size:12px;font-weight:600;">₹499.00</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shipping Timeline -->
+            <div class="slds-card">
+              <div class="slds-card__header">
+                <span class="slds-card__header-title">Shipping Timeline</span>
+              </div>
+              <div class="slds-card__body--no-pad">
+                <div class="timeline-steps">
+                  <div class="timeline-step">
+                    <div class="timeline-dot done">
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <div class="timeline-label">Order Placed</div>
+                    <div class="timeline-date">Mar 10, 2:49 PM</div>
+                  </div>
+                  <div class="timeline-step done" style="--step-pct:100%">
+                    <div class="timeline-dot done">
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <div class="timeline-label">Confirmed</div>
+                    <div class="timeline-date">Mar 10, 3:10 PM</div>
+                  </div>
+                  <div class="timeline-step">
+                    <div class="timeline-dot current">
+                      <svg fill="none" stroke="var(--slds-brand)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    </div>
+                    <div class="timeline-label" style="color:var(--slds-brand);">In Warehouse</div>
+                    <div class="timeline-date">In Progress</div>
+                  </div>
+                  <div class="timeline-step">
+                    <div class="timeline-dot">
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10"/></svg>
+                    </div>
+                    <div class="timeline-label">Shipped</div>
+                    <div class="timeline-date">Pending</div>
+                  </div>
+                  <div class="timeline-step">
+                    <div class="timeline-dot">
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <div class="timeline-label">Delivered</div>
+                    <div class="timeline-date">Est. Mar 15</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payments -->
+            <div class="slds-card">
+              <div class="slds-card__header">
+                <div class="slds-icon-std slds-icon-std-sm ic-billing">
+                  <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                </div>
+                <span class="slds-card__header-title">Payments</span>
+              </div>
+              <div class="slds-card__body--no-pad">
+                <div class="payment-summary">
+                  <div>
+                    <div style="font-size:12px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">Payment Method</div>
+                    <div style="font-size:13px;font-weight:600;">Bank Transfer · Ref #BTF-9024</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:12px;color:var(--slds-n4);">Amount</div>
+                    <div style="font-size:18px;font-weight:700;color:var(--slds-success);">₹4,999.96</div>
+                  </div>
+                </div>
+                <div style="padding:12px 16px;display:flex;gap:24px;flex-wrap:wrap;">
+                  <div><div style="font-size:11px;color:var(--slds-n4);">Payment Date</div><div style="font-size:13px;font-weight:500;">Mar 10, 2024</div></div>
+                  <div><div style="font-size:11px;color:var(--slds-n4);">Status</div><div><span class="slds-badge slds-badge-success">Paid</span></div></div>
+                  <div><div style="font-size:11px;color:var(--slds-n4);">Invoice</div><div><a href="#" class="slds-text-link" style="font-size:13px;">INV-2024-0672</a></div></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Sidebar -->
+          <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <!-- Order Totals (like the left panel widget in screenshot) -->
+            <div class="order-totals-card">
+              <div class="order-totals-header">
+                <div class="ot-icon">
+                  <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <h3>Order Totals</h3>
+              </div>
+              <div class="order-totals-body">
+                <div class="ot-line"><span class="ot-label">Items Subtotal</span><span class="ot-value">₹4,649.95</span></div>
+                <div class="ot-line"><span class="ot-label">Order Adjustments</span><span class="ot-value" style="color:var(--slds-success);">-₹0.00</span></div>
+                <div class="ot-line"><span class="ot-label">Shipping</span><span class="ot-value">₹499.00</span></div>
+                <div class="ot-line"><span class="ot-label">Tax (18% GST)</span><span class="ot-value">₹837.00</span></div>
+                <div class="ot-line"><span class="ot-label">Discount</span><span class="ot-value" style="color:var(--slds-success);">-₹0.00</span></div>
+                <div class="ot-total">
+                  <span>Total</span>
+                  <span style="color:var(--slds-brand);">₹5,985.95</span>
+                </div>
+              </div>
+              <div style="padding:0 16px 16px;">
+                <div class="ot-actions">
+                  <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="showToast('Tracking page opened','info')">Track Order</button>
+                  <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="window.location.href='return-order-create.html'">Return Items</button>
+                </div>
+                <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--slds-n7);">
+                  <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Order #</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--slds-brand);">ORD-FWD-6672</div>
+                  <div style="font-size:11px;color:var(--slds-n4);margin-top:4px;">Date: Mar 10, 2024</div>
+                  <div style="font-size:11px;color:var(--slds-n4);">Items: 4 &nbsp;·&nbsp; Total: ₹5,985.95</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arriving Soon -->
+            <div class="slds-card">
+              <div class="slds-card__header">
+                <span class="slds-card__header-title">Arriving Soon</span>
+                <span style="font-size:11px;padding:2px 8px;background:var(--slds-brand-light);color:var(--slds-brand-dark);border-radius:10px;font-weight:700;">2 items</span>
+              </div>
+              <div class="slds-card__body--no-pad">
+                <div style="padding:12px 16px;border-bottom:1px solid var(--slds-n8);">
+                  <div style="font-size:11px;font-weight:700;color:var(--slds-brand);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Arriving Tomorrow</div>
+                  <div style="display:flex;gap:8px;margin-bottom:10px;">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=80" alt="" style="width:42px;height:42px;object-fit:cover;border-radius:4px;border:1px solid var(--slds-n7);flex-shrink:0;">
+                    <div>
+                      <div style="font-size:12px;font-weight:600;color:var(--slds-n1);">Precision Watch Executive</div>
+                      <div style="font-size:11px;color:var(--slds-n5);">Color: Silver</div>
+                      <div style="font-size:11px;color:var(--slds-n5);">Qty: 1 &nbsp;·&nbsp; ₹653.99</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=80&q=80" alt="" style="width:42px;height:42px;object-fit:cover;border-radius:4px;border:1px solid var(--slds-n7);flex-shrink:0;">
+                    <div>
+                      <div style="font-size:12px;font-weight:600;color:var(--slds-n1);">CapturePlus DSLR Camera</div>
+                      <div style="font-size:11px;color:var(--slds-n5);">Color: Black</div>
+                      <div style="font-size:11px;color:var(--slds-n5);">Qty: 1 &nbsp;·&nbsp; ₹980.99</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shipping Contact -->
+            <div class="slds-card">
+              <div class="slds-card__header">
+                <span class="slds-card__header-title">Delivery Recipient</span>
+              </div>
+              <div class="slds-card__body">
+                <div style="font-size:15px;font-weight:700;color:var(--slds-n1);margin-bottom:4px;">Vikram Malhotra</div>
+                <div style="font-size:13px;color:var(--slds-n4);margin-bottom:2px;">+91 91234 56789</div>
+                <div style="font-size:12px;color:var(--slds-n5);">vikram.m@nexuscorp.in</div>
+                <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--slds-n8);">
+                  <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Notification Groups</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                    <span class="slds-badge slds-badge-info" style="font-size:10px;">Sales Contact</span>
+                    <span class="slds-badge slds-badge-neutral" style="font-size:10px;">Warehouse CC</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documentation -->
+            <div class="slds-card">
+              <div class="slds-card__header">
+                <span class="slds-card__header-title">Documentation</span>
+                <div class="slds-card__header-action">
+                  <button class="slds-btn slds-btn-neutral slds-btn-sm">Upload</button>
+                </div>
+              </div>
+              <div class="slds-card__body--no-pad">
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--slds-n8);cursor:pointer;" onmouseover="this.style.background='#EEF4FF'" onmouseout="this.style.background=''">
+                  <svg fill="none" stroke="var(--slds-error)" viewBox="0 0 24 24" style="width:20px;height:20px;flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:12px;font-weight:600;color:var(--slds-n1);">PurchaseOrder.pdf</div>
+                    <div style="font-size:11px;color:var(--slds-n5);">1.2 MB · Mar 10</div>
+                  </div>
+                  <button class="slds-btn slds-btn-icon" style="flex-shrink:0;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  </button>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;" onmouseover="this.style.background='#EEF4FF'" onmouseout="this.style.background=''">
+                  <svg fill="none" stroke="var(--slds-brand)" viewBox="0 0 24 24" style="width:20px;height:20px;flex-shrink:0;"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:12px;font-weight:600;color:var(--slds-n1);">ItemPhoto_Label.jpg</div>
+                    <div style="font-size:11px;color:var(--slds-n5);">0.8 MB · Mar 10</div>
+                  </div>
+                  <button class="slds-btn slds-btn-icon" style="flex-shrink:0;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED TAB -->
+      <div class="slds-tab-pane" data-pane="pane-related">
+        <div style="padding:0;display:flex;flex-direction:column;gap:16px;">
+
+          <div class="slds-card">
+            <div class="slds-card__header">
+              <span class="slds-card__header-title">Related Returns (1)</span>
+              <div class="slds-card__header-action">
+                <a href="return-order-create.html" class="slds-btn slds-btn-neutral slds-btn-sm">New Return</a>
+              </div>
+            </div>
+            <div class="slds-card__body--no-pad">
+              <table class="slds-table">
+                <thead><tr><th>Return ID</th><th>Date</th><th>Items</th><th>Amount</th><th>Reason</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><a href="return-order-detail.html" class="slds-text-link">RET-2024-0021</a></td>
+                    <td style="color:var(--slds-n4);">Mar 10, 2024</td>
+                    <td>2</td>
+                    <td>₹599.98</td>
+                    <td>Damaged</td>
+                    <td><span class="slds-badge slds-badge-info">Received</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="slds-card">
+            <div class="slds-card__header">
+              <span class="slds-card__header-title">Notes & Attachments (2)</span>
+              <div class="slds-card__header-action">
+                <button class="slds-btn slds-btn-neutral slds-btn-sm">Add Note</button>
+              </div>
+            </div>
+            <div class="slds-card__body--no-pad">
+              <div class="slds-timeline-item">
+                <div class="slds-timeline-dot slds-dot-brand" style="margin-top:4px;"></div>
+                <div style="flex:1;">
+                  <div style="font-size:12px;font-weight:700;color:var(--slds-n1);">Delivery Instructions</div>
+                  <div style="font-size:12px;color:var(--slds-n4);margin-top:2px;">"Deliver after 2 PM. Call recipient before reaching the main gate. Fragile items."</div>
+                  <div style="font-size:11px;color:var(--slds-n5);margin-top:4px;">Demo User · Mar 10, 2024</div>
+                </div>
+              </div>
+              <div class="slds-timeline-item">
+                <div class="slds-timeline-dot slds-dot-neutral" style="margin-top:4px;"></div>
+                <div style="flex:1;">
+                  <div style="font-size:12px;font-weight:700;color:var(--slds-n1);">Priority escalation noted</div>
+                  <div style="font-size:12px;color:var(--slds-n4);margin-top:2px;">Customer flagged as VIP. Ensure expedited processing.</div>
+                  <div style="font-size:11px;color:var(--slds-n5);margin-top:4px;">Demo User · Mar 09, 2024</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DETAILS TAB -->
+      <div class="slds-tab-pane" data-pane="pane-details">
+        <div class="slds-card">
+          <div class="slds-section-header" style="border-top:none;">Order Specification</div>
+          <div class="slds-detail-grid">
+            <div class="slds-detail-field"><div class="slds-detail-label">Order ID</div><div class="slds-detail-value" style="font-weight:700;color:var(--slds-brand);">ORD-FWD-6672</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Order Type</div><div class="slds-detail-value">Standard Delivery</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Priority</div><div class="slds-detail-value"><span class="slds-badge slds-badge-error">High</span></div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Reason</div><div class="slds-detail-value">New Sale (Direct)</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Order Date</div><div class="slds-detail-value">Mar 10, 2024</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Pickup Date</div><div class="slds-detail-value">Mar 12, 10:00 AM</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Expected Delivery</div><div class="slds-detail-value">Mar 15, 2024</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Warehouse</div><div class="slds-detail-value">WH-MUM-01</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Sales Channel</div><div class="slds-detail-value">Online Order</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Channel Type</div><div class="slds-detail-value">Direct B2B</div></div>
+          </div>
+
+          <div class="slds-section-header">Customer Information</div>
+          <div class="slds-detail-grid">
+            <div class="slds-detail-field"><div class="slds-detail-label">Account Name</div><div class="slds-detail-value link">Nexus Corp</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Contact Person</div><div class="slds-detail-value">Vikram Malhotra</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Phone</div><div class="slds-detail-value">+91 91234 56789</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Email</div><div class="slds-detail-value link">vikram.m@nexuscorp.in</div></div>
+          </div>
+
+          <div class="slds-section-header">Billing & Shipping</div>
+          <div class="slds-detail-grid">
+            <div class="slds-detail-field"><div class="slds-detail-label">Billing Address</div><div class="slds-detail-value">12, Bandra West, Mumbai – 400050</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Shipping Address</div><div class="slds-detail-value">12, Bandra West, Mumbai – 400050</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">GST Number</div><div class="slds-detail-value">27AACFN2234F1ZJ</div></div>
+            <div class="slds-detail-field"><div class="slds-detail-label">Payment Terms</div><div class="slds-detail-value">30 Days Net</div></div>
+          </div>
+
+          <div style="padding:16px 24px;border-top:1px solid var(--slds-n7);">
+            <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Additional Instructions</div>
+            <div style="font-size:13px;color:var(--slds-n3);line-height:1.6;background:var(--slds-n10);padding:12px;border-radius:4px;border:1px solid var(--slds-n7);font-style:italic;">
+              "Deliver after 2 PM. Call recipient before reaching the main gate. Fragile items included, ensure upright position during transport."
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+
+  <script src="js/app.js"></script>
+  <script>initPage('forward-order', 'ORD-FWD-6672', 'ORD-FWD-6672', 'order');</script>
+</body>
+</html>

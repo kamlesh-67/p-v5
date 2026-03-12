@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Return Detail — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+    <div class="slds-breadcrumb">
+      <a href="dashboard.html">Home</a><span class="slds-breadcrumb__sep">›</span>
+      <a href="return-order-list.html">Return Orders</a><span class="slds-breadcrumb__sep">›</span>
+      <span class="slds-breadcrumb__current">RET-10428</span>
+    </div>
+
+    <div class="slds-record-header-card">
+      <div class="slds-record-header-inner">
+        <div class="slds-record-header-top">
+          <div class="slds-icon-std ic-return">
+            <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="slds-record-subtitle">Return Order · Damaged / Defective</div>
+            <div class="slds-record-title">RET-10428 · Nexus Corp</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="slds-btn slds-btn-neutral" onclick="showToast('Refund processed','success')">Process Refund</button>
+            <button class="slds-btn slds-btn-neutral" onclick="showToast('Label generated','info')">Print Label</button>
+            <button class="slds-btn slds-btn-brand">Edit</button>
+          </div>
+        </div>
+      </div>
+      <div class="slds-record-metadata">
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Customer</span><span class="slds-record-metadata-value link">Nexus Corp</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Linked Order</span><span class="slds-record-metadata-value link">ORD-FWD-6672</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Date Initiated</span><span class="slds-record-metadata-value">Dec 18, 2024</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Return Reason</span><span class="slds-record-metadata-value">Damaged in Transit</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Status</span><span class="slds-badge slds-badge-info">In-Transit</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Refund Amount</span><span class="slds-record-metadata-value" style="color:var(--slds-success);font-weight:700;">₹1,299.00</span></div>
+      </div>
+
+      <div class="slds-path" style="padding:0 24px;">
+        <div class="slds-path-step done">Initiated</div>
+        <div class="slds-path-step done">Approved</div>
+        <div class="slds-path-step active">In-Transit</div>
+        <div class="slds-path-step">Received</div>
+        <div class="slds-path-step">Inspecting</div>
+        <div class="slds-path-step won">Refunded</div>
+      </div>
+
+      <div class="slds-tabs-bar">
+        <div class="slds-tab-item active" data-tab="summary">Summary</div>
+        <div class="slds-tab-item" data-tab="related">Related</div>
+        <div class="slds-tab-item" data-tab="details">Details</div>
+      </div>
+    </div>
+
+    <div id="tab-summary" class="slds-tab-content active" style="padding:16px 24px;">
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <div class="slds-card">
+            <div class="slds-card__header"><div class="slds-card__header-title">Returned Items (2)</div></div>
+            <table class="slds-table">
+              <thead>
+                <tr><th>SKU</th><th>Product</th><th>Qty Returned</th><th>Condition</th><th>Refund Value</th><th>Disposition</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="item-master-detail.html" class="slds-text-link">SKU-3001</a></td>
+                  <td style="font-weight:500;">NoiseCancelling Headphones</td>
+                  <td>1</td>
+                  <td><span class="slds-badge slds-badge-error">Damaged</span></td>
+                  <td style="color:var(--slds-success);">₹1,299.00</td>
+                  <td><span class="slds-badge slds-badge-warning">Pending</span></td>
+                </tr>
+                <tr>
+                  <td><a href="item-master-detail.html" class="slds-text-link">SKU-3002</a></td>
+                  <td style="font-weight:500;">SmartWatch Charger</td>
+                  <td>1</td>
+                  <td><span class="slds-badge slds-badge-neutral">Unopened</span></td>
+                  <td style="color:var(--slds-success);">₹299.00</td>
+                  <td><span class="slds-badge slds-badge-success">Restock</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Quality Check -->
+          <div class="slds-card">
+            <div class="slds-card__header"><div class="slds-card__header-title">Quality Inspection</div></div>
+            <div class="slds-card__body">
+              <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:12px;font-size:13px;color:var(--slds-n4);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-weight:700;color:var(--slds-n3);">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  Pending Warehouse Inspection
+                </div>
+                Returned package is in transit. Quality check will begin upon arrival at WH-MUM-01. Estimated arrival: Dec 22, 2024.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pickup Timeline -->
+          <div class="slds-card">
+            <div class="slds-card__header"><div class="slds-card__header-title">Return Pickup Timeline</div></div>
+            <div class="slds-card__body">
+              <div style="position:relative;padding-left:24px;">
+                <div style="position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--slds-brand) 50%,var(--slds-n7) 50%);"></div>
+                <div style="margin-bottom:16px;position:relative;">
+                  <div style="position:absolute;left:-24px;width:16px;height:16px;border-radius:50%;background:var(--slds-brand);border:3px solid var(--slds-brand-light);"></div>
+                  <div style="font-size:12px;font-weight:700;">Return Initiated</div>
+                  <div style="font-size:11px;color:var(--slds-n4);">Dec 18, 2024 · 11:22 AM by Arjun Mehta</div>
+                </div>
+                <div style="margin-bottom:16px;position:relative;">
+                  <div style="position:absolute;left:-24px;width:16px;height:16px;border-radius:50%;background:var(--slds-brand);border:3px solid var(--slds-brand-light);"></div>
+                  <div style="font-size:12px;font-weight:700;">Pickup Scheduled</div>
+                  <div style="font-size:11px;color:var(--slds-n4);">Dec 19, 2024 · Delhivery · AWB# 7741889900</div>
+                </div>
+                <div style="position:relative;">
+                  <div style="position:absolute;left:-24px;width:16px;height:16px;border-radius:50%;background:var(--slds-n7);border:3px solid var(--slds-n9);"></div>
+                  <div style="font-size:12px;font-weight:700;color:var(--slds-n5);">Warehouse Receipt</div>
+                  <div style="font-size:11px;color:var(--slds-n5);">Expected Dec 22, 2024</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Refund Summary</div>
+            <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--slds-n4);">Items Value</span><span>₹1,598.00</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--slds-n4);">Restocking Fee</span><span style="color:var(--slds-error);">-₹99.00</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--slds-n4);">GST Reversal</span><span style="color:var(--slds-success);">+₹200.00</span>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--slds-n7);">
+              <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;">
+                <span>Total Refund</span><span style="color:var(--slds-success);">₹1,699.00</span>
+              </div>
+              <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="showToast('Refund initiated!','success')">Process Refund</button>
+              <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="showToast('Store credit issued','info')">Issue Store Credit</button>
+            </div>
+          </div>
+
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Customer</div>
+            <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">NAME</div><span class="slds-text-link">Nexus Corp</span></div>
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">CONTACT</div>Arjun Mehta</div>
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">EMAIL</div><span class="slds-text-link">arjun@nexuscorp.in</span></div>
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">PHONE</div>+91 98100 11223</div>
+            </div>
+          </div>
+
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Carrier Info</div>
+            <div class="slds-highlight-panel__body" style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+              <div style="color:var(--slds-n4);">Delhivery</div>
+              <div>AWB: <a href="#" class="slds-text-link">7741889900</a></div>
+              <a href="#" class="slds-btn slds-btn-neutral slds-btn-sm" style="width:100%;text-align:center;" onclick="showToast('Tracking page opened','info');return false;">Track Return</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-related" class="slds-tab-content" style="padding:16px 24px;">
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">Linked Forward Order</div></div>
+        <table class="slds-table">
+          <thead><tr><th>Order ID</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="forward-order-detail.html" class="slds-text-link">ORD-FWD-6672</a></td>
+              <td style="color:var(--slds-n4);">Dec 10, 2024</td>
+              <td>₹5,985.95</td>
+              <td><span class="slds-badge slds-badge-info">Processing</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-details" class="slds-tab-content" style="padding:16px 24px;">
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">Return Details</div></div>
+        <div class="slds-detail-grid">
+          <div class="slds-detail-field"><span class="slds-detail-label">Return ID</span><span class="slds-detail-value">RET-10428</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Status</span><span class="slds-detail-value"><span class="slds-badge slds-badge-info">In-Transit</span></span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Linked Order</span><span class="slds-detail-value"><a href="forward-order-detail.html" class="slds-text-link">ORD-FWD-6672</a></span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Return Date</span><span class="slds-detail-value">Dec 18, 2024</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Reason</span><span class="slds-detail-value">Damaged / Defective</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Return Type</span><span class="slds-detail-value">Refund</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Items Count</span><span class="slds-detail-value">2</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Total Units</span><span class="slds-detail-value">2</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Refund Amount</span><span class="slds-detail-value" style="color:var(--slds-success);font-weight:700;">₹1,699.00</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Warehouse</span><span class="slds-detail-value">WH-MUM-01</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Created By</span><span class="slds-detail-value">Priya Nair</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Customer Notes</span><span class="slds-detail-value">Headphones received with cracked casing and no audio in left ear.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+  <script src="js/app.js"></script>
+  <script>
+    initPage('return-order', 'RET-10428', 'RET-10428', 'return');
+    initTabs();
+  </script>
+</body>
+</html>

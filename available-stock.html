@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Stock — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+
+    <div class="slds-list-header">
+      <div class="slds-list-header__icon-title">
+        <div class="slds-icon-std ic-stock">
+          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6m-6-4h6m-6-4h6"/></svg>
+        </div>
+        <div>
+          <div class="slds-list-title">Available Stock</div>
+          <div class="slds-list-subtitle">Real-time Inventory · 4 Warehouses</div>
+        </div>
+      </div>
+      <div class="slds-list-actions">
+        <button class="slds-btn slds-btn-neutral" onclick="exportData()">Export Report</button>
+        <button class="slds-btn slds-btn-neutral" onclick="showToast('Stock adjustment panel','info')">Adjust Stock</button>
+        <button class="slds-btn slds-btn-brand" onclick="showToast('Stock transfer initiated','success')">Transfer Stock</button>
+      </div>
+    </div>
+
+    <!-- Warehouse KPI Cards -->
+    <div style="padding:16px 24px;background:white;border-bottom:1px solid var(--slds-n7);">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('MUM-01')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-MUM-01</div>
+              <div style="font-size:12px;color:var(--slds-n4);">Mumbai, Maharashtra</div>
+            </div>
+            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
+          </div>
+          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">512</div>
+          <div style="margin-top:6px;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-n1);">78%</span></div>
+            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:78%;background:var(--slds-warning-accent);border-radius:2px;"></div></div>
+          </div>
+        </div>
+
+        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('DEL-02')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-DEL-02</div>
+              <div style="font-size:12px;color:var(--slds-n4);">New Delhi, DL</div>
+            </div>
+            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
+          </div>
+          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">341</div>
+          <div style="margin-top:6px;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-success);">45%</span></div>
+            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:45%;background:var(--slds-success);border-radius:2px;"></div></div>
+          </div>
+        </div>
+
+        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('BLR-01')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-BLR-01</div>
+              <div style="font-size:12px;color:var(--slds-n4);">Bengaluru, Karnataka</div>
+            </div>
+            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
+          </div>
+          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">289</div>
+          <div style="margin-top:6px;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-error);">91%</span></div>
+            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:91%;background:var(--slds-error);border-radius:2px;"></div></div>
+          </div>
+        </div>
+
+        <div style="background:var(--slds-n10);border:1px solid var(--slds-n7);border-radius:4px;padding:14px;cursor:pointer;" onclick="filterWH('HYD-01')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--slds-n4);text-transform:uppercase;letter-spacing:0.06em;">WH-HYD-01</div>
+              <div style="font-size:12px;color:var(--slds-n4);">Hyderabad, Telangana</div>
+            </div>
+            <div class="slds-icon-std ic-stock" style="width:28px;height:28px;border-radius:5px;"><svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m3-4h6"/></svg></div>
+          </div>
+          <div style="font-size:22px;font-weight:700;color:var(--slds-n1);">62</div>
+          <div style="margin-top:6px;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slds-n4);margin-bottom:3px;"><span>Utilization</span><span style="font-weight:700;color:var(--slds-n1);">52%</span></div>
+            <div style="height:4px;background:var(--slds-n7);border-radius:2px;"><div style="height:100%;width:52%;background:var(--slds-brand);border-radius:2px;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slds-filter-bar">
+      <div class="slds-search-wrap">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" class="slds-search" id="stock-search" placeholder="Search SKU, product name...">
+      </div>
+      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;" id="wh-filter">
+        <option value="">All Warehouses</option>
+        <option>WH-MUM-01</option><option>WH-DEL-02</option>
+        <option>WH-BLR-01</option><option>WH-HYD-01</option>
+      </select>
+      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;" id="stock-status">
+        <option value="">All Stock Levels</option>
+        <option value="ok">In Stock</option>
+        <option value="low">Low Stock</option>
+        <option value="out">Out of Stock</option>
+        <option value="damaged">Has Damaged</option>
+      </select>
+      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;">
+        <option>All Categories</option>
+        <option>Electronics</option><option>Wearables</option>
+        <option>Audio</option><option>Accessories</option>
+      </select>
+    </div>
+
+    <div class="slds-card" style="margin:16px 24px;">
+      <table class="slds-table">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Warehouse</th>
+            <th style="text-align:right;">On Hand</th>
+            <th style="text-align:right;">Reserved</th>
+            <th style="text-align:right;">Available</th>
+            <th style="text-align:right;">Damaged</th>
+            <th style="text-align:right;">Reorder Lvl</th>
+            <th>Status</th>
+            <th style="text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="stock-tbody"></tbody>
+      </table>
+      <div style="padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);font-size:12px;color:var(--slds-n4);">
+        Showing 1–12 of 48 entries across all warehouses
+      </div>
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+  <script src="js/app.js"></script>
+  <script>
+    initPage('stock', 'Available Stock');
+
+    const warehouses = ['WH-MUM-01', 'WH-DEL-02', 'WH-BLR-01', 'WH-HYD-01'];
+    const stockRows = PH_PRODUCTS.slice(0,12).map(p => {
+      const onHand = Math.floor(Math.random()*200+20);
+      const reserved = Math.floor(onHand * 0.15);
+      const avail = onHand - reserved;
+      const damaged = Math.floor(Math.random() * 5);
+      const reorder = 20;
+      const wh = warehouses[Math.floor(Math.random()*4)];
+      return { ...p, onHand, reserved, avail, damaged, reorder, wh };
+    });
+
+    function renderStockTable(rows) {
+      const stockStatus = r => r.avail === 0 ? ['slds-badge-error','Out of Stock'] : r.avail < r.reorder ? ['slds-badge-warning','Low Stock'] : ['slds-badge-success','In Stock'];
+      document.getElementById('stock-tbody').innerHTML = rows.map(r => {
+        const [sc, sl] = stockStatus(r);
+        return `<tr>
+          <td><a href="item-master-detail.html" class="slds-text-link" style="font-weight:600;">${r.sku||'SKU-'+r.id}</a></td>
+          <td style="font-weight:500;max-width:180px;" class="slds-truncate">${r.name}</td>
+          <td style="color:var(--slds-n4);">${r.category}</td>
+          <td style="color:var(--slds-n4);">${r.wh}</td>
+          <td style="text-align:right;font-weight:600;">${r.onHand}</td>
+          <td style="text-align:right;color:var(--slds-warning);">${r.reserved}</td>
+          <td style="text-align:right;font-weight:700;color:${r.avail < r.reorder ? 'var(--slds-error)':'var(--slds-success)'};">${r.avail}</td>
+          <td style="text-align:right;color:${r.damaged>0?'var(--slds-error)':'var(--slds-n4)'};">${r.damaged||'—'}</td>
+          <td style="text-align:right;color:var(--slds-n4);">${r.reorder}</td>
+          <td><span class="slds-badge ${sc}">${sl}</span></td>
+          <td style="text-align:right;">
+            <div style="display:flex;gap:6px;justify-content:flex-end;">
+              <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('Adjusting ${r.sku||r.id}','info')">Adjust</button>
+              <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('Transfer initiated','success')">Transfer</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+    renderStockTable(stockRows);
+
+    function filterWH(code) {
+      document.getElementById('wh-filter').value = 'WH-' + code;
+      renderStockTable(stockRows.filter(r => r.wh === 'WH-' + code));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Item — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+    <div class="slds-breadcrumb">
+      <a href="dashboard.html">Home</a><span class="slds-breadcrumb__sep">›</span>
+      <a href="item-master-list.html">Item Master</a><span class="slds-breadcrumb__sep">›</span>
+      <span class="slds-breadcrumb__current">New Item</span>
+    </div>
+
+    <div class="slds-record-header-card">
+      <div class="slds-record-header-inner">
+        <div class="slds-record-header-top">
+          <div class="slds-icon-std ic-product">
+            <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="slds-record-subtitle">Item Master</div>
+            <div class="slds-record-title">Add New Item / SKU</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <a href="item-master-list.html" class="slds-btn slds-btn-neutral">Cancel</a>
+            <button class="slds-btn slds-btn-neutral" onclick="saveItem('draft')">Save Draft</button>
+            <button class="slds-btn slds-btn-brand" onclick="saveItem()">Save &amp; Activate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:24px;display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1200px;">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- Basic Info -->
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Basic Information</div></div>
+          <div class="slds-card__body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="slds-form-element" style="grid-column:span 2;">
+                <label class="slds-form-element__label">Item / Product Name <span style="color:var(--slds-error);">*</span></label>
+                <input type="text" class="slds-input" id="item-name" placeholder="e.g. UltraBook Pro 15-inch Laptop">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">SKU Code <span style="color:var(--slds-error);">*</span></label>
+                <input type="text" class="slds-input" id="sku" placeholder="e.g. SKU-3001">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Barcode / EAN</label>
+                <input type="text" class="slds-input" id="barcode" placeholder="e.g. 4902224757048">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Category <span style="color:var(--slds-error);">*</span></label>
+                <select class="slds-select" id="category">
+                  <option value="">— Select Category —</option>
+                  <option>Electronics</option><option>Accessories</option>
+                  <option>Wearables</option><option>Audio</option>
+                  <option>Computing</option><option>Photography</option><option>Other</option>
+                </select>
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Brand</label>
+                <input type="text" class="slds-input" id="brand" placeholder="e.g. TechPro">
+              </div>
+              <div class="slds-form-element" style="grid-column:span 2;">
+                <label class="slds-form-element__label">Description</label>
+                <textarea class="slds-textarea" id="description" rows="3" placeholder="Product description visible to customers..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing & Tax -->
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Pricing &amp; Tax</div></div>
+          <div class="slds-card__body">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">MRP (₹) <span style="color:var(--slds-error);">*</span></label>
+                <input type="number" class="slds-input" id="mrp" placeholder="0.00" min="0" step="0.01">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Cost Price (₹)</label>
+                <input type="number" class="slds-input" id="cost" placeholder="0.00" min="0" step="0.01">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Selling Price (₹)</label>
+                <input type="number" class="slds-input" id="sell-price" placeholder="0.00" min="0" step="0.01">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">HSN Code</label>
+                <input type="text" class="slds-input" id="hsn" placeholder="e.g. 8471">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">GST Rate (%)</label>
+                <select class="slds-select" id="gst">
+                  <option value="">— Select —</option>
+                  <option>0</option><option>5</option>
+                  <option>12</option><option>18</option><option>28</option>
+                </select>
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Discount (%)</label>
+                <input type="number" class="slds-input" id="discount" placeholder="0" min="0" max="100">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Physical Attributes -->
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Physical Attributes</div></div>
+          <div class="slds-card__body">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Weight (kg)</label>
+                <input type="number" class="slds-input" id="weight" placeholder="0.00" step="0.01">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Length (cm)</label>
+                <input type="number" class="slds-input" id="length" placeholder="0.0">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Breadth (cm)</label>
+                <input type="number" class="slds-input" id="breadth" placeholder="0.0">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Height (cm)</label>
+                <input type="number" class="slds-input" id="height-cm" placeholder="0.0">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Storage Type</label>
+                <select class="slds-select" id="storage-type">
+                  <option>Ambient</option><option>Cold Chain</option>
+                  <option>Hazmat</option><option>Fragile</option>
+                </select>
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Units per Carton</label>
+                <input type="number" class="slds-input" id="units-carton" placeholder="1">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventory -->
+        <div class="slds-card">
+          <div class="slds-card__header"><div class="slds-card__header-title">Inventory Settings</div></div>
+          <div class="slds-card__body">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Opening Stock</label>
+                <input type="number" class="slds-input" id="opening-stock" placeholder="0">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Reorder Level</label>
+                <input type="number" class="slds-input" id="reorder-level" placeholder="10">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Max Stock Level</label>
+                <input type="number" class="slds-input" id="max-stock" placeholder="500">
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Warehouse</label>
+                <select class="slds-select" id="inv-warehouse">
+                  <option value="">— All —</option>
+                  <option>WH-MUM-01</option><option>WH-DEL-02</option>
+                  <option>WH-BLR-01</option><option>WH-HYD-01</option>
+                </select>
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Batch Tracking</label>
+                <select class="slds-select" id="batch-tracking">
+                  <option>Not Required</option>
+                  <option>By Batch/Lot</option>
+                  <option>By Serial Number</option>
+                </select>
+              </div>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label">Expiry Tracking</label>
+                <select class="slds-select">
+                  <option>No Expiry</option>
+                  <option>Track Expiry Date</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+
+        <div class="slds-highlight-panel">
+          <div class="slds-highlight-panel__header">Item Preview</div>
+          <div class="slds-highlight-panel__body" style="text-align:center;">
+            <div id="preview-img-wrap" style="width:100%;height:160px;background:var(--slds-n9);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:40px;height:40px;color:var(--slds-n6);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <button class="slds-btn slds-btn-neutral" style="width:100%;margin-bottom:8px;" onclick="document.getElementById('img-upload').click()">Upload Image</button>
+            <input type="file" id="img-upload" style="display:none;" accept="image/*" onchange="previewImage(event)">
+            <div style="font-size:11px;color:var(--slds-n5);">JPG, PNG, WEBP · Max 5MB</div>
+          </div>
+        </div>
+
+        <div class="slds-highlight-panel">
+          <div class="slds-highlight-panel__header">Quick Summary</div>
+          <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--slds-n4);">Status</span>
+              <span class="slds-badge slds-badge-warning">Draft</span>
+            </div>
+            <hr style="border:none;border-top:1px solid var(--slds-n7);">
+            <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="saveItem()">Save &amp; Activate</button>
+            <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="saveItem('draft')">Save as Draft</button>
+          </div>
+        </div>
+
+        <div class="slds-highlight-panel">
+          <div class="slds-highlight-panel__header">Compliance</div>
+          <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:10px;">
+            <div class="slds-form-element" style="margin-bottom:0;">
+              <label class="slds-form-element__label">Country of Origin</label>
+              <select class="slds-select">
+                <option>India</option><option>China</option><option>USA</option><option>Germany</option><option>Japan</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:13px;">
+              <input type="checkbox" id="hazmat" class="slds-checkbox">
+              <label for="hazmat">Contains Hazardous Materials</label>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:13px;">
+              <input type="checkbox" id="fragile" class="slds-checkbox">
+              <label for="fragile">Fragile / Handle with Care</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+  <script src="js/app.js"></script>
+  <script>
+    initPage('item-master', 'New Item', 'New Item', 'product');
+
+    function saveItem(mode) {
+      const name = document.getElementById('item-name').value.trim();
+      const sku = document.getElementById('sku').value.trim();
+      if (!name || !sku) { showToast('Item name and SKU are required.', 'error', 'Validation Error'); return; }
+      showToast(mode === 'draft' ? `Draft saved for "${name}"` : `"${name}" (${sku}) activated successfully!`, 'success', 'Success');
+      setTimeout(() => { window.location.href = 'item-master-list.html'; }, 1500);
+    }
+
+    function previewImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById('preview-img-wrap').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>

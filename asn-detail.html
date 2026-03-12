@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASN Detail — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+    <div class="slds-breadcrumb">
+      <a href="dashboard.html">Home</a>
+      <span class="slds-breadcrumb__sep">›</span>
+      <a href="asn-list.html">ASN</a>
+      <span class="slds-breadcrumb__sep">›</span>
+      <span class="slds-breadcrumb__current">ASN-20241</span>
+    </div>
+
+    <!-- Record Header -->
+    <div class="slds-record-header-card">
+      <div class="slds-record-header-inner">
+        <div class="slds-record-header-top">
+          <div class="slds-icon-std ic-asn">
+            <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="slds-record-subtitle">ASN · Advance Shipment Notice</div>
+            <div class="slds-record-title">ASN-20241 · GlobalTech Supplies</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="slds-btn slds-btn-neutral" onclick="showToast('Mark as Received','success')">Mark Received</button>
+            <button class="slds-btn slds-btn-neutral" onclick="showToast('Flagging discrepancy…','warning')">Flag Discrepancy</button>
+            <button class="slds-btn slds-btn-brand">Edit</button>
+            <button class="slds-btn slds-btn-icon" onclick="showToast('Deleted','error')" title="Delete">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="slds-record-metadata">
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Supplier</span><span class="slds-record-metadata-value link">GlobalTech Supplies</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">PO Reference</span><span class="slds-record-metadata-value link">PO-2024-4521</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Expected Date</span><span class="slds-record-metadata-value">Dec 28, 2024</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Warehouse</span><span class="slds-record-metadata-value">WH-MUM-01</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Status</span><span class="slds-badge slds-badge-info">In-Transit</span></div>
+        <div class="slds-record-metadata-item"><span class="slds-record-metadata-label">Carrier</span><span class="slds-record-metadata-value">FedEx Express</span></div>
+      </div>
+
+      <!-- SLDS Path -->
+      <div class="slds-path" style="padding:0 24px;">
+        <div class="slds-path-step done">Created</div>
+        <div class="slds-path-step done">Confirmed</div>
+        <div class="slds-path-step active">In-Transit</div>
+        <div class="slds-path-step">Arrived</div>
+        <div class="slds-path-step">Receiving</div>
+        <div class="slds-path-step">Received</div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="slds-tabs-bar">
+        <div class="slds-tab-item active" data-tab="summary">Summary</div>
+        <div class="slds-tab-item" data-tab="related">Related</div>
+        <div class="slds-tab-item" data-tab="details">Details</div>
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="tab-summary" class="slds-tab-content active" style="padding:16px 24px;">
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Items Expected -->
+          <div class="slds-card">
+            <div class="slds-card__header">
+              <div class="slds-card__header-title">Items Expected (4)</div>
+              <div class="slds-card__header-action">
+                <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('Exported items list','info')">Export</button>
+              </div>
+            </div>
+            <table class="slds-table">
+              <thead>
+                <tr>
+                  <th>SKU</th><th>Product</th><th>Qty Expected</th><th>Qty Received</th><th>Variance</th><th>Batch</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="item-master-detail.html" class="slds-text-link">SKU-3001</a></td>
+                  <td style="font-weight:500;">UltraBook Pro 15"</td>
+                  <td>50</td><td>50</td>
+                  <td><span style="color:var(--slds-success);font-weight:700;">+0</span></td>
+                  <td>LOT-A</td>
+                  <td><span class="slds-badge slds-badge-success">OK</span></td>
+                </tr>
+                <tr>
+                  <td><a href="item-master-detail.html" class="slds-text-link">SKU-3002</a></td>
+                  <td style="font-weight:500;">NoiseCancelling Headphones</td>
+                  <td>100</td><td>98</td>
+                  <td><span style="color:var(--slds-error);font-weight:700;">-2</span></td>
+                  <td>LOT-A</td>
+                  <td><span class="slds-badge slds-badge-error">Short</span></td>
+                </tr>
+                <tr>
+                  <td><a href="item-master-detail.html" class="slds-text-link">SKU-3003</a></td>
+                  <td style="font-weight:500;">SmartWatch Series X</td>
+                  <td>75</td><td>—</td>
+                  <td>—</td>
+                  <td>LOT-B</td>
+                  <td><span class="slds-badge slds-badge-warning">Pending</span></td>
+                </tr>
+                <tr>
+                  <td><a href="item-master-detail.html" class="slds-text-link">SKU-3004</a></td>
+                  <td style="font-weight:500;">Mirrorless Camera Kit</td>
+                  <td>25</td><td>—</td>
+                  <td>—</td>
+                  <td>LOT-B</td>
+                  <td><span class="slds-badge slds-badge-warning">Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Tracking Timeline -->
+          <div class="slds-card">
+            <div class="slds-card__header"><div class="slds-card__header-title">Shipment Tracking</div></div>
+            <div class="slds-card__body">
+              <div style="position:relative;padding-left:24px;">
+                <div style="position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--slds-brand) 66%,var(--slds-n7) 66%);"></div>
+                <div class="slds-tracking-event completed" style="margin-bottom:16px;">
+                  <div style="position:absolute;left:0;width:16px;height:16px;border-radius:50%;background:var(--slds-brand);border:3px solid var(--slds-brand-light);top:0;"></div>
+                  <div style="font-size:12px;font-weight:700;">In-Transit</div>
+                  <div style="font-size:11px;color:var(--slds-n4);">Dec 24, 2024 · 09:32 AM — FedEx Hub, Mumbai</div>
+                </div>
+                <div class="slds-tracking-event completed" style="margin-bottom:16px;">
+                  <div style="position:absolute;left:0;width:16px;height:16px;border-radius:50%;background:var(--slds-brand);border:3px solid var(--slds-brand-light);top:0;"></div>
+                  <div style="font-size:12px;font-weight:700;">Departed Origin</div>
+                  <div style="font-size:11px;color:var(--slds-n4);">Dec 23, 2024 · 06:00 PM — GlobalTech Warehouse, Delhi</div>
+                </div>
+                <div class="slds-tracking-event" style="margin-bottom:16px;">
+                  <div style="position:absolute;left:0;width:16px;height:16px;border-radius:50%;background:var(--slds-n7);border:3px solid var(--slds-n9);top:0;"></div>
+                  <div style="font-size:12px;font-weight:700;color:var(--slds-n5);">Out for Delivery</div>
+                  <div style="font-size:11px;color:var(--slds-n5);">Expected Dec 27, 2024</div>
+                </div>
+                <div class="slds-tracking-event" style="margin-bottom:0;">
+                  <div style="position:absolute;left:0;width:16px;height:16px;border-radius:50%;background:var(--slds-n7);border:3px solid var(--slds-n9);top:0;"></div>
+                  <div style="font-size:12px;font-weight:700;color:var(--slds-n5);">Delivered to Warehouse</div>
+                  <div style="font-size:11px;color:var(--slds-n5);">Expected Dec 28, 2024</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div style="display:flex;flex-direction:column;gap:12px;">
+
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">ASN Totals</div>
+            <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--slds-n4);">Total Line Items</span><span style="font-weight:700;">4</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--slds-n4);">Units Expected</span><span style="font-weight:700;">250</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--slds-n4);">Units Received</span><span style="font-weight:700;color:var(--slds-success);">148</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--slds-n4);">Variance</span><span style="font-weight:700;color:var(--slds-error);">-2</span>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--slds-n7);">
+              <button class="slds-btn slds-btn-brand" style="width:100%;" onclick="showToast('Receiving started','info')">Start Receiving</button>
+              <button class="slds-btn slds-btn-neutral" style="width:100%;" onclick="showToast('Printed GRN','success')">Print GRN</button>
+            </div>
+          </div>
+
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Supplier Info</div>
+            <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">COMPANY</div><span class="slds-text-link">GlobalTech Supplies Pvt Ltd</span></div>
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">CONTACT</div>Ramesh Verma</div>
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">EMAIL</div><span class="slds-text-link">r.verma@globaltech.in</span></div>
+              <div><div style="color:var(--slds-n4);font-size:11px;font-weight:700;margin-bottom:2px;">PHONE</div>+91 98765 43210</div>
+            </div>
+          </div>
+
+          <div class="slds-highlight-panel">
+            <div class="slds-highlight-panel__header">Documents</div>
+            <div class="slds-highlight-panel__body" style="display:flex;flex-direction:column;gap:8px;">
+              <a class="slds-doc-link" href="#" onclick="showToast('Downloading invoice...','info');return false;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span style="color:var(--slds-brand);font-size:12px;">Invoice_ASN20241.pdf</span>
+              </a>
+              <a class="slds-doc-link" href="#" onclick="showToast('Downloading packing list...','info');return false;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span style="color:var(--slds-brand);font-size:12px;">PackingList_ASN20241.pdf</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-related" class="slds-tab-content" style="padding:16px 24px;">
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">Related Purchase Orders (1)</div></div>
+        <table class="slds-table">
+          <thead><tr><th>PO Reference</th><th>Created</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="#" class="slds-text-link">PO-2024-4521</a></td>
+              <td style="color:var(--slds-n4);">Dec 10, 2024</td>
+              <td>₹1,24,750.00</td>
+              <td><span class="slds-badge slds-badge-info">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-details" class="slds-tab-content" style="padding:16px 24px;">
+      <div class="slds-card">
+        <div class="slds-card__header"><div class="slds-card__header-title">ASN Details</div></div>
+        <div class="slds-detail-grid">
+          <div class="slds-detail-field"><span class="slds-detail-label">ASN ID</span><span class="slds-detail-value">ASN-20241</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Status</span><span class="slds-detail-value"><span class="slds-badge slds-badge-info">In-Transit</span></span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Supplier</span><span class="slds-detail-value">GlobalTech Supplies</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">PO Reference</span><span class="slds-detail-value">PO-2024-4521</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Carrier</span><span class="slds-detail-value">FedEx Express</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Tracking #</span><span class="slds-detail-value"><a href="#" class="slds-text-link">7441-3522-9900</a></span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Expected Date</span><span class="slds-detail-value">Dec 28, 2024</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Target Warehouse</span><span class="slds-detail-value">WH-MUM-01 · Mumbai</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Created By</span><span class="slds-detail-value">Priya Nair</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Created On</span><span class="slds-detail-value">Dec 22, 2024</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Last Modified</span><span class="slds-detail-value">Dec 24, 2024</span></div>
+          <div class="slds-detail-field"><span class="slds-detail-label">Notes</span><span class="slds-detail-value">Priority receiving required for UltraBook Pro units.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+  <script src="js/app.js"></script>
+  <script>
+    initPage('asn', 'ASN-20241', 'ASN-20241', 'asn');
+    initTabs();
+  </script>
+</body>
+</html>

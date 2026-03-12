@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Master — PartnerHub</title>
+  <link rel="stylesheet" href="css/slds.css">
+</head>
+<body>
+  <div id="slds-global-header-container"></div>
+  <div id="slds-app-nav-container"></div>
+  <div id="slds-workspace-tabs-container"></div>
+
+  <div class="slds-body">
+
+    <div class="slds-list-header">
+      <div class="slds-list-header__icon-title">
+        <div class="slds-icon-std ic-product">
+          <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        </div>
+        <div>
+          <div class="slds-list-title">Item Master</div>
+          <div class="slds-list-subtitle">12 records · Active Items</div>
+        </div>
+      </div>
+      <div class="slds-list-actions">
+        <button class="slds-btn slds-btn-neutral" onclick="exportData()">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Export
+        </button>
+        <button class="slds-btn slds-btn-neutral" onclick="showToast('Import ready','info')">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12"/></svg>
+          Import
+        </button>
+        <a href="item-master-create.html" class="slds-btn slds-btn-brand">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          New Item
+        </a>
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
+      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="slds-kpi-label">Total SKUs</div>
+        <div class="slds-kpi-value" style="font-size:20px;">248</div>
+      </div>
+      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="slds-kpi-label">Active</div>
+        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">231</div>
+      </div>
+      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="slds-kpi-label">Inactive</div>
+        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-n4);">17</div>
+      </div>
+      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="slds-kpi-label">Low Stock</div>
+        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">8</div>
+      </div>
+      <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="slds-kpi-label">Out of Stock</div>
+        <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-error);">3</div>
+      </div>
+    </div>
+
+    <!-- View toggle: Grid / List -->
+    <div class="slds-filter-bar">
+      <div class="slds-search-wrap">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" class="slds-search" id="item-search" placeholder="Search by SKU, name, category...">
+      </div>
+      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;" id="item-category">
+        <option value="">All Categories</option>
+        <option>Electronics</option><option>Accessories</option>
+        <option>Wearables</option><option>Audio</option><option>Computing</option>
+      </select>
+      <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;" id="item-status">
+        <option value="">All Status</option>
+        <option>Active</option><option>Inactive</option><option>Discontinued</option>
+      </select>
+      <div style="margin-left:auto;display:flex;gap:4px;">
+        <button class="slds-btn slds-btn-neutral slds-btn-sm" id="view-grid" onclick="setView('grid')" style="padding:0 10px;">
+          <svg fill="currentColor" viewBox="0 0 20 20" style="width:14px;height:14px;"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        </button>
+        <button class="slds-btn slds-btn-neutral slds-btn-sm" id="view-list" onclick="setView('list')" style="padding:0 10px;background:var(--slds-brand);color:white;border-color:var(--slds-brand);">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- List View (default) -->
+    <div id="list-view" style="margin:16px 24px;">
+      <div class="slds-card">
+        <table class="slds-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="slds-checkbox" onchange="toggleAll(this)"></th>
+              <th style="width:56px;">Image</th>
+              <th onclick="sortItems(2)" style="cursor:pointer;">SKU ↕</th>
+              <th onclick="sortItems(3)" style="cursor:pointer;">Item Name ↕</th>
+              <th>Category</th>
+              <th onclick="sortItems(5)" style="cursor:pointer;">MRP ↕</th>
+              <th>Weight</th>
+              <th>HSN</th>
+              <th>GST</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="item-tbody"></tbody>
+        </table>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+          <span style="font-size:12px;color:var(--slds-n4);">Showing 1–12 of 248 records</span>
+          <div style="display:flex;gap:4px;">
+            <button class="slds-btn slds-btn-neutral slds-btn-sm" disabled>‹</button>
+            <button class="slds-btn slds-btn-neutral slds-btn-sm" style="background:var(--slds-brand);color:white;border-color:var(--slds-brand);">1</button>
+            <button class="slds-btn slds-btn-neutral slds-btn-sm">2</button>
+            <button class="slds-btn slds-btn-neutral slds-btn-sm">3</button>
+            <button class="slds-btn slds-btn-neutral slds-btn-sm">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid View (hidden by default) -->
+    <div id="grid-view" style="display:none;padding:16px 24px;">
+      <div id="item-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;"></div>
+    </div>
+  </div>
+
+  <div id="slds-toast-zone" class="slds-toast-zone"></div>
+  <script src="js/app.js"></script>
+  <script>
+    initPage('item-master', 'Item Master');
+
+    const stockStatus = s => s > 50 ? 'slds-badge-success' : s > 10 ? 'slds-badge-warning' : 'slds-badge-error';
+    const stockLabel = s => s > 50 ? 'In Stock' : s > 10 ? 'Low Stock' : 'Out of Stock';
+
+    document.getElementById('item-tbody').innerHTML = PH_PRODUCTS.map(p => `
+      <tr>
+        <td><input type="checkbox" class="slds-checkbox"></td>
+        <td><img src="${p.image}" alt="${p.name}" style="width:36px;height:36px;object-fit:cover;border-radius:4px;border:1px solid var(--slds-n7);"></td>
+        <td><a href="item-master-detail.html?id=${p.id}" class="slds-text-link" style="font-weight:600;">${p.sku||'SKU-'+p.id}</a></td>
+        <td style="font-weight:500;max-width:200px;" class="slds-truncate">${p.name}</td>
+        <td style="color:var(--slds-n4);">${p.category}</td>
+        <td style="font-weight:600;">₹${(p.price||0).toLocaleString('en-IN')}</td>
+        <td style="color:var(--slds-n4);">${p.weight||'—'}</td>
+        <td style="color:var(--slds-n4);">${p.hsn||'8471'}</td>
+        <td style="color:var(--slds-n4);">${p.gst||18}%</td>
+        <td><span class="slds-badge ${stockStatus(p.stock||60)}">${stockLabel(p.stock||60)}</span></td>
+        <td><span class="slds-badge slds-badge-success">Active</span></td>
+        <td style="text-align:right;">
+          <div style="display:flex;gap:6px;justify-content:flex-end;">
+            <a href="item-master-detail.html?id=${p.id}" class="slds-btn slds-btn-neutral slds-btn-sm">View</a>
+            <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('${p.name} deactivated','warning')">Deactivate</button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('item-grid').innerHTML = PH_PRODUCTS.map(p => `
+      <div class="slds-card" style="cursor:pointer;" onclick="window.location='item-master-detail.html?id=${p.id}'">
+        <img src="${p.image}" alt="${p.name}" style="width:100%;height:140px;object-fit:cover;">
+        <div style="padding:12px;">
+          <div style="font-size:11px;color:var(--slds-n4);font-weight:600;margin-bottom:2px;">${p.sku||'SKU-'+p.id}</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:14px;font-weight:700;color:var(--slds-brand);">₹${(p.price||0).toLocaleString('en-IN')}</span>
+            <span class="slds-badge ${stockStatus(p.stock||60)}" style="font-size:10px;">${stockLabel(p.stock||60)}</span>
+          </div>
+        </div>
+      </div>`).join('');
+
+    function setView(v) {
+      document.getElementById('list-view').style.display = v === 'list' ? 'block' : 'none';
+      document.getElementById('grid-view').style.display = v === 'grid' ? 'block' : 'none';
+      document.getElementById('view-list').style.background = v === 'list' ? 'var(--slds-brand)' : '';
+      document.getElementById('view-list').style.color = v === 'list' ? 'white' : '';
+      document.getElementById('view-list').style.borderColor = v === 'list' ? 'var(--slds-brand)' : '';
+      document.getElementById('view-grid').style.background = v === 'grid' ? 'var(--slds-brand)' : '';
+      document.getElementById('view-grid').style.color = v === 'grid' ? 'white' : '';
+      document.getElementById('view-grid').style.borderColor = v === 'grid' ? 'var(--slds-brand)' : '';
+    }
+
+    function toggleAll(cb) {
+      document.querySelectorAll('#item-tbody input[type=checkbox]').forEach(c => c.checked = cb.checked);
+    }
+  </script>
+</body>
+</html>
