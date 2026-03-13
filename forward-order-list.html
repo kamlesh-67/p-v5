@@ -77,25 +77,24 @@
         </div>
 
         <!-- KPI Row -->
-        <div
-            style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
-            <div class="slds-kpi-card" style="flex:1;min-width:130px;padding:12px;">
+        <div class="ph-kpi-strip">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Total</div>
                 <div class="slds-kpi-value" style="font-size:22px;">284</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:130px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Processing</div>
                 <div class="slds-kpi-value" style="font-size:22px;color:var(--slds-info);">42</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:130px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Shipped</div>
                 <div class="slds-kpi-value" style="font-size:22px;color:var(--slds-purple-text);">67</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:130px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Delivered</div>
                 <div class="slds-kpi-value" style="font-size:22px;color:var(--slds-success);">158</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:130px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Cancelled</div>
                 <div class="slds-kpi-value" style="font-size:22px;color:var(--slds-error);">17</div>
             </div>
@@ -112,7 +111,7 @@
                     oninput="filterOrders(this.value)">
             </div>
 
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;"
+            <select class="slds-select"
                 onchange="filterByStatus(this.value)">
                 <option value="">All Statuses</option>
                 <option value="Processing">Processing</option>
@@ -122,7 +121,7 @@
                 <option value="Cancelled">Cancelled</option>
             </select>
 
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;"
+            <select class="slds-select"
                 onchange="filterByPriority(this.value)">
                 <option value="">All Priorities</option>
                 <option value="High">High</option>

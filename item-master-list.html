@@ -53,25 +53,24 @@
         </div>
 
         <!-- KPI Row -->
-        <div
-            style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="ph-kpi-strip">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Total SKUs</div>
                 <div class="slds-kpi-value" style="font-size:20px;">248</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Active</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">231</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Inactive</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-n4);">17</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Low Stock</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">8</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Out of Stock</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-error);">3</div>
             </div>
@@ -86,7 +85,7 @@
                 </svg>
                 <input type="text" class="slds-search" id="item-search" placeholder="Search by SKU, name, category...">
             </div>
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;"
+            <select class="slds-select"
                 id="item-category">
                 <option value="">All Categories</option>
                 <option>Electronics</option>
@@ -95,7 +94,7 @@
                 <option>Audio</option>
                 <option>Computing</option>
             </select>
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:120px;"
+            <select class="slds-select"
                 id="item-status">
                 <option value="">All Status</option>
                 <option>Active</option>
@@ -123,24 +122,26 @@
         <!-- List View (default) -->
         <div id="list-view" style="margin:16px 24px;">
             <div class="slds-card">
-                <table class="slds-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" class="slds-checkbox" onchange="toggleAll(this)"></th>
-                            <th style="width:56px;">Image</th>
-                            <th onclick="sortItems(2)" style="cursor:pointer;">SKU ↕</th>
-                            <th onclick="sortItems(3)" style="cursor:pointer;">Item Name ↕</th>
-                            <th>Category</th>
-                            <th>Weight</th>
-                            <th>HSN</th>
-                            <th>GST</th>
-                            <th>Stock</th>
-                            <th>Status</th>
-                            <th style="text-align:right;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="item-tbody"></tbody>
-                </table>
+                <div class="slds-table-wrap">
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" class="slds-checkbox" onchange="toggleAll(this)"></th>
+                                <th style="width:56px;">Image</th>
+                                <th onclick="sortItems(2)" style="cursor:pointer;">SKU ↕</th>
+                                <th onclick="sortItems(3)" style="cursor:pointer;">Item Name ↕</th>
+                                <th>Category</th>
+                                <th>Weight</th>
+                                <th>HSN</th>
+                                <th>GST</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="item-tbody"></tbody>
+                    </table>
+                </div><!-- /slds-table-wrap -->
                 <div
                     style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
                     <span style="font-size:12px;color:var(--slds-n4);">Showing 1–12 of 248 records</span>
@@ -158,8 +159,7 @@
 
         <!-- Grid View (hidden by default) -->
         <div id="grid-view" style="display:none;padding:16px 24px;">
-            <div id="item-grid"
-                style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;"></div>
+            <div id="item-grid" class="ph-autofill-200"></div>
         </div>
     </div>
 

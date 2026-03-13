@@ -86,7 +86,7 @@
 
         <!-- Tab Content -->
         <div id="tab-summary" class="slds-tab-content active" style="padding:16px 24px;">
-            <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;">
+            <div class="ph-aside-grid-sm">
                 <div style="display:flex;flex-direction:column;gap:16px;">
 
                     <!-- Items Expected -->
@@ -98,57 +98,59 @@
                                     onclick="showToast('Exported items list','info')">Export</button>
                             </div>
                         </div>
-                        <table class="slds-table">
-                            <thead>
-                                <tr>
-                                    <th>SKU</th>
-                                    <th>Product</th>
-                                    <th>Qty Expected</th>
-                                    <th>Qty Received</th>
-                                    <th>Variance</th>
-                                    <th>Batch</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="item-master-detail.html" class="slds-text-link">SKU-3001</a></td>
-                                    <td style="font-weight:500;">UltraBook Pro 15"</td>
-                                    <td>50</td>
-                                    <td>50</td>
-                                    <td><span style="color:var(--slds-success);font-weight:700;">+0</span></td>
-                                    <td>LOT-A</td>
-                                    <td><span class="slds-badge slds-badge-success">OK</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="item-master-detail.html" class="slds-text-link">SKU-3002</a></td>
-                                    <td style="font-weight:500;">NoiseCancelling Headphones</td>
-                                    <td>100</td>
-                                    <td>98</td>
-                                    <td><span style="color:var(--slds-error);font-weight:700;">-2</span></td>
-                                    <td>LOT-A</td>
-                                    <td><span class="slds-badge slds-badge-error">Short</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="item-master-detail.html" class="slds-text-link">SKU-3003</a></td>
-                                    <td style="font-weight:500;">SmartWatch Series X</td>
-                                    <td>75</td>
-                                    <td>—</td>
-                                    <td>—</td>
-                                    <td>LOT-B</td>
-                                    <td><span class="slds-badge slds-badge-warning">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="item-master-detail.html" class="slds-text-link">SKU-3004</a></td>
-                                    <td style="font-weight:500;">Mirrorless Camera Kit</td>
-                                    <td>25</td>
-                                    <td>—</td>
-                                    <td>—</td>
-                                    <td>LOT-B</td>
-                                    <td><span class="slds-badge slds-badge-warning">Pending</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="slds-table-wrap">
+                            <table class="slds-table">
+                                <thead>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <th>Product</th>
+                                        <th>Qty Expected</th>
+                                        <th>Qty Received</th>
+                                        <th>Variance</th>
+                                        <th>Batch</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="item-master-detail.html" class="slds-text-link">SKU-3001</a></td>
+                                        <td style="font-weight:500;">UltraBook Pro 15"</td>
+                                        <td>50</td>
+                                        <td>50</td>
+                                        <td><span style="color:var(--slds-success);font-weight:700;">+0</span></td>
+                                        <td>LOT-A</td>
+                                        <td><span class="slds-badge slds-badge-success">OK</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="item-master-detail.html" class="slds-text-link">SKU-3002</a></td>
+                                        <td style="font-weight:500;">NoiseCancelling Headphones</td>
+                                        <td>100</td>
+                                        <td>98</td>
+                                        <td><span style="color:var(--slds-error);font-weight:700;">-2</span></td>
+                                        <td>LOT-A</td>
+                                        <td><span class="slds-badge slds-badge-error">Short</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="item-master-detail.html" class="slds-text-link">SKU-3003</a></td>
+                                        <td style="font-weight:500;">SmartWatch Series X</td>
+                                        <td>75</td>
+                                        <td>—</td>
+                                        <td>—</td>
+                                        <td>LOT-B</td>
+                                        <td><span class="slds-badge slds-badge-warning">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="item-master-detail.html" class="slds-text-link">SKU-3004</a></td>
+                                        <td style="font-weight:500;">Mirrorless Camera Kit</td>
+                                        <td>25</td>
+                                        <td>—</td>
+                                        <td>—</td>
+                                        <td>LOT-B</td>
+                                        <td><span class="slds-badge slds-badge-warning">Pending</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- /slds-table-wrap -->
                     </div>
 
                     <!-- Tracking Timeline -->
@@ -283,22 +285,24 @@
                 <div class="slds-card__header">
                     <div class="slds-card__header-title">Related Purchase Orders (1)</div>
                 </div>
-                <table class="slds-table">
-                    <thead>
-                        <tr>
-                            <th>PO Reference</th>
-                            <th>Created</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><a href="#" class="slds-text-link">PO-2024-4521</a></td>
-                            <td style="color:var(--slds-n4);">Dec 10, 2024</td>
-                            <td><span class="slds-badge slds-badge-info">Open</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="slds-table-wrap">
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th>PO Reference</th>
+                                <th>Created</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="slds-text-link">PO-2024-4521</a></td>
+                                <td style="color:var(--slds-n4);">Dec 10, 2024</td>
+                                <td><span class="slds-badge slds-badge-info">Open</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /slds-table-wrap -->
             </div>
         </div>
 

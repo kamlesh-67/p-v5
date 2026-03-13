@@ -323,6 +323,130 @@ a:hover {
 }
 
 /* ============================================================
+   HEADER DROPDOWNS
+   ============================================================ */
+.slds-hdr-btn-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.slds-hdr-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: white;
+    border: 1px solid var(--slds-n7);
+    border-radius: 6px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .18);
+    z-index: 9200;
+    min-width: 220px;
+    animation: hdrDropIn .1s ease;
+    overflow: hidden;
+}
+
+@keyframes hdrDropIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slds-hdr-dropdown__header {
+    padding: 10px 16px 8px;
+    border-bottom: 1px solid var(--slds-n8);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--slds-n5);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slds-hdr-dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px;
+    font-size: 13px;
+    color: var(--slds-n1);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .1s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.slds-hdr-dropdown__item:hover {
+    background: #F3F3F3;
+    text-decoration: none;
+    color: var(--slds-n1);
+}
+
+.slds-hdr-dropdown__item svg {
+    width: 15px;
+    height: 15px;
+    color: var(--slds-n5);
+    flex-shrink: 0;
+}
+
+.slds-hdr-dropdown__footer {
+    padding: 9px 16px;
+    border-top: 1px solid var(--slds-n8);
+    font-size: 12px;
+    color: var(--slds-brand);
+    cursor: pointer;
+    text-align: center;
+    transition: background .1s;
+}
+
+.slds-hdr-dropdown__footer:hover {
+    background: #F3F3F3;
+}
+
+.slds-notif-item {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--slds-n8);
+    cursor: pointer;
+    transition: background .1s;
+}
+
+.slds-notif-item:hover {
+    background: #F8FAFF;
+}
+
+.slds-notif-item:last-of-type {
+    border-bottom: none;
+}
+
+.slds-notif-item__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--slds-n1);
+    margin-bottom: 2px;
+}
+
+.slds-notif-item__meta {
+    font-size: 11px;
+    color: var(--slds-n5);
+}
+
+.slds-notif-unread {
+    border-left: 3px solid var(--slds-brand);
+    padding-left: 13px;
+}
+
+/* ============================================================
    APP NAVIGATION BAR  — brand blue  #0176D3
    ============================================================ */
 .slds-app-nav {
@@ -566,6 +690,11 @@ a:hover {
     flex-wrap: wrap;
 }
 
+.slds-filter-bar .slds-select {
+    width: auto;
+    min-width: 120px;
+}
+
 .slds-search-wrap {
     position: relative;
     min-width: 200px;
@@ -669,11 +798,15 @@ a:hover {
    DATA TABLE
    ============================================================ */
 .slds-table-wrap {
+    display: block;
+    width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .slds-table {
     width: 100%;
+    min-width: 560px;
     border-collapse: collapse;
     font-size: 13px;
     table-layout: auto;
@@ -690,8 +823,12 @@ a:hover {
     letter-spacing: .06em;
     border-bottom: 1px solid var(--slds-n7);
     white-space: nowrap;
-    cursor: pointer;
+    cursor: default;
     user-select: none;
+}
+
+.slds-table th[onclick] {
+    cursor: pointer;
 }
 
 .slds-table th:first-child {
@@ -1035,6 +1172,7 @@ a:hover {
     padding: 10px 16px;
     border-bottom: 1px solid var(--slds-n7);
     background: white;
+    flex-wrap: wrap;
 }
 
 .slds-card__header-title {
@@ -1928,52 +2066,139 @@ a:hover {
 }
 
 /* ============================================================
-   RESPONSIVE
+   MOBILE NAV DRAWER
    ============================================================ */
-@media (max-width: 768px) {
-    :root {
-        --total-hdr: 88px;
-        --an: 0px;
-    }
-
-    .slds-app-nav {
-        display: none;
-    }
-
-    .slds-header-search {
-        display: none;
-    }
-
-    .slds-workspace-tabs {
-        top: calc(var(--gh));
-    }
-
-    .slds-detail-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .slds-record-metadata {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .slds-list-title {
-        font-size: 15px;
-    }
+.slds-mobile-menu-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 4px;
+    color: rgba(255, 255, 255, .85);
+    flex-shrink: 0;
+    transition: background .15s;
 }
 
-@media (max-width: 480px) {
-    .slds-kpi-grid {
-        grid-template-columns: 1fr 1fr;
-    }
+.slds-mobile-menu-btn:hover {
+    background: rgba(255, 255, 255, .12);
+    color: white;
+}
 
-    .slds-record-metadata {
-        flex-direction: column;
-    }
+.slds-mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    z-index: 9100;
+}
 
-    .slds-detail-grid {
-        grid-template-columns: 1fr;
-    }
+.slds-mobile-nav-overlay.open {
+    display: block;
+}
+
+.slds-mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: white;
+    z-index: 9200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform .25s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, .2);
+}
+
+.slds-mobile-nav-drawer.open {
+    transform: translateX(0);
+}
+
+.slds-mobile-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--slds-brand-darker);
+    flex-shrink: 0;
+}
+
+.slds-mobile-nav-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+}
+
+.slds-mobile-nav-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, .8);
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 22px;
+    line-height: 1;
+    transition: background .15s;
+}
+
+.slds-mobile-nav-close:hover {
+    background: rgba(255, 255, 255, .12);
+    color: white;
+}
+
+.slds-mobile-nav-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+
+.slds-mobile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 20px;
+    text-decoration: none;
+    color: var(--slds-n2);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background .1s;
+    border-left: 3px solid transparent;
+}
+
+.slds-mobile-nav-item:hover {
+    background: var(--slds-brand-light);
+    color: var(--slds-brand);
+    text-decoration: none;
+}
+
+.slds-mobile-nav-item.active {
+    background: var(--slds-brand-light);
+    color: var(--slds-brand);
+    border-left-color: var(--slds-brand);
+    font-weight: 700;
+}
+
+.slds-mobile-nav-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.slds-mobile-nav-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--slds-n7);
+    font-size: 12px;
+    color: var(--slds-n5);
+    text-align: center;
 }
 
 /* ============================================================
@@ -2024,6 +2249,234 @@ a:hover {
 
     .slds-grid-3 {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* -- Mobile (768px and below) -- */
+@media (max-width: 768px) {
+    :root {
+        --total-hdr: 88px;
+        --an: 0px;
+    }
+
+    /* Show hamburger; hide desktop-only header elements */
+    .slds-mobile-menu-btn {
+        display: flex;
+    }
+
+    .slds-app-launcher-btn {
+        display: none;
+    }
+
+    .slds-brand-name {
+        display: none;
+    }
+
+    .slds-header-divider {
+        display: none;
+    }
+
+    .slds-header-search {
+        display: none;
+    }
+
+    .slds-util-hide-mobile {
+        display: none !important;
+    }
+
+    /* App nav bar replaced by drawer */
+    .slds-app-nav {
+        display: none;
+    }
+
+    /* Workspace tabs shift up since no app nav */
+    .slds-workspace-tabs {
+        top: var(--gh);
+    }
+
+    /* Content padding */
+    .slds-content-lg {
+        padding: 12px 16px;
+    }
+
+    .slds-content {
+        padding: 10px 16px;
+    }
+
+    /* List / page header */
+    .slds-list-header {
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .slds-list-actions {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .slds-list-title {
+        font-size: 15px;
+    }
+
+    .slds-list-subtitle {
+        font-size: 11px;
+    }
+
+    /* Filter bar */
+    .slds-filter-bar {
+        padding: 8px 16px;
+        gap: 6px;
+    }
+
+    .slds-search-wrap {
+        min-width: unset;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Record header */
+    .slds-record-header-inner {
+        padding: 12px 16px 0;
+    }
+
+    .slds-record-top {
+        flex-wrap: wrap;
+    }
+
+    .slds-record-actions {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .slds-record-name,
+    .slds-record-title {
+        font-size: 16px;
+    }
+
+    /* Metadata */
+    .slds-record-metadata {
+        flex-direction: column;
+        gap: 4px;
+        padding: 4px 16px;
+    }
+
+    .slds-record-metadata-item {
+        padding: 6px 0;
+        min-width: unset;
+    }
+
+    /* Tabs & path */
+    .slds-record-tabs,
+    .slds-tabs-bar {
+        padding: 0 16px;
+        overflow-x: auto;
+    }
+
+    .slds-path-wrap,
+    .slds-path {
+        padding: 8px 16px;
+    }
+
+    /* Detail grid: 2 col -> stays 2, phone will turn 1 */
+    .slds-detail-grid {
+        grid-template-columns: 1fr 1fr;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    /* Section & breadcrumb */
+    .slds-section-header {
+        padding: 8px 16px;
+    }
+
+    .slds-breadcrumb {
+        padding: 6px 16px;
+    }
+
+    .slds-table th:first-child,
+    .slds-table td:first-child {
+        padding-left: 16px;
+    }
+
+    /* Cards */
+    .slds-card__body {
+        padding: 12px;
+    }
+
+    .slds-card {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* KPI grid */
+    .slds-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* Content grids */
+    .slds-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .slds-grid-3 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Content pads that use padding:16px 24px inline */
+    .slds-content-full {
+        padding: 0;
+    }
+
+    /* Tab panels inside record pages */
+    .slds-tab-content {
+        padding: 12px 16px !important;
+    }
+
+    /* Modals: bottom sheet style */
+    .slds-backdrop {
+        padding: 8px;
+        align-items: flex-end;
+    }
+
+    .slds-modal {
+        max-height: 92vh;
+        border-radius: 8px 8px 0 0;
+    }
+
+    /* Header dropdowns: adjust right offset */
+    .slds-hdr-dropdown {
+        right: -8px;
+    }
+}
+
+/* -- Small phone (480px and below) -- */
+@media (max-width: 480px) {
+    .slds-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .slds-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .slds-record-metadata {
+        flex-direction: column;
+    }
+
+    .slds-grid-2,
+    .slds-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .slds-hdr-dropdown {
+        min-width: calc(100vw - 16px);
+        right: -8px;
     }
 }
 
@@ -2292,4 +2745,231 @@ a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+/* ============================================================
+   RESPONSIVE GRID UTILITY CLASSES
+   ============================================================ */
+.ph-aside-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+}
+
+.ph-aside-grid-sm {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 16px;
+}
+
+.ph-form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.ph-form-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+.ph-analytics-2-1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+}
+
+.ph-analytics-1-2 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+}
+
+.ph-settings-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+    padding: 16px 24px;
+}
+
+.ph-kpi-6col {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+}
+
+.ph-kpi-5col {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+.ph-kpi-4col {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 1024px) {
+    .ph-kpi-6col {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+
+    .ph-aside-grid,
+    .ph-aside-grid-sm {
+        grid-template-columns: 1fr;
+    }
+
+    .ph-analytics-2-1,
+    .ph-analytics-1-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .ph-settings-grid {
+        grid-template-columns: 1fr;
+        padding: 12px 16px;
+    }
+
+    .ph-kpi-4col {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ph-kpi-5col {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 680px) {
+
+    .ph-form-grid-2,
+    .ph-form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .ph-kpi-6col {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ph-kpi-5col {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .ph-kpi-6col,
+    .ph-kpi-5col,
+    .ph-kpi-4col {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Auto-fill responsive grids */
+.ph-autofill-240 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+}
+
+.ph-autofill-200 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.ph-autofill-300 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+}
+
+/* User card meta row */
+.ph-user-card-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 12px;
+    border-top: 1px solid var(--slds-n7);
+    padding-top: 10px;
+}
+
+/* ============================================================
+   MOBILE KPI MINI STRIP (inline flex rows in list pages)
+   ============================================================ */
+.ph-kpi-strip {
+    padding: 12px 24px;
+    background: white;
+    border-bottom: 1px solid var(--slds-n7);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ph-kpi-strip-card {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px;
+}
+
+/* ============================================================
+   FILTER BAR SELECTS — FULL WIDTH ON MOBILE
+   ============================================================ */
+@media (max-width: 768px) {
+    .slds-filter-bar .slds-select {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .ph-kpi-strip {
+        padding: 10px 16px;
+        gap: 8px;
+    }
+
+    .ph-kpi-strip-card {
+        min-width: calc(50% - 4px);
+        flex: 0 0 calc(50% - 4px);
+        padding: 10px;
+    }
+
+    /* Card margin on mobile */
+    .slds-card[style*="margin:16px 24px"] {
+        margin: 12px 16px !important;
+    }
+
+    /* Detail page right indent */
+    .slds-record-header-inner {
+        padding: 12px 16px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .ph-kpi-strip-card {
+        min-width: calc(50% - 4px);
+        flex: 0 0 calc(50% - 4px);
+    }
+}
+
+/* ============================================================
+   AUTO-FILL GRIDS — NARROWER FALLBACK
+   ============================================================ */
+@media (max-width: 480px) {
+    .ph-autofill-240 {
+        grid-template-columns: 1fr;
+    }
+
+    .ph-autofill-200 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ph-autofill-300 {
+        grid-template-columns: 1fr;
+    }
+
+    .ph-user-card-meta {
+        grid-template-columns: 1fr 1fr;
+    }
 }

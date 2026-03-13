@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div style="padding:16px 24px;display:grid;grid-template-columns:220px 1fr;gap:16px;">
+        <div class="ph-settings-grid">
 
             <!-- Settings Nav (left sidebar navigation) -->
             <div class="slds-card"
@@ -103,7 +103,7 @@
                             <div class="slds-card__header-title">General Settings</div>
                         </div>
                         <div class="slds-card__body">
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div class="ph-form-grid-2">
                                 <div class="slds-form-element">
                                     <label class="slds-form-element__label">Application Name</label>
                                     <input type="text" class="slds-input" value="PartnerHub WMS">
@@ -157,7 +157,7 @@
                             <div class="slds-card__header-title">Order Settings</div>
                         </div>
                         <div class="slds-card__body">
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div class="ph-form-grid-2">
                                 <div class="slds-form-element">
                                     <label class="slds-form-element__label">Order ID Prefix</label>
                                     <input type="text" class="slds-input" value="ORD-FWD-">
@@ -210,72 +210,74 @@
                             <div class="slds-card__header-title">Notification Preferences</div>
                         </div>
                         <div class="slds-card__body">
-                            <table class="slds-table">
-                                <thead>
-                                    <tr>
-                                        <th>Event</th>
-                                        <th style="text-align:center;">Email</th>
-                                        <th style="text-align:center;">In-App</th>
-                                        <th style="text-align:center;">SMS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>New Order Received</td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Order Dispatched</td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Return Initiated</td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Low Stock Alert</td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ASN Received</td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Payment Received</td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                        <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
-                                                checked></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="slds-table-wrap">
+                                <table class="slds-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Event</th>
+                                            <th style="text-align:center;">Email</th>
+                                            <th style="text-align:center;">In-App</th>
+                                            <th style="text-align:center;">SMS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>New Order Received</td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Dispatched</td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Return Initiated</td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Low Stock Alert</td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>ASN Received</td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Payment Received</td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                            <td style="text-align:center;"><input type="checkbox" class="slds-checkbox"
+                                                    checked></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- /slds-table-wrap -->
                         </div>
                     </div>
                 </div>

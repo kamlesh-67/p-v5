@@ -72,40 +72,42 @@
         </div>
 
         <div id="tab-summary" class="slds-tab-content active" style="padding:16px 24px;">
-            <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;">
+            <div class="ph-aside-grid-sm">
                 <div style="display:flex;flex-direction:column;gap:16px;">
 
                     <div class="slds-card">
                         <div class="slds-card__header">
                             <div class="slds-card__header-title">Returned Items (2)</div>
                         </div>
-                        <table class="slds-table">
-                            <thead>
-                                <tr>
-                                    <th>SKU</th>
-                                    <th>Product</th>
-                                    <th>Qty Returned</th>
-                                    <th>Condition</th>
-                                    <th>Disposition</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="item-master-detail.html" class="slds-text-link">SKU-3001</a></td>
-                                    <td style="font-weight:500;">NoiseCancelling Headphones</td>
-                                    <td>1</td>
-                                    <td><span class="slds-badge slds-badge-error">Damaged</span></td>
-                                    <td><span class="slds-badge slds-badge-warning">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="item-master-detail.html" class="slds-text-link">SKU-3002</a></td>
-                                    <td style="font-weight:500;">SmartWatch Charger</td>
-                                    <td>1</td>
-                                    <td><span class="slds-badge slds-badge-neutral">Unopened</span></td>
-                                    <td><span class="slds-badge slds-badge-success">Restock</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="slds-table-wrap">
+                            <table class="slds-table">
+                                <thead>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <th>Product</th>
+                                        <th>Qty Returned</th>
+                                        <th>Condition</th>
+                                        <th>Disposition</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="item-master-detail.html" class="slds-text-link">SKU-3001</a></td>
+                                        <td style="font-weight:500;">NoiseCancelling Headphones</td>
+                                        <td>1</td>
+                                        <td><span class="slds-badge slds-badge-error">Damaged</span></td>
+                                        <td><span class="slds-badge slds-badge-warning">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="item-master-detail.html" class="slds-text-link">SKU-3002</a></td>
+                                        <td style="font-weight:500;">SmartWatch Charger</td>
+                                        <td>1</td>
+                                        <td><span class="slds-badge slds-badge-neutral">Unopened</span></td>
+                                        <td><span class="slds-badge slds-badge-success">Restock</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- /slds-table-wrap -->
                     </div>
 
                     <!-- Quality Check -->
@@ -215,22 +217,24 @@
                 <div class="slds-card__header">
                     <div class="slds-card__header-title">Linked Forward Order</div>
                 </div>
-                <table class="slds-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><a href="forward-order-detail.html" class="slds-text-link">ORD-FWD-6672</a></td>
-                            <td style="color:var(--slds-n4);">Dec 10, 2024</td>
-                            <td><span class="slds-badge slds-badge-info">Processing</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="slds-table-wrap">
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="forward-order-detail.html" class="slds-text-link">ORD-FWD-6672</a></td>
+                                <td style="color:var(--slds-n4);">Dec 10, 2024</td>
+                                <td><span class="slds-badge slds-badge-info">Processing</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /slds-table-wrap -->
             </div>
         </div>
 

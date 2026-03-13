@@ -46,25 +46,24 @@
         </div>
 
         <!-- KPI Row -->
-        <div
-            style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="ph-kpi-strip">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Total ASNs</div>
                 <div class="slds-kpi-value" style="font-size:20px;">41</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Pending</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">3</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">In-Transit</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">5</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Received</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">31</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Discrepancy</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-error);">2</div>
             </div>
@@ -78,14 +77,14 @@
                 </svg>
                 <input type="text" class="slds-search" placeholder="Search ASN by ID, supplier...">
             </div>
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;">
+            <select class="slds-select">
                 <option value="">All Statuses</option>
                 <option>Pending</option>
                 <option>In-Transit</option>
                 <option>Received</option>
                 <option>Discrepancy</option>
             </select>
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
+            <select class="slds-select">
                 <option value="">All Warehouses</option>
                 <option>WH-MUM-01</option>
                 <option>WH-DEL-02</option>

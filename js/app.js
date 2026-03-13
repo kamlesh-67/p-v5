@@ -149,12 +149,79 @@ function formatCurrency(n) {
 }
 
 // ----------------------------------------------------------------
+//  HEADER DROPDOWNS
+// ----------------------------------------------------------------
+function closeAllHeaderDropdowns() {
+    document.querySelectorAll('.slds-hdr-dropdown').forEach(d => d.style.display = 'none');
+}
+
+function toggleHeaderDropdown(id, e) {
+    if (e) e.stopPropagation();
+    const dd = document.getElementById(id);
+    if (!dd) return;
+    const isOpen = dd.style.display !== 'none';
+    closeAllHeaderDropdowns();
+    if (!isOpen) dd.style.display = 'block';
+}
+
+document.addEventListener('click', function () {
+    closeAllHeaderDropdowns();
+});
+
+// ----------------------------------------------------------------
+//  MOBILE NAV
+// ----------------------------------------------------------------
+function getMobileNavDrawerHTML(activePage) {
+    const items = PH_NAV.map(n => `
+    <a href="${n.href}" class="slds-mobile-nav-item${activePage === n.id ? ' active' : ''}" onclick="closeMobileNav()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[n.icon] || ''}</svg>
+      ${n.label}
+    </a>`).join('');
+    return `
+    <div id="slds-mobile-nav-overlay" class="slds-mobile-nav-overlay" onclick="closeMobileNav()"></div>
+    <div id="slds-mobile-nav-drawer" class="slds-mobile-nav-drawer">
+      <div class="slds-mobile-nav-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="slds-brand-logo" style="width:28px;height:28px;font-size:10px;">PH</div>
+          <span class="slds-mobile-nav-title">PartnerHub WMS</span>
+        </div>
+        <button class="slds-mobile-nav-close" onclick="closeMobileNav()">&#215;</button>
+      </div>
+      <div class="slds-mobile-nav-items">${items}</div>
+      <div class="slds-mobile-nav-footer">WMS Platform &middot; v1.0.1</div>
+    </div>`;
+}
+
+function toggleMobileNav() {
+    const overlay = document.getElementById('slds-mobile-nav-overlay');
+    const drawer = document.getElementById('slds-mobile-nav-drawer');
+    if (!overlay || !drawer) return;
+    const isOpen = drawer.classList.contains('open');
+    overlay.classList.toggle('open', !isOpen);
+    drawer.classList.toggle('open', !isOpen);
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+
+function closeMobileNav() {
+    const overlay = document.getElementById('slds-mobile-nav-overlay');
+    const drawer = document.getElementById('slds-mobile-nav-drawer');
+    if (overlay) overlay.classList.remove('open');
+    if (drawer) drawer.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// ----------------------------------------------------------------
 //  GLOBAL HEADER HTML
 // ----------------------------------------------------------------
 function getGlobalHeaderHTML() {
     const user = JSON.parse(localStorage.getItem('ph_slds_user') || '{"name":"Demo User","company":"Partner Co.","initials":"DU"}');
     return `
     <header class="slds-global-header">
+      <!-- Hamburger (mobile only) -->
+      <button class="slds-mobile-menu-btn" title="Menu" onclick="toggleMobileNav()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:22px;height:22px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
       <!-- App Launcher -->
       <button class="slds-app-launcher-btn" title="App Launcher" onclick="toggleAppLauncher()">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:20px;height:20px;">${ICON_PATHS.apps}</svg>
@@ -169,11 +236,21 @@ function getGlobalHeaderHTML() {
       <!-- Divider -->
       <div class="slds-header-divider"></div>
 
-      <!-- App Name -->
-      <button class="slds-header-app-name">
-        WMS Platform
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;">${ICON_PATHS.chevron}</svg>
-      </button>
+      <!-- WMS Platform Dropdown -->
+      <div class="slds-hdr-btn-wrap slds-util-hide-mobile">
+        <button class="slds-header-app-name" onclick="toggleHeaderDropdown('platform-dd',event)">
+          WMS Platform
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;">${ICON_PATHS.chevron}</svg>
+        </button>
+        <div id="platform-dd" class="slds-hdr-dropdown" style="display:none;min-width:190px;">
+          <div class="slds-hdr-dropdown__header">WMS Modules</div>
+          ${PH_NAV.map(n => `
+          <a href="${n.href}" class="slds-hdr-dropdown__item" onclick="closeAllHeaderDropdowns()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[n.icon] || ''}</svg>
+            ${n.label}
+          </a>`).join('')}
+        </div>
+      </div>
 
       <!-- Search -->
       <div class="slds-header-search">
@@ -183,14 +260,91 @@ function getGlobalHeaderHTML() {
 
       <!-- Utilities -->
       <div class="slds-header-utilities">
-        <button class="slds-header-util-btn" title="Favorites">${icon('star')}</button>
-        <button class="slds-header-util-btn" title="New Record">${icon('plus')}</button>
-        <button class="slds-header-util-btn" title="Help">${icon('info')}</button>
-        <button class="slds-header-util-btn" title="Setup">${icon('setting')}</button>
-        <button class="slds-header-util-btn" title="Notifications">
-          ${icon('notif')}
-          <span class="slds-notif-dot"></span>
-        </button>
+        <button class="slds-header-util-btn slds-util-hide-mobile" title="Favorites">${icon('star')}</button>
+        <button class="slds-header-util-btn slds-util-hide-mobile" title="New Record">${icon('plus')}</button>
+
+        <!-- Help -->
+        <div class="slds-hdr-btn-wrap slds-util-hide-mobile">
+          <button class="slds-header-util-btn" title="Help" onclick="toggleHeaderDropdown('help-dd',event)">${icon('info')}</button>
+          <div id="help-dd" class="slds-hdr-dropdown" style="display:none;">
+            <div class="slds-hdr-dropdown__header">Help &amp; Resources</div>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening Help Center…','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.info}</svg>Help Center
+            </a>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening Documentation…','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.order}</svg>Documentation
+            </a>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening Video Tutorials…','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.report}</svg>Video Tutorials
+            </a>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Keyboard shortcuts coming soon','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.star}</svg>Keyboard Shortcuts
+            </a>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening support portal…','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.user}</svg>Contact Support
+            </a>
+            <div class="slds-hdr-dropdown__footer">PartnerHub v1.0.1</div>
+          </div>
+        </div>
+
+        <!-- Setup -->
+        <div class="slds-hdr-btn-wrap slds-util-hide-mobile">
+          <button class="slds-header-util-btn" title="Setup" onclick="toggleHeaderDropdown('setup-dd',event)">${icon('setting')}</button>
+          <div id="setup-dd" class="slds-hdr-dropdown" style="display:none;">
+            <div class="slds-hdr-dropdown__header">Setup</div>
+            <a href="settings.html" class="slds-hdr-dropdown__item" onclick="closeAllHeaderDropdowns()">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.setting}</svg>General Settings
+            </a>
+            <a href="user-master-list.html" class="slds-hdr-dropdown__item" onclick="closeAllHeaderDropdowns()">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.user}</svg>User Management
+            </a>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Warehouse Configuration coming soon','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.asn}</svg>Warehouse Config
+            </a>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Integration Settings coming soon','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.refresh}</svg>Integrations
+            </a>
+            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Security settings coming soon','info');closeAllHeaderDropdowns();return false">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.check}</svg>Security &amp; Permissions
+            </a>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="slds-hdr-btn-wrap">
+          <button class="slds-header-util-btn" title="Notifications" onclick="toggleHeaderDropdown('notif-dd',event)">
+            ${icon('notif')}
+            <span class="slds-notif-dot"></span>
+          </button>
+          <div id="notif-dd" class="slds-hdr-dropdown" style="display:none;width:320px;min-width:320px;">
+            <div class="slds-hdr-dropdown__header">
+              <span>Notifications</span>
+              <span onclick="closeAllHeaderDropdowns();showToast('All notifications marked as read','success')" style="font-size:11px;font-weight:500;color:var(--slds-brand);cursor:pointer;text-transform:none;letter-spacing:0;">Mark All Read</span>
+            </div>
+            <div class="slds-notif-item slds-notif-unread">
+              <div class="slds-notif-item__title">New ASN Received — ASN-2024-0041</div>
+              <div class="slds-notif-item__meta">Alpha Logistics &middot; 480 units &middot; WH-MUM-01 &middot; 2 hrs ago</div>
+            </div>
+            <div class="slds-notif-item slds-notif-unread">
+              <div class="slds-notif-item__title">Order Processing — ORD-FWD-6672</div>
+              <div class="slds-notif-item__meta">Nexus Corp &middot; 4 items &middot; High Priority &middot; 3 hrs ago</div>
+            </div>
+            <div class="slds-notif-item slds-notif-unread">
+              <div class="slds-notif-item__title">Low Stock Alert — SwiftRun Pro Sneakers</div>
+              <div class="slds-notif-item__meta">SKU: SN-SWT-006 &middot; Only 3 units remaining &middot; 5 hrs ago</div>
+            </div>
+            <div class="slds-notif-item">
+              <div class="slds-notif-item__title">Return Completed — RET-2024-0019</div>
+              <div class="slds-notif-item__meta">Apex Industries &middot; 3 items &middot; Yesterday</div>
+            </div>
+            <div class="slds-notif-item">
+              <div class="slds-notif-item__title">ASN Discrepancy — ASN-2024-0037</div>
+              <div class="slds-notif-item__meta">Alpha Logistics &middot; WH-MUM-01 &middot; Review required &middot; Yesterday</div>
+            </div>
+            <div class="slds-hdr-dropdown__footer" onclick="closeAllHeaderDropdowns()">View All Notifications →</div>
+          </div>
+        </div>
+
         <div class="slds-header-avatar" title="${user.name}">${user.initials}</div>
       </div>
     </header>`;
@@ -387,6 +541,11 @@ function initPage(activePage, pageTitle, tabLabel, tabIcon) {
     // Inject workspace tabs
     const wtContainer = document.getElementById('slds-workspace-tabs-container');
     if (wtContainer) wtContainer.innerHTML = getWorkspaceTabsHTML(activePage);
+
+    // Inject mobile nav drawer (once per page load)
+    if (!document.getElementById('slds-mobile-nav-overlay')) {
+        document.body.insertAdjacentHTML('beforeend', getMobileNavDrawerHTML(activePage));
+    }
 }
 
 // ----------------------------------------------------------------

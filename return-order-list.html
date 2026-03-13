@@ -40,25 +40,24 @@
         </div>
 
         <!-- KPI Strip -->
-        <div
-            style="padding:12px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:flex;gap:12px;overflow-x:auto;">
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+        <div class="ph-kpi-strip">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Total Returns</div>
                 <div class="slds-kpi-value" style="font-size:20px;">24</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Initiated</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">5</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">In-Transit</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">7</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Received</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-n3);">10</div>
             </div>
-            <div class="slds-kpi-card" style="flex:1;min-width:120px;padding:12px;">
+            <div class="slds-kpi-card ph-kpi-strip-card">
                 <div class="slds-kpi-label">Refunded</div>
                 <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">2</div>
             </div>
@@ -72,7 +71,7 @@
                 </svg>
                 <input type="text" class="slds-search" placeholder="Search by Return ID, order, customer...">
             </div>
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:130px;">
+            <select class="slds-select">
                 <option>All Statuses</option>
                 <option>Initiated</option>
                 <option>In-Transit</option>
@@ -80,7 +79,7 @@
                 <option>Inspecting</option>
                 <option>Refunded</option>
             </select>
-            <select class="slds-select" style="width:auto;height:32px;padding:0 28px 0 10px;min-width:140px;">
+            <select class="slds-select">
                 <option>All Reasons</option>
                 <option>Damaged</option>
                 <option>Wrong Item</option>
@@ -90,23 +89,25 @@
         </div>
 
         <div class="slds-card" style="margin:16px 24px;">
-            <table class="slds-table">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" class="slds-checkbox"></th>
-                        <th>Return ID</th>
-                        <th>Linked Order</th>
-                        <th>Customer</th>
-                        <th>Date Initiated</th>
-                        <th>Items</th>
-                        <th>Reason</th>
-                        <th>Refund Amt</th>
-                        <th>Status</th>
-                        <th style="text-align:right;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="return-tbody"></tbody>
-            </table>
+            <div class="slds-table-wrap">
+                <table class="slds-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="slds-checkbox"></th>
+                            <th>Return ID</th>
+                            <th>Linked Order</th>
+                            <th>Customer</th>
+                            <th>Date Initiated</th>
+                            <th>Items</th>
+                            <th>Reason</th>
+                            <th>Refund Amt</th>
+                            <th>Status</th>
+                            <th style="text-align:right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="return-tbody"></tbody>
+                </table>
+            </div><!-- /slds-table-wrap -->
             <div
                 style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
                 <span style="font-size:12px;color:var(--slds-n4);">Showing 1–5 of 24 records</span>

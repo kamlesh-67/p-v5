@@ -45,8 +45,7 @@
         </div>
 
         <!-- Top KPI Cards -->
-        <div
-            style="padding:16px 24px;background:white;border-bottom:1px solid var(--slds-n7);display:grid;grid-template-columns:repeat(6,1fr);gap:12px;">
+        <div style="padding:16px 24px;background:white;border-bottom:1px solid var(--slds-n7);" class="ph-kpi-6col">
             <div class="slds-kpi-card">
                 <div class="slds-kpi-label">Total Orders</div>
                 <div class="slds-kpi-value">284</div>
@@ -77,7 +76,7 @@
         <div style="padding:16px 24px;display:flex;flex-direction:column;gap:16px;">
 
             <!-- Row 1: Order Volume + Category Breakdown -->
-            <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;">
+            <div class="ph-analytics-2-1">
                 <div class="slds-card">
                     <div class="slds-card__header">
                         <div class="slds-card__header-title">Order Volume — Last 12 Weeks</div>
@@ -105,7 +104,7 @@
             </div>
 
             <!-- Row 2: Channel Breakdown + Fulfilment Trend -->
-            <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;">
+            <div class="ph-analytics-1-2">
                 <div class="slds-card">
                     <div class="slds-card__header">
                         <div class="slds-card__header-title">Orders by Channel</div>
@@ -115,7 +114,8 @@
                             <div>
                                 <div
                                     style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
-                                    <span>Direct</span><span style="font-weight:700;">38%</span></div>
+                                    <span>Direct</span><span style="font-weight:700;">38%</span>
+                                </div>
                                 <div style="height:6px;background:var(--slds-n8);border-radius:3px;">
                                     <div style="height:100%;width:38%;background:var(--slds-brand);border-radius:3px;">
                                     </div>
@@ -124,7 +124,8 @@
                             <div>
                                 <div
                                     style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
-                                    <span>Amazon</span><span style="font-weight:700;">27%</span></div>
+                                    <span>Amazon</span><span style="font-weight:700;">27%</span>
+                                </div>
                                 <div style="height:6px;background:var(--slds-n8);border-radius:3px;">
                                     <div
                                         style="height:100%;width:27%;background:var(--slds-warning-accent);border-radius:3px;">
@@ -134,7 +135,8 @@
                             <div>
                                 <div
                                     style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
-                                    <span>Flipkart</span><span style="font-weight:700;">19%</span></div>
+                                    <span>Flipkart</span><span style="font-weight:700;">19%</span>
+                                </div>
                                 <div style="height:6px;background:var(--slds-n8);border-radius:3px;">
                                     <div style="height:100%;width:19%;background:#E07AB8;border-radius:3px;"></div>
                                 </div>
@@ -142,7 +144,8 @@
                             <div>
                                 <div
                                     style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
-                                    <span>Meesho</span><span style="font-weight:700;">10%</span></div>
+                                    <span>Meesho</span><span style="font-weight:700;">10%</span>
+                                </div>
                                 <div style="height:6px;background:var(--slds-n8);border-radius:3px;">
                                     <div
                                         style="height:100%;width:10%;background:var(--slds-success);border-radius:3px;">
@@ -152,7 +155,8 @@
                             <div>
                                 <div
                                     style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
-                                    <span>Other</span><span style="font-weight:700;">6%</span></div>
+                                    <span>Other</span><span style="font-weight:700;">6%</span>
+                                </div>
                                 <div style="height:6px;background:var(--slds-n8);border-radius:3px;">
                                     <div style="height:100%;width:6%;background:var(--slds-n5);border-radius:3px;">
                                     </div>
@@ -173,52 +177,54 @@
             </div>
 
             <!-- Row 3: Warehouse Performance + Top SKUs -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="ph-form-grid-2">
                 <div class="slds-card">
                     <div class="slds-card__header">
                         <div class="slds-card__header-title">Warehouse Performance</div>
                     </div>
-                    <table class="slds-table">
-                        <thead>
-                            <tr>
-                                <th>Warehouse</th>
-                                <th style="text-align:right;">Orders</th>
-                                <th style="text-align:right;">Dispatch Rate</th>
-                                <th style="text-align:right;">Avg Time</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-weight:600;">WH-MUM-01</td>
-                                <td style="text-align:right;">112</td>
-                                <td style="text-align:right;color:var(--slds-success);">98.2%</td>
-                                <td style="text-align:right;color:var(--slds-n4);">1.4d</td>
-                                <td><span class="slds-badge slds-badge-success">Optimal</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:600;">WH-DEL-02</td>
-                                <td style="text-align:right;">89</td>
-                                <td style="text-align:right;color:var(--slds-success);">96.6%</td>
-                                <td style="text-align:right;color:var(--slds-n4);">1.9d</td>
-                                <td><span class="slds-badge slds-badge-success">Good</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:600;">WH-BLR-01</td>
-                                <td style="text-align:right;">56</td>
-                                <td style="text-align:right;color:var(--slds-warning);">92.1%</td>
-                                <td style="text-align:right;color:var(--slds-n4);">2.4d</td>
-                                <td><span class="slds-badge slds-badge-warning">Capacity!</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:600;">WH-HYD-01</td>
-                                <td style="text-align:right;">27</td>
-                                <td style="text-align:right;color:var(--slds-success);">97.4%</td>
-                                <td style="text-align:right;color:var(--slds-n4);">1.6d</td>
-                                <td><span class="slds-badge slds-badge-success">Good</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="slds-table-wrap">
+                        <table class="slds-table">
+                            <thead>
+                                <tr>
+                                    <th>Warehouse</th>
+                                    <th style="text-align:right;">Orders</th>
+                                    <th style="text-align:right;">Dispatch Rate</th>
+                                    <th style="text-align:right;">Avg Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight:600;">WH-MUM-01</td>
+                                    <td style="text-align:right;">112</td>
+                                    <td style="text-align:right;color:var(--slds-success);">98.2%</td>
+                                    <td style="text-align:right;color:var(--slds-n4);">1.4d</td>
+                                    <td><span class="slds-badge slds-badge-success">Optimal</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600;">WH-DEL-02</td>
+                                    <td style="text-align:right;">89</td>
+                                    <td style="text-align:right;color:var(--slds-success);">96.6%</td>
+                                    <td style="text-align:right;color:var(--slds-n4);">1.9d</td>
+                                    <td><span class="slds-badge slds-badge-success">Good</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600;">WH-BLR-01</td>
+                                    <td style="text-align:right;">56</td>
+                                    <td style="text-align:right;color:var(--slds-warning);">92.1%</td>
+                                    <td style="text-align:right;color:var(--slds-n4);">2.4d</td>
+                                    <td><span class="slds-badge slds-badge-warning">Capacity!</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600;">WH-HYD-01</td>
+                                    <td style="text-align:right;">27</td>
+                                    <td style="text-align:right;color:var(--slds-success);">97.4%</td>
+                                    <td style="text-align:right;color:var(--slds-n4);">1.6d</td>
+                                    <td><span class="slds-badge slds-badge-success">Good</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!-- /slds-table-wrap -->
                 </div>
 
                 <div class="slds-card">
@@ -226,16 +232,18 @@
                         <div class="slds-card__header-title">Top 5 SKUs by Orders</div>
                     </div>
                     <div class="slds-card__body" style="padding:0;">
-                        <table class="slds-table">
-                            <thead>
-                                <tr>
-                                    <th>SKU</th>
-                                    <th>Item</th>
-                                    <th style="text-align:right;">Orders</th>
-                                </tr>
-                            </thead>
-                            <tbody id="top-skus"></tbody>
-                        </table>
+                        <div class="slds-table-wrap">
+                            <table class="slds-table">
+                                <thead>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <th>Item</th>
+                                        <th style="text-align:right;">Orders</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="top-skus"></tbody>
+                            </table>
+                        </div><!-- /slds-table-wrap -->
                     </div>
                 </div>
             </div>
@@ -246,7 +254,7 @@
                     <div class="slds-card__header-title">Returns Analysis</div>
                 </div>
                 <div class="slds-card__body">
-                    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;text-align:center;">
+                    <div style="text-align:center;" class="ph-kpi-5col">
                         <div>
                             <div style="font-size:28px;font-weight:700;color:var(--slds-n1);">24</div>
                             <div

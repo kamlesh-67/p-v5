@@ -89,6 +89,73 @@
             font-size: 11px;
             color: var(--slds-n5);
         }
+
+        /* ---- Mobile overrides ---- */
+        @media (max-width: 768px) {
+            .quick-action-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 8px;
+            }
+
+            .quick-action-card {
+                padding: 12px 6px;
+            }
+
+            .quick-action-card span {
+                font-size: 11px;
+            }
+
+            /* Hide chart legend labels on narrow screens to save space */
+            .dash-chart-legend {
+                display: none;
+            }
+
+            /* Tighten up vertical spacing between cards */
+            .slds-grid-aside-lg {
+                gap: 12px;
+            }
+
+            /* Chart canvas height on mobile */
+            #dashOrderChart {
+                max-height: 180px;
+            }
+
+            .dash-chart-container {
+                height: 160px !important;
+            }
+
+            /* Header: truncate long subtitle so it fits on one line */
+            .slds-list-subtitle {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 100%;
+            }
+
+            /* Activity timeline: clamp text lines so they don't blow out the row */
+            .slds-timeline-item > div[style] > div {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quick-action-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            /* Let activity timestamp wrap under the text on very small screens */
+            .slds-timeline-item {
+                flex-wrap: wrap;
+            }
+
+            .activity-time {
+                width: 100%;
+                text-align: right;
+                margin-top: 2px;
+            }
+        }
     </style>
 </head>
 
@@ -241,7 +308,7 @@
                                 </svg></div>
                             <span class="slds-card__header-title">Order Volume — Last 7 Weeks</span>
                             <div class="slds-card__header-action">
-                                <div style="display:flex;align-items:center;gap:12px;font-size:11px;">
+                                <div class="dash-chart-legend" style="display:flex;align-items:center;gap:12px;font-size:11px;">
                                     <div style="display:flex;align-items:center;gap:4px;">
                                         <div class="legend-dot" style="background:#0176D3;"></div><span
                                             style="color:var(--slds-n4);">Forward</span>
@@ -258,7 +325,9 @@
                             </div>
                         </div>
                         <div class="slds-card__body" style="padding:12px 16px;">
-                            <canvas id="dashOrderChart" height="90"></canvas>
+                            <div class="dash-chart-container" style="position:relative;height:200px;">
+                                <canvas id="dashOrderChart" style="width:100%;height:100%;"></canvas>
+                            </div>
                         </div>
                     </div>
 
@@ -368,7 +437,8 @@
                                             style="width:18px;height:18px;">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                                 d="M12 4v16m8-8H4" />
-                                        </svg></div>
+                                        </svg>
+                                    </div>
                                     <span>New ASN</span>
                                 </a>
                                 <a href="return-order-create.html" class="quick-action-card">
@@ -566,15 +636,16 @@
         new Chart(document.getElementById('dashOrderChart'), {
             type: 'bar',
             data: {
-                labels: ['W1','W2','W3','W4','W5','W6','W7'],
+                labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
                 datasets: [
-                    { label: 'Forward', data: [45,62,51,73,58,84,76], backgroundColor: '#0176D3', borderRadius: 2 },
-                    { label: 'Returns', data: [15,12,18,22,14,16,19], backgroundColor: '#E07AB8', borderRadius: 2 },
-                    { label: 'ASN',     data: [26,34,30,41,38,46,43], backgroundColor: '#54A77B', borderRadius: 2 }
+                    { label: 'Forward', data: [45, 62, 51, 73, 58, 84, 76], backgroundColor: '#0176D3', borderRadius: 2 },
+                    { label: 'Returns', data: [15, 12, 18, 22, 14, 16, 19], backgroundColor: '#E07AB8', borderRadius: 2 },
+                    { label: 'ASN', data: [26, 34, 30, 41, 38, 46, 43], backgroundColor: '#54A77B', borderRadius: 2 }
                 ]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
                     x: { grid: { display: false }, ticks: { font: { size: 11 } } },
