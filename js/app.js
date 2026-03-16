@@ -396,8 +396,9 @@ function getMobileNavDrawerHTML(activePage) {
     <div id="slds-mobile-nav-drawer" class="slds-mobile-nav-drawer">
       <div class="slds-mobile-nav-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div class="slds-brand-logo" style="width:28px;height:28px;font-size:10px;">PH</div>
-          <span class="slds-mobile-nav-title">PartnerHub WMS</span>
+          <img src="img/EL.png" alt="Emirates Logistics" style="height:24px;object-fit:contain;">
+          <span style="color:rgba(255,255,255,.35);font-weight:300;font-size:20px;line-height:1;">|</span>
+          <img src="img/coco.png" alt="CocoHub" style="height:20px;object-fit:contain;">
         </div>
         <button class="slds-mobile-nav-close" onclick="closeMobileNav()">&#215;</button>
       </div>
@@ -442,8 +443,9 @@ function getGlobalHeaderHTML() {
 
       <!-- Brand -->
       <a href="dashboard.html" class="slds-global-header__brand">
-        <div class="slds-brand-logo">PH</div>
-        <span class="slds-brand-name">PartnerHub</span>
+        <img src="img/EL.png" alt="Emirates Logistics" class="slds-brand-img slds-brand-img-el">
+        <span class="slds-brand-img-divider"></span>
+        <img src="img/coco.png" alt="CocoHub" class="slds-brand-img slds-brand-img-coco">
       </a>
 
       <!-- Search -->

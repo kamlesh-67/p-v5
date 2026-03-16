@@ -129,13 +129,13 @@ a:hover {
     left: 0;
     right: 0;
     height: var(--gh);
-    background: var(--slds-brand-darker);
+    background: #ffffff;
     display: flex;
     align-items: center;
     padding: 0 12px;
     gap: 6px;
     z-index: 9000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1), 0 2px 6px rgba(0, 0, 0, .06);
 }
 
 .slds-sidebar-toggle {
@@ -150,13 +150,13 @@ a:hover {
     background: transparent;
     cursor: pointer;
     border-radius: 4px;
-    color: rgba(255, 255, 255, .8);
+    color: var(--slds-brand);
     transition: background .15s, color .15s, transform .24s cubic-bezier(.4, 0, .2, 1);
 }
 
 .slds-sidebar-toggle:hover {
-    background: rgba(255, 255, 255, .12);
-    color: white;
+    background: rgba(6, 19, 89, .08);
+    color: var(--slds-brand);
 }
 
 .slds-sidebar-toggle svg {
@@ -199,6 +199,28 @@ a:hover {
     white-space: nowrap;
 }
 
+.slds-brand-img {
+    display: block;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.slds-brand-img-el {
+    height: 30px;
+}
+
+.slds-brand-img-coco {
+    height: 24px;
+}
+
+.slds-brand-img-divider {
+    display: block;
+    width: 2px;
+    height: 28px;
+    background: rgba(0, 0, 0, 36%);
+    flex-shrink: 0;
+}
+
 .slds-header-search {
     flex: 1;
     max-width: 520px;
@@ -211,7 +233,7 @@ a:hover {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: rgba(255, 255, 255, .5);
+    color: rgba(6, 19, 89, .45);
     pointer-events: none;
     width: 14px;
     height: 14px;
@@ -220,10 +242,10 @@ a:hover {
 .slds-header-search input {
     width: 100%;
     height: 32px;
-    background: rgba(255, 255, 255, .12);
-    border: 1px solid rgba(255, 255, 255, .15);
+    background: #f3f4f8;
+    border: 1px solid #dde1ec;
     border-radius: 4px;
-    color: white;
+    color: var(--slds-brand);
     padding: 0 12px 0 34px;
     font-size: 13px;
     outline: none;
@@ -232,12 +254,12 @@ a:hover {
 }
 
 .slds-header-search input::placeholder {
-    color: rgba(255, 255, 255, .45);
+    color: rgba(6, 19, 89, .4);
 }
 
 .slds-header-search input:focus {
-    background: rgba(255, 255, 255, .18);
-    border-color: rgba(255, 255, 255, .35);
+    background: #eef0f8;
+    border-color: var(--slds-brand-accent);
 }
 
 .slds-header-utilities {
@@ -259,13 +281,13 @@ a:hover {
     background: transparent;
     cursor: pointer;
     border-radius: 4px;
-    color: rgba(255, 255, 255, .8);
+    color: var(--slds-brand);
     transition: background .15s;
 }
 
 .slds-header-util-btn:hover {
-    background: rgba(255, 255, 255, .12);
-    color: white;
+    background: rgba(6, 19, 89, .08);
+    color: var(--slds-brand);
 }
 
 .slds-header-util-btn svg {
@@ -281,14 +303,14 @@ a:hover {
     height: 8px;
     border-radius: 50%;
     background: #FE9339;
-    border: 2px solid var(--slds-brand-darker);
+    border: 2px solid #ffffff;
 }
 
 .slds-header-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: #1B96FF;
+    background: var(--slds-brand);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -296,13 +318,13 @@ a:hover {
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
-    border: 2px solid rgba(255, 255, 255, .2);
+    border: 2px solid var(--slds-brand-light);
     transition: border-color .15s;
     margin-left: 4px;
 }
 
 .slds-header-avatar:hover {
-    border-color: rgba(255, 255, 255, .5);
+    border-color: var(--slds-brand-accent);
 }
 
 /* ============================================================
@@ -2562,14 +2584,14 @@ table.dataTable.no-footer {
     background: transparent;
     cursor: pointer;
     border-radius: 4px;
-    color: rgba(255, 255, 255, .85);
+    color: var(--slds-brand);
     flex-shrink: 0;
     transition: background .15s;
 }
 
 .slds-mobile-menu-btn:hover {
-    background: rgba(255, 255, 255, .12);
-    color: white;
+    background: rgba(6, 19, 89, .08);
+    color: var(--slds-brand);
 }
 
 .slds-mobile-nav-overlay {
@@ -2604,9 +2626,11 @@ table.dataTable.no-footer {
 }
 
 .slds-mobile-nav-header {
-    display: flex;
+    display: none;
+    /* hidden by default; shown only on mobile via media query */
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    position: relative;
     padding: 14px 16px;
     background: var(--slds-brand-darker);
     flex-shrink: 0;
@@ -2619,6 +2643,10 @@ table.dataTable.no-footer {
 }
 
 .slds-mobile-nav-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 32px;
     height: 32px;
     display: flex;
@@ -2819,6 +2847,10 @@ table.dataTable.no-footer {
         display: flex;
     }
 
+    .slds-mobile-nav-header {
+        display: flex;
+    }
+
     .slds-sidebar-toggle {
         display: none;
     }
@@ -2828,6 +2860,11 @@ table.dataTable.no-footer {
     }
 
     .slds-brand-name {
+        display: none;
+    }
+
+    /* Hide logos on mobile — drawer header already shows them */
+    .slds-global-header__brand {
         display: none;
     }
 
