@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Master &mdash; PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
+</head>
+
+<body>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
+
+    <div class="slds-body">
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-address">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">Address Master</div>
+                    <div class="slds-list-subtitle">Warehouse, store, and delivery point records</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <button class="slds-btn slds-btn-neutral" onclick="exportData()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export
+                </button>
+                <button class="slds-btn slds-btn-brand"
+                    onclick="showToast('Address creation flow can be added next','info')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New Address
+                </button>
+            </div>
+        </div>
+
+        <div class="ph-kpi-strip">
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Total Addresses</div>
+                <div class="slds-kpi-value" style="font-size:20px;">48</div>
+            </div>
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Warehouses</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">12</div>
+            </div>
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Retail Stores</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">24</div>
+            </div>
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Inactive</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">3</div>
+            </div>
+        </div>
+
+        <div class="slds-filter-bar">
+            <div class="slds-search-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" class="slds-search" id="address-search" placeholder="Search by code, name, city..."
+                    oninput="renderAddressTable()">
+            </div>
+            <select class="slds-select" id="address-type" onchange="renderAddressTable()">
+                <option value="">All Types</option>
+                <option value="Warehouse">Warehouse</option>
+                <option value="Store">Store</option>
+                <option value="Pickup Point">Pickup Point</option>
+            </select>
+            <select class="slds-select" id="address-status" onchange="renderAddressTable()">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+
+        <div class="slds-card" style="margin:16px 24px;">
+            <div class="slds-table-wrap">
+                <table class="slds-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="slds-checkbox"></th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>City</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                            <th style="text-align:right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="address-tbody"></tbody>
+                </table>
+            </div>
+            <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+                <span style="font-size:12px;color:var(--slds-n4);" id="address-count">Showing all records</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('address-master', 'Address Master');
+
+        const ADDRESS_DATA = [
+            { code: 'WH-MUM-01', name: 'Mumbai Central Warehouse', type: 'Warehouse', city: 'Mumbai', contact: 'Rohan Mehta', status: 'Active' },
+            { code: 'WH-BLR-01', name: 'Bengaluru Distribution Hub', type: 'Warehouse', city: 'Bengaluru', contact: 'Kriti Rao', status: 'Active' },
+            { code: 'ST-DEL-04', name: 'Delhi Flagship Store', type: 'Store', city: 'Delhi', contact: 'Aman Khanna', status: 'Active' },
+            { code: 'ST-HYD-02', name: 'Hyderabad High Street', type: 'Store', city: 'Hyderabad', contact: 'Nisha Varma', status: 'Inactive' },
+            { code: 'PU-PUN-01', name: 'Pune Pickup Point', type: 'Pickup Point', city: 'Pune', contact: 'Neeraj Kulkarni', status: 'Active' },
+            { code: 'PU-CHN-02', name: 'Chennai Pickup Point', type: 'Pickup Point', city: 'Chennai', contact: 'Divya Anand', status: 'Active' },
+        ];
+
+        function renderAddressTable() {
+            const query = document.getElementById('address-search').value.toLowerCase();
+            const type = document.getElementById('address-type').value;
+            const status = document.getElementById('address-status').value;
+            const statusMap = { Active: 'slds-badge-success', Inactive: 'slds-badge-neutral' };
+
+            const filtered = ADDRESS_DATA.filter(item =>
+                (!query || [item.code, item.name, item.city, item.contact].some(value => value.toLowerCase().includes(query))) &&
+                (!type || item.type === type) &&
+                (!status || item.status === status)
+            );
+
+            document.getElementById('address-tbody').innerHTML = filtered.map(item => `
+                <tr>
+                    <td><input type="checkbox" class="slds-checkbox"></td>
+                    <td><span class="slds-text-link" style="font-weight:600;">${item.code}</span></td>
+                    <td style="font-weight:500;">${item.name}</td>
+                    <td style="color:var(--slds-n4);">${item.type}</td>
+                    <td style="color:var(--slds-n4);">${item.city}</td>
+                    <td>${item.contact}</td>
+                    <td><span class="slds-badge ${statusMap[item.status] || 'slds-badge-neutral'}">${item.status}</span></td>
+                    <td style="text-align:right;">
+                        <div style="display:flex;gap:6px;justify-content:flex-end;">
+                            <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('Edit flow can be added next','info')">Edit</button>
+                            <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('${item.name} synced','success')">Sync</button>
+                        </div>
+                    </td>
+                </tr>`).join('');
+
+            document.getElementById('address-count').textContent = `Showing ${filtered.length} of ${ADDRESS_DATA.length} records`;
+            refreshDataTable(document.getElementById('address-tbody').closest('table'));
+        }
+
+        renderAddressTable();
+    </script>
+</body>
+
+</html>

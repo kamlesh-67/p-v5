@@ -61,16 +61,29 @@ const PH_RETURNS = [
 //  NAV ITEMS
 // ----------------------------------------------------------------
 const PH_NAV = [
-    { id: 'dashboard', label: 'Home', href: 'dashboard.html', icon: 'home' },
-    { id: 'forward-order', label: 'Orders', href: 'forward-order-list.html', icon: 'order' },
-    { id: 'asn', label: 'ASN', href: 'asn-list.html', icon: 'asn' },
-    { id: 'return-order', label: 'Returns', href: 'return-order-list.html', icon: 'return' },
-    { id: 'item-master', label: 'Products', href: 'item-master-list.html', icon: 'product' },
-    { id: 'stock', label: 'Stock', href: 'available-stock.html', icon: 'stock' },
-    { id: 'analytics', label: 'Analytics', href: 'analytics.html', icon: 'report' },
-    { id: 'user-master', label: 'Users', href: 'user-master-list.html', icon: 'user' },
-    { id: 'settings', label: 'Settings', href: 'settings.html', icon: 'setting' },
+    { id: 'dashboard', label: 'Dashboard', href: 'dashboard.html', icon: 'home', group: 'Dashboard' },
+    { id: 'available-stock', label: 'Available Stock', href: 'available-stock.html', icon: 'stock', group: 'Stock Management' },
+    { id: 'damaged-stock', label: 'Damaged Stock', href: 'damaged-stock.html', icon: 'warn', group: 'Stock Management' },
+    { id: 'store-stock', label: 'Store Stock', href: 'store-stock.html', icon: 'home', group: 'Stock Management' },
+    { id: 'item-master', label: 'Item Master', href: 'item-master-list.html', icon: 'product', group: 'Masters' },
+    { id: 'address-master', label: 'Address Master', href: 'address-master-list.html', icon: 'address', group: 'Masters' },
+    { id: 'user-master', label: 'User Master', href: 'user-master-list.html', icon: 'user', group: 'Masters' },
+    { id: 'forward-order', label: 'Order', href: 'forward-order-list.html', icon: 'order', group: 'Orders & ASN' },
+    { id: 'return-order', label: 'Return Order', href: 'return-order-list.html', icon: 'return', group: 'Orders & ASN' },
+    { id: 'asn-create', label: 'ASN Creation', href: 'asn-create.html', icon: 'asn', group: 'Orders & ASN' },
+    { id: 'adhoc-return', label: 'Ad-hoc Return', href: 'adhoc-return-list.html', icon: 'refresh', group: 'Orders & ASN' },
 ];
+
+const PH_NAV_GROUPS = [
+    { id: 'Dashboard', label: '' },
+    { id: 'Stock Management', label: 'Stock Management' },
+    { id: 'Masters', label: 'Masters' },
+    { id: 'Orders & ASN', label: 'Orders & ASN' },
+];
+
+const PH_SIDEBAR_STATE_KEY = 'ph_slds_sidebar_collapsed';
+let phActiveTooltipTarget = null;
+let phDataTableAssetsPromise = null;
 
 // ----------------------------------------------------------------
 //  SVG ICON PATHS
@@ -108,6 +121,211 @@ const ICON_PATHS = {
 
 function icon(name, cls = '') {
     return `<svg class="${cls}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${ICON_PATHS[name] || ''}</svg>`;
+}
+
+function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('ph_slds_user') || '{"name":"Demo User","company":"Partner Co.","initials":"DU"}');
+}
+
+function getSidebarToggleIconPath(collapsed) {
+    return collapsed
+        ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5l7 7-7 7"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 5v14"/>'
+        : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 5l-7 7 7 7"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 5v14"/>';
+}
+
+function isSidebarCollapsed() {
+    return localStorage.getItem(PH_SIDEBAR_STATE_KEY) === '1';
+}
+
+function ensureNavTooltip() {
+    let tooltip = document.getElementById('slds-nav-tooltip');
+    if (tooltip) return tooltip;
+
+    tooltip = document.createElement('div');
+    tooltip.id = 'slds-nav-tooltip';
+    tooltip.className = 'slds-nav-tooltip';
+    tooltip.setAttribute('role', 'tooltip');
+    tooltip.innerHTML = '<span class="slds-nav-tooltip__label"></span>';
+    document.body.appendChild(tooltip);
+    return tooltip;
+}
+
+function positionNavTooltip(target) {
+    const tooltip = ensureNavTooltip();
+    const rect = target.getBoundingClientRect();
+    tooltip.classList.remove('slds-nav-tooltip--left');
+    tooltip.style.left = '0px';
+    tooltip.style.top = '0px';
+
+    const spacing = 14;
+    const tooltipWidth = tooltip.offsetWidth;
+    let left = rect.right + spacing;
+
+    if (left + tooltipWidth > window.innerWidth - 12) {
+        left = rect.left - tooltipWidth - spacing;
+        tooltip.classList.add('slds-nav-tooltip--left');
+    }
+
+    tooltip.style.left = `${Math.max(12, left)}px`;
+    tooltip.style.top = `${rect.top + rect.height / 2}px`;
+}
+
+function showNavTooltip(target) {
+    if (!target || window.innerWidth <= 768 || !document.body.classList.contains('slds-sidebar-collapsed')) {
+        hideNavTooltip();
+        return;
+    }
+
+    const label = target.dataset.tooltip;
+    if (!label) return;
+
+    const tooltip = ensureNavTooltip();
+    tooltip.querySelector('.slds-nav-tooltip__label').textContent = label;
+    phActiveTooltipTarget = target;
+    positionNavTooltip(target);
+    tooltip.classList.add('open');
+}
+
+function hideNavTooltip() {
+    const tooltip = document.getElementById('slds-nav-tooltip');
+    if (tooltip) tooltip.classList.remove('open', 'slds-nav-tooltip--left');
+    phActiveTooltipTarget = null;
+}
+
+function initNavTooltips() {
+    if (document.body.dataset.navTooltipBound === '1') return;
+    document.body.dataset.navTooltipBound = '1';
+
+    document.addEventListener('mouseover', event => {
+        const navItem = event.target.closest('.slds-nav-item[data-tooltip]');
+        if (!navItem || navItem.contains(event.relatedTarget)) return;
+        showNavTooltip(navItem);
+    });
+
+    document.addEventListener('mouseout', event => {
+        const navItem = event.target.closest('.slds-nav-item[data-tooltip]');
+        if (!navItem || navItem.contains(event.relatedTarget)) return;
+        hideNavTooltip();
+    });
+
+    document.addEventListener('focusin', event => {
+        const navItem = event.target.closest('.slds-nav-item[data-tooltip]');
+        if (navItem) showNavTooltip(navItem);
+    });
+
+    document.addEventListener('focusout', event => {
+        const navItem = event.target.closest('.slds-nav-item[data-tooltip]');
+        if (navItem) hideNavTooltip();
+    });
+
+    window.addEventListener('scroll', () => {
+        if (phActiveTooltipTarget) positionNavTooltip(phActiveTooltipTarget);
+    }, true);
+
+    window.addEventListener('resize', () => {
+        if (phActiveTooltipTarget) {
+            if (window.innerWidth <= 768 || !document.body.classList.contains('slds-sidebar-collapsed')) {
+                hideNavTooltip();
+            } else {
+                positionNavTooltip(phActiveTooltipTarget);
+            }
+        }
+    });
+}
+
+function applySidebarState() {
+    const collapsed = isSidebarCollapsed();
+    document.body.classList.toggle('slds-sidebar-collapsed', collapsed);
+    hideNavTooltip();
+
+    const toggleButton = document.getElementById('slds-sidebar-toggle');
+    if (toggleButton) {
+        const actionLabel = collapsed ? 'Expand menu' : 'Collapse menu';
+        toggleButton.setAttribute('title', actionLabel);
+        toggleButton.setAttribute('aria-label', actionLabel);
+    }
+
+    const toggleIcon = document.getElementById('slds-sidebar-toggle-icon');
+    if (toggleIcon) toggleIcon.innerHTML = getSidebarToggleIconPath(collapsed);
+}
+
+function toggleSidebar() {
+    const next = isSidebarCollapsed() ? '0' : '1';
+    localStorage.setItem(PH_SIDEBAR_STATE_KEY, next);
+    applySidebarState();
+}
+
+function isNavItemActive(item, activePage) {
+    if (item.id === activePage) return true;
+    return Array.isArray(item.children) && item.children.some(child => child.id === activePage);
+}
+
+function getGroupedNavSections(activePage, itemRenderer) {
+    return PH_NAV_GROUPS.map(group => {
+        const items = PH_NAV.filter(item => item.group === group.id);
+        if (!items.length) return '';
+        return `
+    <section class="slds-app-nav__section">
+            ${group.label ? `<div class="slds-app-nav__section-label">${group.label}</div>` : ''}
+      <div class="slds-app-nav__items">${items.map(item => itemRenderer(item, isNavItemActive(item, activePage))).join('')}</div>
+    </section>`;
+    }).join('');
+}
+
+function getDesktopNavItemHTML(item, isActive, activePage) {
+    if (!item.children) {
+        return `
+        <a href="${item.href}" class="slds-nav-item${isActive ? ' active' : ''}" data-tooltip="${item.label}" aria-label="${item.label}">
+          <span class="slds-nav-item__icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[item.icon] || ''}</svg>
+          </span>
+          <span class="slds-nav-item__label">${item.label}</span>
+        </a>`;
+    }
+
+    const children = item.children.map(child => `
+      <a href="${child.href}" class="slds-nav-item slds-nav-item--child${activePage === child.id ? ' active' : ''}" data-tooltip="${child.label}" aria-label="${child.label}">
+        <span class="slds-nav-item__icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[child.icon] || ''}</svg>
+        </span>
+        <span class="slds-nav-item__label">${child.label}</span>
+      </a>`).join('');
+
+    return `
+    <div class="slds-nav-group${isActive ? ' active' : ''}">
+      <div class="slds-nav-item slds-nav-item--group${isActive ? ' active' : ''}" data-tooltip="${item.label}" aria-label="${item.label}">
+        <span class="slds-nav-item__icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[item.icon] || ''}</svg>
+        </span>
+        <span class="slds-nav-item__label">${item.label}</span>
+      </div>
+      <div class="slds-nav-children">${children}</div>
+    </div>`;
+}
+
+function getMobileNavItemHTML(item, isActive, activePage) {
+    if (!item.children) {
+        return `
+        <a href="${item.href}" class="slds-mobile-nav-item${isActive ? ' active' : ''}" onclick="closeMobileNav()">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[item.icon] || ''}</svg>
+          ${item.label}
+        </a>`;
+    }
+
+    const children = item.children.map(child => `
+      <a href="${child.href}" class="slds-mobile-nav-item slds-mobile-nav-item--child${activePage === child.id ? ' active' : ''}" onclick="closeMobileNav()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[child.icon] || ''}</svg>
+        ${child.label}
+      </a>`).join('');
+
+    return `
+    <div class="slds-mobile-nav-group${isActive ? ' active' : ''}">
+      <div class="slds-mobile-nav-parent">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[item.icon] || ''}</svg>
+        ${item.label}
+      </div>
+      <div class="slds-mobile-nav-children">${children}</div>
+    </div>`;
 }
 
 // ----------------------------------------------------------------
@@ -172,11 +390,7 @@ document.addEventListener('click', function () {
 //  MOBILE NAV
 // ----------------------------------------------------------------
 function getMobileNavDrawerHTML(activePage) {
-    const items = PH_NAV.map(n => `
-    <a href="${n.href}" class="slds-mobile-nav-item${activePage === n.id ? ' active' : ''}" onclick="closeMobileNav()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[n.icon] || ''}</svg>
-      ${n.label}
-    </a>`).join('');
+    const sections = getGroupedNavSections(activePage, (item, isActive) => getMobileNavItemHTML(item, isActive, activePage));
     return `
     <div id="slds-mobile-nav-overlay" class="slds-mobile-nav-overlay" onclick="closeMobileNav()"></div>
     <div id="slds-mobile-nav-drawer" class="slds-mobile-nav-drawer">
@@ -187,7 +401,7 @@ function getMobileNavDrawerHTML(activePage) {
         </div>
         <button class="slds-mobile-nav-close" onclick="closeMobileNav()">&#215;</button>
       </div>
-      <div class="slds-mobile-nav-items">${items}</div>
+      <div class="slds-mobile-nav-items">${sections}</div>
       <div class="slds-mobile-nav-footer">WMS Platform &middot; v1.0.1</div>
     </div>`;
 }
@@ -214,7 +428,7 @@ function closeMobileNav() {
 //  GLOBAL HEADER HTML
 // ----------------------------------------------------------------
 function getGlobalHeaderHTML() {
-    const user = JSON.parse(localStorage.getItem('ph_slds_user') || '{"name":"Demo User","company":"Partner Co.","initials":"DU"}');
+    const user = getCurrentUser();
     return `
     <header class="slds-global-header">
       <!-- Hamburger (mobile only) -->
@@ -222,9 +436,8 @@ function getGlobalHeaderHTML() {
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:22px;height:22px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
 
-      <!-- App Launcher -->
-      <button class="slds-app-launcher-btn" title="App Launcher" onclick="toggleAppLauncher()">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:20px;height:20px;">${ICON_PATHS.apps}</svg>
+      <button id="slds-sidebar-toggle" class="slds-sidebar-toggle slds-util-hide-mobile" type="button" title="Collapse menu" aria-label="Collapse menu" onclick="toggleSidebar()">
+        <svg id="slds-sidebar-toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;">${getSidebarToggleIconPath(false)}</svg>
       </button>
 
       <!-- Brand -->
@@ -233,118 +446,13 @@ function getGlobalHeaderHTML() {
         <span class="slds-brand-name">PartnerHub</span>
       </a>
 
-      <!-- Divider -->
-      <div class="slds-header-divider"></div>
-
-      <!-- WMS Platform Dropdown -->
-      <div class="slds-hdr-btn-wrap slds-util-hide-mobile">
-        <button class="slds-header-app-name" onclick="toggleHeaderDropdown('platform-dd',event)">
-          WMS Platform
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;">${ICON_PATHS.chevron}</svg>
-        </button>
-        <div id="platform-dd" class="slds-hdr-dropdown" style="display:none;min-width:190px;">
-          <div class="slds-hdr-dropdown__header">WMS Modules</div>
-          ${PH_NAV.map(n => `
-          <a href="${n.href}" class="slds-hdr-dropdown__item" onclick="closeAllHeaderDropdowns()">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[n.icon] || ''}</svg>
-            ${n.label}
-          </a>`).join('')}
-        </div>
-      </div>
-
       <!-- Search -->
       <div class="slds-header-search">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.search}</svg>
         <input type="text" placeholder="Search PartnerHub...">
       </div>
 
-      <!-- Utilities -->
       <div class="slds-header-utilities">
-        <button class="slds-header-util-btn slds-util-hide-mobile" title="Favorites">${icon('star')}</button>
-        <button class="slds-header-util-btn slds-util-hide-mobile" title="New Record">${icon('plus')}</button>
-
-        <!-- Help -->
-        <div class="slds-hdr-btn-wrap slds-util-hide-mobile">
-          <button class="slds-header-util-btn" title="Help" onclick="toggleHeaderDropdown('help-dd',event)">${icon('info')}</button>
-          <div id="help-dd" class="slds-hdr-dropdown" style="display:none;">
-            <div class="slds-hdr-dropdown__header">Help &amp; Resources</div>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening Help Center…','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.info}</svg>Help Center
-            </a>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening Documentation…','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.order}</svg>Documentation
-            </a>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening Video Tutorials…','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.report}</svg>Video Tutorials
-            </a>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Keyboard shortcuts coming soon','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.star}</svg>Keyboard Shortcuts
-            </a>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Opening support portal…','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.user}</svg>Contact Support
-            </a>
-            <div class="slds-hdr-dropdown__footer">PartnerHub v1.0.1</div>
-          </div>
-        </div>
-
-        <!-- Setup -->
-        <div class="slds-hdr-btn-wrap slds-util-hide-mobile">
-          <button class="slds-header-util-btn" title="Setup" onclick="toggleHeaderDropdown('setup-dd',event)">${icon('setting')}</button>
-          <div id="setup-dd" class="slds-hdr-dropdown" style="display:none;">
-            <div class="slds-hdr-dropdown__header">Setup</div>
-            <a href="settings.html" class="slds-hdr-dropdown__item" onclick="closeAllHeaderDropdowns()">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.setting}</svg>General Settings
-            </a>
-            <a href="user-master-list.html" class="slds-hdr-dropdown__item" onclick="closeAllHeaderDropdowns()">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.user}</svg>User Management
-            </a>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Warehouse Configuration coming soon','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.asn}</svg>Warehouse Config
-            </a>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Integration Settings coming soon','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.refresh}</svg>Integrations
-            </a>
-            <a href="#" class="slds-hdr-dropdown__item" onclick="showToast('Security settings coming soon','info');closeAllHeaderDropdowns();return false">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS.check}</svg>Security &amp; Permissions
-            </a>
-          </div>
-        </div>
-
-        <!-- Notifications -->
-        <div class="slds-hdr-btn-wrap">
-          <button class="slds-header-util-btn" title="Notifications" onclick="toggleHeaderDropdown('notif-dd',event)">
-            ${icon('notif')}
-            <span class="slds-notif-dot"></span>
-          </button>
-          <div id="notif-dd" class="slds-hdr-dropdown" style="display:none;width:320px;min-width:320px;">
-            <div class="slds-hdr-dropdown__header">
-              <span>Notifications</span>
-              <span onclick="closeAllHeaderDropdowns();showToast('All notifications marked as read','success')" style="font-size:11px;font-weight:500;color:var(--slds-brand);cursor:pointer;text-transform:none;letter-spacing:0;">Mark All Read</span>
-            </div>
-            <div class="slds-notif-item slds-notif-unread">
-              <div class="slds-notif-item__title">New ASN Received — ASN-2024-0041</div>
-              <div class="slds-notif-item__meta">Alpha Logistics &middot; 480 units &middot; WH-MUM-01 &middot; 2 hrs ago</div>
-            </div>
-            <div class="slds-notif-item slds-notif-unread">
-              <div class="slds-notif-item__title">Order Processing — ORD-FWD-6672</div>
-              <div class="slds-notif-item__meta">Nexus Corp &middot; 4 items &middot; High Priority &middot; 3 hrs ago</div>
-            </div>
-            <div class="slds-notif-item slds-notif-unread">
-              <div class="slds-notif-item__title">Low Stock Alert — SwiftRun Pro Sneakers</div>
-              <div class="slds-notif-item__meta">SKU: SN-SWT-006 &middot; Only 3 units remaining &middot; 5 hrs ago</div>
-            </div>
-            <div class="slds-notif-item">
-              <div class="slds-notif-item__title">Return Completed — RET-2024-0019</div>
-              <div class="slds-notif-item__meta">Apex Industries &middot; 3 items &middot; Yesterday</div>
-            </div>
-            <div class="slds-notif-item">
-              <div class="slds-notif-item__title">ASN Discrepancy — ASN-2024-0037</div>
-              <div class="slds-notif-item__meta">Alpha Logistics &middot; WH-MUM-01 &middot; Review required &middot; Yesterday</div>
-            </div>
-            <div class="slds-hdr-dropdown__footer" onclick="closeAllHeaderDropdowns()">View All Notifications →</div>
-          </div>
-        </div>
-
         <div class="slds-header-avatar" title="${user.name}">${user.initials}</div>
       </div>
     </header>`;
@@ -354,62 +462,12 @@ function getGlobalHeaderHTML() {
 //  APP NAVIGATION HTML
 // ----------------------------------------------------------------
 function getAppNavHTML(activePage) {
-    const items = PH_NAV.map(n => `
-    <a href="${n.href}"
-       class="slds-nav-item${activePage === n.id ? ' active' : ''}">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${ICON_PATHS[n.icon] || ''}</svg>
-      ${n.label}
-    </a>`).join('');
+    const sections = getGroupedNavSections(activePage, (item, isActive) => getDesktopNavItemHTML(item, isActive, activePage));
 
     return `
     <nav class="slds-app-nav">
-      <div class="slds-app-nav__items">${items}</div>
+            <div class="slds-app-nav__scroll">${sections}</div>
     </nav>`;
-}
-
-// ----------------------------------------------------------------
-//  WORKSPACE TABS HTML
-// ----------------------------------------------------------------
-function getWorkspaceTabsHTML(activeTab) {
-    const tabs = getStoredTabs();
-    const tabsHTML = tabs.map(t => `
-    <a href="${t.href}" class="slds-wtab${activeTab === t.id ? ' active' : ''}">
-      <div class="slds-wtab__icon ic-${t.icon}">${icon(t.icon, '')}</div>
-      <span class="slds-truncate" style="max-width:120px;">${t.label}</span>
-      ${t.closeable ? `<button class="slds-wtab__close" onclick="closeTab(event,'${t.id}')">${icon('close', '')}</button>` : ''}
-    </a>`).join('');
-
-    return `
-    <div class="slds-workspace-tabs">
-      ${tabsHTML}
-      <button class="slds-wtab-add" title="New Tab">+</button>
-    </div>`;
-}
-
-function getStoredTabs() {
-    // Always include the home tab plus any open record tabs
-    const saved = JSON.parse(sessionStorage.getItem('ph_slds_tabs') || '[]');
-    const home = { id: 'dashboard', label: 'Home', href: 'dashboard.html', icon: 'home', closeable: false };
-    // Deduplicate
-    const others = saved.filter(t => t.id !== 'dashboard');
-    return [home, ...others];
-}
-
-function openTab(id, label, href, icon) {
-    const tabs = JSON.parse(sessionStorage.getItem('ph_slds_tabs') || '[]');
-    if (!tabs.find(t => t.id === id)) {
-        tabs.push({ id, label, href, icon, closeable: true });
-        if (tabs.length > 8) tabs.shift(); // keep max 8 tabs
-        sessionStorage.setItem('ph_slds_tabs', JSON.stringify(tabs));
-    }
-}
-
-function closeTab(e, id) {
-    e.preventDefault(); e.stopPropagation();
-    const tabs = JSON.parse(sessionStorage.getItem('ph_slds_tabs') || '[]');
-    const filtered = tabs.filter(t => t.id !== id);
-    sessionStorage.setItem('ph_slds_tabs', JSON.stringify(filtered));
-    window.location.href = 'dashboard.html';
 }
 
 // ----------------------------------------------------------------
@@ -427,7 +485,6 @@ function checkAuth() {
 function logout() {
     localStorage.removeItem('ph_slds_auth');
     localStorage.removeItem('ph_slds_user');
-    sessionStorage.removeItem('ph_slds_tabs');
     window.location.href = 'index.html';
 }
 
@@ -484,39 +541,156 @@ function exportData() {
     setTimeout(() => showToast('Data exported successfully (CSV)', 'success', 'Done'), 1500);
 }
 
-// ----------------------------------------------------------------
-//  APP LAUNCHER MODAL
-// ----------------------------------------------------------------
-function toggleAppLauncher() {
-    let modal = document.getElementById('slds-app-launcher');
-    if (modal) { modal.remove(); return; }
+function loadStyleAsset(id, href) {
+    const existing = document.getElementById(id);
+    if (existing) return Promise.resolve(existing);
 
-    document.body.insertAdjacentHTML('beforeend', `
-    <div id="slds-app-launcher" class="slds-backdrop" onclick="if(event.target===this)this.remove()">
-      <div class="slds-modal" style="max-width:720px;">
-        <div class="slds-modal__header" style="background:#0176D3;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">${ICON_PATHS.apps}</svg>
-            <span class="slds-modal__title">App Launcher</span>
-          </div>
-          <button class="slds-modal__close" onclick="document.getElementById('slds-app-launcher').remove()">×</button>
-        </div>
-        <div class="slds-modal__body">
-          <input class="slds-input" style="margin-bottom:16px;" placeholder="Search apps and items..." oninput="filterApps(this.value)">
-          <div id="app-launcher-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;">
-            ${PH_NAV.map(n => `
-              <a href="${n.href}" onclick="document.getElementById('slds-app-launcher').remove()"
-                 style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;border:1px solid var(--slds-n7);border-radius:4px;text-decoration:none;transition:background .1s;"
-                 onmouseover="this.style.background='#EEF4FF'" onmouseout="this.style.background=''">
-                <div class="slds-icon-std ic-${n.icon}" style="width:48px;height:48px;border-radius:12px;">
-                  <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:24px;height:24px;">${ICON_PATHS[n.icon] || ''}</svg>
-                </div>
-                <span style="font-size:13px;font-weight:600;color:var(--slds-n1);text-align:center;">${n.label}</span>
-              </a>`).join('')}
-          </div>
-        </div>
-      </div>
-    </div>`);
+    return new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.id = id;
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.onload = () => resolve(link);
+        link.onerror = () => reject(new Error(`Failed to load stylesheet: ${href}`));
+        document.head.appendChild(link);
+    });
+}
+
+function loadScriptAsset(id, src) {
+    const existing = document.getElementById(id);
+    if (existing && existing.dataset.loaded === '1') return Promise.resolve(existing);
+
+    return new Promise((resolve, reject) => {
+        const script = existing || document.createElement('script');
+        script.id = id;
+        script.src = src;
+        script.async = true;
+        script.onload = () => {
+            script.dataset.loaded = '1';
+            resolve(script);
+        };
+        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+        if (!existing) document.head.appendChild(script);
+    });
+}
+
+function ensureDataTableAssets() {
+    if (window.jQuery && window.jQuery.fn && window.jQuery.fn.dataTable) {
+        return Promise.resolve();
+    }
+
+    if (!phDataTableAssetsPromise) {
+        phDataTableAssetsPromise = loadStyleAsset('ph-datatables-css', 'https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css')
+            .then(() => loadScriptAsset('ph-jquery-js', 'https://code.jquery.com/jquery-3.7.1.min.js'))
+            .then(() => loadScriptAsset('ph-datatables-js', 'https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js'))
+            .catch(error => {
+                console.warn(error);
+                phDataTableAssetsPromise = null;
+            });
+    }
+
+    return phDataTableAssetsPromise || Promise.resolve();
+}
+
+function resolveTableElement(tableOrSelector) {
+    if (!tableOrSelector) return null;
+    if (typeof tableOrSelector === 'string') return document.querySelector(tableOrSelector);
+    return tableOrSelector.tagName === 'TABLE' ? tableOrSelector : tableOrSelector.closest('table');
+}
+
+function getLegacyTableFooter(table) {
+    return table?.closest('.slds-table-wrap')?.nextElementSibling || null;
+}
+
+function setLegacyTableFooterHidden(table, hidden) {
+    const footer = getLegacyTableFooter(table);
+    if (footer) footer.classList.toggle('slds-datatable-legacy-footer', hidden);
+}
+
+function buildDataTableColumnDefs(table) {
+    return Array.from(table.querySelectorAll('thead th')).reduce((defs, th, index) => {
+        const text = th.textContent.trim().toLowerCase();
+        const inlineStyle = (th.getAttribute('style') || '').toLowerCase();
+        const hasCheckbox = !!th.querySelector('input[type="checkbox"]');
+        const isActions = text.includes('action') || inlineStyle.includes('text-align:right');
+        const isExplicitlyDisabled = th.dataset.dtOrder === 'false';
+
+        if (hasCheckbox || isActions || isExplicitlyDisabled) {
+            defs.push({ targets: index, orderable: false, searchable: !hasCheckbox });
+        }
+
+        return defs;
+    }, []);
+}
+
+function getDataTableOptions(table) {
+    const rowCount = table.tBodies[0]?.rows.length || 0;
+    const pageLength = Number.parseInt(table.dataset.dtPageLength || '8', 10);
+    const pagingEnabled = table.dataset.dtPaging !== 'false';
+    const orderingEnabled = table.dataset.dtOrdering !== 'false';
+    const searchingEnabled = table.dataset.dtSearching === 'true';
+    const legacyFooter = !!getLegacyTableFooter(table);
+    const showFooter = legacyFooter || rowCount > pageLength || table.dataset.dtInfo === 'true';
+
+    return {
+        paging: pagingEnabled,
+        ordering: orderingEnabled,
+        searching: searchingEnabled,
+        info: showFooter,
+        lengthChange: false,
+        autoWidth: false,
+        pageLength,
+        pagingType: 'simple_numbers',
+        order: [],
+        stripeClasses: [],
+        dom: showFooter ? 't<"slds-datatable-footer"ip>' : 't',
+        language: {
+            info: 'Showing _START_–_END_ of _TOTAL_ records',
+            infoEmpty: 'Showing 0 records',
+            infoFiltered: '',
+            paginate: {
+                previous: '‹',
+                next: '›',
+            },
+            emptyTable: 'No records available',
+            zeroRecords: 'No matching records found',
+        },
+        columnDefs: buildDataTableColumnDefs(table),
+        drawCallback() {
+            table.querySelectorAll('tbody tr').forEach(row => {
+                row.classList.remove('odd', 'even');
+            });
+        },
+    };
+}
+
+function refreshDataTable(tableOrSelector) {
+    const table = resolveTableElement(tableOrSelector);
+    if (!table || !table.querySelector('thead') || !table.querySelector('tbody')) return Promise.resolve(null);
+    if (table.offsetParent === null) return Promise.resolve(null);
+
+    return ensureDataTableAssets().then(() => {
+        if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.dataTable) return null;
+
+        const $table = window.jQuery(table);
+        if (window.jQuery.fn.dataTable.isDataTable(table)) {
+            $table.DataTable().destroy();
+            table.style.width = '';
+        }
+
+        $table.DataTable(getDataTableOptions(table));
+        setLegacyTableFooterHidden(table, true);
+        return $table.DataTable();
+    });
+}
+
+function enhancePageTables(root = document) {
+    const tables = Array.from(root.querySelectorAll('.slds-table')).filter(table => {
+        if (table.dataset.dtIgnore === 'true') return false;
+        return table.querySelector('thead') && table.querySelector('tbody') && table.offsetParent !== null;
+    });
+
+    return Promise.all(tables.map(table => refreshDataTable(table)));
 }
 
 // ----------------------------------------------------------------
@@ -524,11 +698,6 @@ function toggleAppLauncher() {
 // ----------------------------------------------------------------
 function initPage(activePage, pageTitle, tabLabel, tabIcon) {
     checkAuth();
-
-    // If this a record page, open a workspace tab for it
-    if (tabLabel && tabLabel !== 'Home' && tabLabel !== 'Dashboard') {
-        openTab(activePage + '-' + Date.now(), tabLabel, window.location.href.split('/').pop(), tabIcon || activePage.split('-')[0]);
-    }
 
     // Inject global header
     const ghContainer = document.getElementById('slds-global-header-container');
@@ -538,14 +707,17 @@ function initPage(activePage, pageTitle, tabLabel, tabIcon) {
     const navContainer = document.getElementById('slds-app-nav-container');
     if (navContainer) navContainer.innerHTML = getAppNavHTML(activePage);
 
-    // Inject workspace tabs
-    const wtContainer = document.getElementById('slds-workspace-tabs-container');
-    if (wtContainer) wtContainer.innerHTML = getWorkspaceTabsHTML(activePage);
-
     // Inject mobile nav drawer (once per page load)
     if (!document.getElementById('slds-mobile-nav-overlay')) {
         document.body.insertAdjacentHTML('beforeend', getMobileNavDrawerHTML(activePage));
     }
+
+    initNavTooltips();
+    applySidebarState();
+    ensureDataTableAssets().then(() => {
+        window.requestAnimationFrame(() => enhancePageTables(document));
+        window.setTimeout(() => enhancePageTables(document), 120);
+    });
 }
 
 // ----------------------------------------------------------------

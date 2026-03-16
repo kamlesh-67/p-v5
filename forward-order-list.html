@@ -111,8 +111,7 @@
                     oninput="filterOrders(this.value)">
             </div>
 
-            <select class="slds-select"
-                onchange="filterByStatus(this.value)">
+            <select class="slds-select" onchange="filterByStatus(this.value)">
                 <option value="">All Statuses</option>
                 <option value="Processing">Processing</option>
                 <option value="Pending">Pending</option>
@@ -121,8 +120,7 @@
                 <option value="Cancelled">Cancelled</option>
             </select>
 
-            <select class="slds-select"
-                onchange="filterByPriority(this.value)">
+            <select class="slds-select" onchange="filterByPriority(this.value)">
                 <option value="">All Priorities</option>
                 <option value="High">High</option>
                 <option value="Normal">Normal</option>
@@ -220,6 +218,7 @@
             const tbody = document.getElementById('orders-tbody');
             if (!data || data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="11" class="slds-table-empty">No orders found matching your filters</td></tr>`;
+                refreshDataTable('#orders-table');
                 return;
             }
 
@@ -251,6 +250,8 @@
             </div>
           </td>
         </tr>`).join('');
+
+            refreshDataTable('#orders-table');
         }
 
         let currentData = [...PH_FWD_ORDERS];

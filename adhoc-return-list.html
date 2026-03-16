@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad-hoc Return &mdash; PartnerHub</title>
+    <link rel="stylesheet" href="css/slds.css">
+</head>
+
+<body>
+    <div id="slds-global-header-container"></div>
+    <div id="slds-app-nav-container"></div>
+    <div id="slds-workspace-tabs-container"></div>
+
+    <div class="slds-body">
+        <div class="slds-list-header">
+            <div class="slds-list-header__icon-title">
+                <div class="slds-icon-std ic-return">
+                    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:20px;height:20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="slds-list-title">Ad-hoc Return</div>
+                    <div class="slds-list-subtitle">Standalone customer pickup returns and exception requests</div>
+                </div>
+            </div>
+            <div class="slds-list-actions">
+                <button class="slds-btn slds-btn-neutral" onclick="exportData()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export
+                </button>
+                <button class="slds-btn slds-btn-brand"
+                    onclick="showToast('Ad-hoc return create flow can be added next','info')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New Request
+                </button>
+            </div>
+        </div>
+
+        <div class="ph-kpi-strip">
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Open Requests</div>
+                <div class="slds-kpi-value" style="font-size:20px;">16</div>
+            </div>
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Awaiting Approval</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-warning);">5</div>
+            </div>
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Pickup Scheduled</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-info);">7</div>
+            </div>
+            <div class="slds-kpi-card ph-kpi-strip-card">
+                <div class="slds-kpi-label">Completed</div>
+                <div class="slds-kpi-value" style="font-size:20px;color:var(--slds-success);">28</div>
+            </div>
+        </div>
+
+        <div class="slds-filter-bar">
+            <div class="slds-search-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" class="slds-search" id="adhoc-search"
+                    placeholder="Search request ID, customer, city..." oninput="renderAdhocTable()">
+            </div>
+            <select class="slds-select" id="adhoc-status" onchange="renderAdhocTable()">
+                <option value="">All Statuses</option>
+                <option value="Awaiting Approval">Awaiting Approval</option>
+                <option value="Pickup Scheduled">Pickup Scheduled</option>
+                <option value="Received">Received</option>
+                <option value="Closed">Closed</option>
+            </select>
+            <select class="slds-select" id="adhoc-reason" onchange="renderAdhocTable()">
+                <option value="">All Reasons</option>
+                <option value="Damaged Item">Damaged Item</option>
+                <option value="Wrong Product">Wrong Product</option>
+                <option value="Buyer Remorse">Buyer Remorse</option>
+            </select>
+        </div>
+
+        <div class="slds-card" style="margin:16px 24px;">
+            <div class="slds-table-wrap">
+                <table class="slds-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="slds-checkbox"></th>
+                            <th>Request ID</th>
+                            <th>Customer</th>
+                            <th>City</th>
+                            <th>Items</th>
+                            <th>Pickup Date</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th style="text-align:right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adhoc-tbody"></tbody>
+                </table>
+            </div>
+            <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-top:1px solid var(--slds-n7);background:var(--slds-n10);">
+                <span style="font-size:12px;color:var(--slds-n4);" id="adhoc-count">Showing all requests</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="slds-toast-zone" class="slds-toast-zone"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('adhoc-return', 'Ad-hoc Return');
+
+        const ADHOC_RETURN_DATA = [
+            { id: 'ADH-RET-1041', customer: 'Aarav Sharma', city: 'Mumbai', items: 2, pickupDate: '18 Mar 2026', reason: 'Damaged Item', status: 'Awaiting Approval' },
+            { id: 'ADH-RET-1040', customer: 'Meera Iyer', city: 'Bengaluru', items: 1, pickupDate: '17 Mar 2026', reason: 'Wrong Product', status: 'Pickup Scheduled' },
+            { id: 'ADH-RET-1039', customer: 'Ritesh Jain', city: 'Delhi', items: 3, pickupDate: '16 Mar 2026', reason: 'Buyer Remorse', status: 'Received' },
+            { id: 'ADH-RET-1038', customer: 'Kavya Menon', city: 'Chennai', items: 1, pickupDate: '15 Mar 2026', reason: 'Damaged Item', status: 'Closed' },
+            { id: 'ADH-RET-1037', customer: 'Sonal Gupta', city: 'Pune', items: 4, pickupDate: '14 Mar 2026', reason: 'Wrong Product', status: 'Pickup Scheduled' },
+        ];
+
+        function renderAdhocTable() {
+            const query = document.getElementById('adhoc-search').value.toLowerCase();
+            const status = document.getElementById('adhoc-status').value;
+            const reason = document.getElementById('adhoc-reason').value;
+            const statusMap = {
+                'Awaiting Approval': 'slds-badge-warning',
+                'Pickup Scheduled': 'slds-badge-info',
+                Received: 'slds-badge-success',
+                Closed: 'slds-badge-neutral',
+            };
+
+            const filtered = ADHOC_RETURN_DATA.filter(item =>
+                (!query || [item.id, item.customer, item.city].some(value => value.toLowerCase().includes(query))) &&
+                (!status || item.status === status) &&
+                (!reason || item.reason === reason)
+            );
+
+            document.getElementById('adhoc-tbody').innerHTML = filtered.map(item => `
+                <tr>
+                    <td><input type="checkbox" class="slds-checkbox"></td>
+                    <td><span class="slds-text-link" style="font-weight:600;">${item.id}</span></td>
+                    <td style="font-weight:500;">${item.customer}</td>
+                    <td style="color:var(--slds-n4);">${item.city}</td>
+                    <td>${item.items}</td>
+                    <td style="color:var(--slds-n4);">${item.pickupDate}</td>
+                    <td>${item.reason}</td>
+                    <td><span class="slds-badge ${statusMap[item.status] || 'slds-badge-neutral'}">${item.status}</span></td>
+                    <td style="text-align:right;">
+                        <div style="display:flex;gap:6px;justify-content:flex-end;">
+                            <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('${item.id} opened','info')">View</button>
+                            <button class="slds-btn slds-btn-neutral slds-btn-sm" onclick="showToast('${item.id} scheduled','success')">Schedule</button>
+                        </div>
+                    </td>
+                </tr>`).join('');
+
+            document.getElementById('adhoc-count').textContent = `Showing ${filtered.length} of ${ADHOC_RETURN_DATA.length} requests`;
+            refreshDataTable(document.getElementById('adhoc-tbody').closest('table'));
+        }
+
+        renderAdhocTable();
+    </script>
+</body>
+
+</html>
